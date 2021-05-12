@@ -7,4 +7,8 @@
     <string name="cart">Cart</string>
     <string name="favorite">Favorite</string>
     <string name="account">Account</string>
+    <string name="facebook_app_id">502865764485189</string>
+    <string name="fb_login_protocol_scheme">fb502865764485189</string>
+    <string name="title_activity_maps">Map</string>
+
 </resources>

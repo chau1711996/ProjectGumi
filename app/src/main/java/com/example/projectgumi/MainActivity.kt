@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             CartFragment.newInstance("Cart", "To Cart"),
             FavoriteFragment.newInstance("Favorite", "To Favorite"),
             AccountFragment.newInstance("Account", "To Account")
-        )  
+        )
         binding?.let {
             it.viewPager.adapter = ViewPagerFragmentAdapter(supportFragmentManager, fragments, lifecycle)
 
