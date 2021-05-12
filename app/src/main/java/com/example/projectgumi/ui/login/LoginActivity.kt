@@ -100,7 +100,7 @@ class LoginActivity : AppCompatActivity() {
         }
         binding.buttonLogout.setOnClickListener {
             signOut()
-        }
+        }      
 
     }
 
