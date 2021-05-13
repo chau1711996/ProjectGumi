@@ -11,5 +11,14 @@
     <string name="fb_login_protocol_scheme">fb502865764485189</string>
 
     <string name="title_activity_maps">Map</string>
+    <string name="product_title">Product Title</string>
+    <string name="product_name">Product Name</string>
+    <string name="reduce_the_number_product">reduce the number</string>
+    <string name="increasing_the_number_product">increasing the number</string>
+    <string name="product_nutri_count">100g</string>
+    <string name="product_name_detail">Product name detail</string>
+    <string name="product_nutri">Product Nutri</string>
+    <string name="product_title_detail">Product Title Detail</string>
+    <string name="add_to_basket">Add to basket</string>
 
 </resources>
