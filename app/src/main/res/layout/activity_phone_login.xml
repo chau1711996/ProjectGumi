@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.signInPhone.PhoneLoginActivity">
+    <include
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/layout_head"
+        layout="@layout/layout_head"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_phone"
+        app:layout_constraintTop_toBottomOf="@id/layout_head"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_marginStart="20dp"
+            android:id="@+id/layout_fristNumberVN"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/edit_phoneNumber"
+            app:layout_constraintBottom_toBottomOf="@id/edit_phoneNumber"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_vietnam"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="@string/first_phone_vn"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <EditText
+            app:layout_constraintStart_toEndOf="@id/layout_fristNumberVN"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/edit_phoneNumber"
+            android:padding="20dp"
+            android:hint="@string/enter_phone_number"
+            android:layout_width="0dp"
+            android:inputType="phone"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/buttonGetCode"
+            app:layout_constraintTop_toBottomOf="@id/edit_phoneNumber"
+            android:text="Get Code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_code"
+        app:layout_constraintTop_toBottomOf="@id/layout_head"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+        <EditText
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/edit_code"
+            android:padding="20dp"
+            android:hint="@string/enter_code"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/buttonOK"
+            app:layout_constraintTop_toBottomOf="@id/edit_code"
+            android:text="OK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/buttonResend"
+            app:layout_constraintTop_toBottomOf="@id/buttonOK"
+            android:text="Resend COde"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/flGetCode"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20dp"
+        android:background="@color/button_bg"
+        android:src="@drawable/ic_arrow_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

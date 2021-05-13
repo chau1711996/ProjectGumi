@@ -5,49 +5,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.login.LoginActivity">
-    <Button
-        android:id="@+id/button_loginGg"
+    <LinearLayout
+        android:id="@+id/layout_login"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="LOGIN GOOGLE"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/button_loginFb"
-        app:layout_constraintTop_toBottomOf="@id/button_loginGg"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="LOGIN FACEBOOK"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_login"
-        app:layout_constraintTop_toBottomOf="@id/button_loginFb"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/button_loginGg"
+            android:text="LOGIN GOOGLE"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/button_loginFb"
+            android:text="LOGIN FACEBOOK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/button_loginPhone"
+            android:text="LOGIN PHONE"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_logout"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
         <Button
             android:id="@+id/button_logout"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:text="LOGOUT"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <ImageView
             android:id="@+id/image_user"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
             android:layout_width="100dp"
             android:layout_height="100dp"/>
         <TextView
-            app:layout_constraintTop_toBottomOf="@id/image_user"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="20dp"
             android:id="@+id/text_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_marginTop="20dp"
+            android:id="@+id/text_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

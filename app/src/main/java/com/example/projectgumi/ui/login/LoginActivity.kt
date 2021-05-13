@@ -1,17 +1,23 @@
 package com.example.projectgumi.ui.login
 
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import coil.load
 import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ActivityLoginBinding
+import com.example.projectgumi.ui.signInPhone.PhoneLoginActivity
+import com.example.projectgumi.utils.Utils
+import com.example.projectgumi.utils.Utils.PHONE_SIGN_IN
 import com.example.projectgumi.utils.Utils.RC_SIGN_IN
 import com.example.projectgumi.utils.Utils.TAG
+import com.example.projectgumi.utils.Utils.showProgressBar
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -22,10 +28,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.FirebaseException
+import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -34,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var callbackManager: CallbackManager
+    private lateinit var dialog: AlertDialog
 
     override fun onStart() {
         super.onStart()
@@ -43,39 +48,60 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        binding.layoutLogin.visibility = View.GONE
-        binding.buttonLoginFb.visibility = View.VISIBLE
-        binding.buttonLoginGg.visibility = View.VISIBLE
+        binding.layoutLogout.visibility = View.GONE
+        binding.layoutLogin.visibility = View.VISIBLE
         user?.let {
-            binding.layoutLogin.visibility = View.VISIBLE
+            binding.layoutLogout.visibility = View.VISIBLE
+            binding.layoutLogin.visibility = View.GONE
             binding.imageUser.load(it.photoUrl)
             binding.textEmail.text = it.displayName
-            binding.buttonLoginFb.visibility = View.GONE
-            binding.buttonLoginGg.visibility = View.GONE
+            binding.textPhone.text = it.phoneNumber
+        }
+        dialog.dismiss()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Firebase.auth.currentUser.let {
+            it?.let {
+                updateUI(it)
+            }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(LayoutInflater.from(this))
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
     }
 
     private fun init() {
-
+        //Instance firebase auth
         auth = Firebase.auth
 
-        // Configure Google Sign In
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
+        dialog = showProgressBar(this, "Please wait! Loading...")
 
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        instanceGoogleSignIn()
 
-        callbackManager = CallbackManager.Factory.create()
+        instanceFacebookSignIn()
 
+        binding.buttonLoginGg.setOnClickListener {
+            signInGg()
+        }
+        binding.buttonLoginFb.setOnClickListener {
+            signInFb()
+        }
+        binding.buttonLoginPhone.setOnClickListener {
+            singInPhone()
+        }
+        binding.buttonLogout.setOnClickListener {
+            signOut()
+        }
+
+    }
+
+    private fun instanceFacebookSignIn() {
         LoginManager.getInstance().registerCallback(callbackManager, object :
             FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
@@ -91,21 +117,28 @@ class LoginActivity : AppCompatActivity() {
                 Log.d(TAG, "facebook:onError", error)
             }
         })
+    }
 
-        binding.buttonLoginGg.setOnClickListener {
-            signInGg()
-        }
-        binding.buttonLoginFb.setOnClickListener {
-            signInFb()
-        }
-        binding.buttonLogout.setOnClickListener {
-            signOut()
-        }
+    private fun instanceGoogleSignIn() {
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
 
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        callbackManager = CallbackManager.Factory.create()
+    }
+
+    private fun singInPhone() {
+        val intent = Intent(this, PhoneLoginActivity::class.java)
+        startActivity(intent)
     }
 
     private fun signInFb() {
-        LoginManager.getInstance().logInWithReadPermissions(this, arrayListOf("public_profile", "user_friends"))
+        LoginManager.getInstance()
+            .logInWithReadPermissions(this, arrayListOf("public_profile", "user_friends"))
     }
 
     private fun signInGg() {
@@ -121,7 +154,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        dialog.show()
         callbackManager.onActivityResult(requestCode, resultCode, data)
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
@@ -178,4 +211,5 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }
+
 }
