@@ -5,17 +5,18 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ProgressBar
 import android.widget.Toast
 import coil.load
 import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ActivityLoginBinding
+import com.example.projectgumi.sns.SNSLoginActivity
 import com.example.projectgumi.ui.signInPhone.PhoneLoginActivity
-import com.example.projectgumi.utils.Utils
-import com.example.projectgumi.utils.Utils.PHONE_SIGN_IN
-import com.example.projectgumi.utils.Utils.RC_SIGN_IN
+import com.example.projectgumi.utils.SNSLoginType
+import com.example.projectgumi.utils.Utils.SNS_LOGIN_TYPE
+import com.example.projectgumi.utils.Utils.SNS_REQUEST_CODE
+import com.example.projectgumi.utils.Utils.SNS_RESULT_CODE
+import com.example.projectgumi.utils.Utils.SNS_RESULT_DATA
 import com.example.projectgumi.utils.Utils.TAG
 import com.example.projectgumi.utils.Utils.showProgressBar
 import com.facebook.AccessToken
@@ -28,7 +29,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -38,7 +38,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var callbackManager: CallbackManager
-    private lateinit var dialog: AlertDialog
 
     override fun onStart() {
         super.onStart()
@@ -57,7 +56,6 @@ class LoginActivity : AppCompatActivity() {
             binding.textEmail.text = it.displayName
             binding.textPhone.text = it.phoneNumber
         }
-        dialog.dismiss()
     }
 
     override fun onResume() {
@@ -79,10 +77,6 @@ class LoginActivity : AppCompatActivity() {
     private fun init() {
         //Instance firebase auth
         auth = Firebase.auth
-
-        dialog = showProgressBar(this, "Please wait! Loading...")
-
-        instanceGoogleSignIn()
 
         instanceFacebookSignIn()
 
@@ -119,18 +113,6 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    private fun instanceGoogleSignIn() {
-        // Configure Google Sign In
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        callbackManager = CallbackManager.Factory.create()
-    }
-
     private fun singInPhone() {
         val intent = Intent(this, PhoneLoginActivity::class.java)
         startActivity(intent)
@@ -142,8 +124,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signInGg() {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        val intent = Intent(this, SNSLoginActivity::class.java)
+        intent.putExtra(SNS_LOGIN_TYPE, SNSLoginType.Google)
+        startActivityForResult(intent, SNS_REQUEST_CODE)
     }
 
     private fun signOut() {
@@ -154,40 +137,31 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        dialog.show()
-        callbackManager.onActivityResult(requestCode, resultCode, data)
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                val account = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-                firebaseAuthWithGoogle(account.idToken!!)
-            } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e)
-            }
+        if(requestCode == SNS_REQUEST_CODE && resultCode == SNS_RESULT_CODE){
+            val user = data?.extras?.get(SNS_RESULT_DATA) as FirebaseUser?
+            updateUI(user)
         }
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                    updateUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    updateUI(null)
-                }
-            }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        dialog.show()
+//        callbackManager.onActivityResult(requestCode, resultCode, data)
+//
+//        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+//        if (requestCode == RC_SIGN_IN) {
+//            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+//            try {
+//                // Google Sign In was successful, authenticate with Firebase
+//                val account = task.getResult(ApiException::class.java)!!
+//                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+//                firebaseAuthWithGoogle(account.idToken!!)
+//            } catch (e: ApiException) {
+//                // Google Sign In failed, update UI appropriately
+//                Log.w(TAG, "Google sign in failed", e)
+//            }
+//        }
+//    }
 
     private fun handleFacebookAccessToken(token: AccessToken) {
         Log.d("TAG", "handleFacebookAccessToken:$token")

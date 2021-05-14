@@ -7,8 +7,15 @@ import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ProgressBarBinding
 
 object Utils {
-    const val RC_SIGN_IN = 999
     const val TAG = "TAG"
+
+    const val SNS_REQUEST_CODE = 888
+
+    const val SNS_RESULT_CODE = 777
+
+    const val SNS_RESULT_DATA = "SNS_RESULT_DATA"
+
+    const val SNS_LOGIN_TYPE = "SNS_LOGIN_TYPE"
 
     const val PHONE_SIGN_IN = 998
 
