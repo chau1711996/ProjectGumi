@@ -6,13 +6,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
-import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ActivityPhoneLoginBinding
-import com.example.projectgumi.ui.login.LoginActivity
 import com.example.projectgumi.utils.Utils
+import com.example.projectgumi.utils.Utils.SNS_RESULT_CODE
+import com.example.projectgumi.utils.Utils.SNS_RESULT_DATA
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import java.util.concurrent.TimeUnit
@@ -104,16 +103,19 @@ class PhoneLoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    dialog.dismiss()
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("TAG", "signInWithCredential:${auth.currentUser!!.phoneNumber}")
-                    startActivity(Intent(this, LoginActivity::class.java))
+                    val intent = Intent()
+                    intent.putExtra(SNS_RESULT_DATA, auth.currentUser)
+                    setResult(SNS_RESULT_CODE, intent)
+                    dialog.dismiss()
+                    finish()
                 } else {
                     dialog.dismiss()
                     // If sign in fails, display a message to the user.
                     Log.w("TAG", "signInWithCredential:failure", task.exception)
                     Toast.makeText(
-                        baseContext, "Authentication failed.",
+                        baseContext, "Authentication failed by code error.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -123,7 +125,8 @@ class PhoneLoginActivity : AppCompatActivity() {
     private fun instancePhoneSignIn() {
         phoneCallBack = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
             override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-                signInWithPhoneAuthCredential(p0)
+//                signInWithPhoneAuthCredential(p0)
+                Toast.makeText(this@PhoneLoginActivity, p0.smsCode, Toast.LENGTH_SHORT).show()
             }
 
             override fun onVerificationFailed(p0: FirebaseException) {
@@ -131,6 +134,7 @@ class PhoneLoginActivity : AppCompatActivity() {
                 Toast.makeText(this@PhoneLoginActivity, p0.message, Toast.LENGTH_SHORT).show()
             }
 
+            @SuppressLint("SetTextI18n")
             override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
                 super.onCodeSent(p0, p1)
                 Log.d(TAG, "onCodeSent: $p0")
@@ -142,6 +146,8 @@ class PhoneLoginActivity : AppCompatActivity() {
                 binding.apply {
                     layoutCode.visibility = View.VISIBLE
                     layoutPhone.visibility = View.GONE
+                    layoutHead.caption.text = "Mobie Code"
+                    layoutHead.title.text = "Enter your mobie code"
                 }
             }
         }

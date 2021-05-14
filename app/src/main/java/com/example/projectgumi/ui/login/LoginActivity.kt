@@ -90,8 +90,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun singInPhone() {
-        val intent = Intent(this, PhoneLoginActivity::class.java)
-        startActivity(intent)
+        val intent = Intent(this, SNSLoginActivity::class.java)
+        intent.putExtra(SNS_LOGIN_TYPE, SNSLoginType.PhoneNumber)
+        startActivityForResult(intent, SNS_REQUEST_CODE)
     }
 
     private fun signInFb() {

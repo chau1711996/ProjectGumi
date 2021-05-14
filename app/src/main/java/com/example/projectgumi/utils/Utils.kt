@@ -17,7 +17,9 @@ object Utils {
 
     const val SNS_LOGIN_TYPE = "SNS_LOGIN_TYPE"
 
-    const val PHONE_SIGN_IN = 998
+    const val SNS_REQUEST_CODE_GOOGLE = 887
+
+    const val SNS_REQUEST_CODE_PHONE = 886
 
     fun showProgressBar(context: Context, message: String): AlertDialog{
         val builder = AlertDialog.Builder(context)

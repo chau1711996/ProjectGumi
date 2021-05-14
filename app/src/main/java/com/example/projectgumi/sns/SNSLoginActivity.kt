@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.projectgumi.R
+import com.example.projectgumi.ui.signInPhone.PhoneLoginActivity
 import com.example.projectgumi.utils.SNSLoginType
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -17,7 +18,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.projectgumi.utils.Utils
 import com.example.projectgumi.utils.Utils.SNS_LOGIN_TYPE
-import com.example.projectgumi.utils.Utils.SNS_REQUEST_CODE
+import com.example.projectgumi.utils.Utils.SNS_REQUEST_CODE_GOOGLE
+import com.example.projectgumi.utils.Utils.SNS_REQUEST_CODE_PHONE
 import com.example.projectgumi.utils.Utils.SNS_RESULT_CODE
 import com.example.projectgumi.utils.Utils.SNS_RESULT_DATA
 import com.example.projectgumi.utils.Utils.showProgressBar
@@ -41,8 +43,8 @@ class SNSLoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
-        val resultData = intent.extras?.get(SNS_LOGIN_TYPE) as SNSLoginType
-        when(resultData){
+
+        when(intent.extras?.get(SNS_LOGIN_TYPE) as SNSLoginType){
             SNSLoginType.Google -> {
                 instanceGoogleSignIn()
                 signInGoogle()
@@ -51,17 +53,13 @@ class SNSLoginActivity : AppCompatActivity() {
                 instanceFacebookSignIn()
                 signInFb()
             }
-            else -> signPhoneNumber()
+            else -> singInPhone()
         }
     }
 
     private fun init() {
         auth = Firebase.auth
         dialog = showProgressBar(this, "Loading...")
-    }
-
-    private fun signPhoneNumber(){
-
     }
 
     private fun instanceGoogleSignIn() {
@@ -74,9 +72,14 @@ class SNSLoginActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
+    private fun singInPhone() {
+        val intent = Intent(this, PhoneLoginActivity::class.java)
+        startActivityForResult(intent, SNS_REQUEST_CODE_PHONE)
+    }
+
     private fun signInGoogle() {
         val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, SNS_REQUEST_CODE)
+        startActivityForResult(signInIntent, SNS_REQUEST_CODE_GOOGLE)
     }
 
     private fun signInFb() {
@@ -88,19 +91,27 @@ class SNSLoginActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         dialog.show()
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == SNS_REQUEST_CODE) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                val account = task.getResult(ApiException::class.java)!!
-                Log.d(Utils.TAG, "firebaseAuthWithGoogle:" + account.id)
-                firebaseAuthWithGoogle(account.idToken!!)
-            } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(Utils.TAG, "Google sign in failed", e)
+
+        when(requestCode){
+            SNS_REQUEST_CODE_GOOGLE ->{
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                try {
+                    // Google Sign In was successful, authenticate with Firebase
+                    val account = task.getResult(ApiException::class.java)!!
+                    Log.d(Utils.TAG, "firebaseAuthWithGoogle:" + account.id)
+                    firebaseAuthWithGoogle(account.idToken!!)
+                } catch (e: ApiException) {
+                    // Google Sign In failed, update UI appropriately
+                    Log.w(Utils.TAG, "Google sign in failed", e)
+                }
             }
-        }else{
-            fbCallbackManager.onActivityResult(requestCode, resultCode, data)
+            SNS_REQUEST_CODE_PHONE -> {
+                if(resultCode == SNS_RESULT_CODE){
+                    val resultData = data?.extras?.get(SNS_RESULT_DATA) as FirebaseUser?
+                    handleCallbackLoginActivity(resultData)
+                }
+            }
+            else -> fbCallbackManager.onActivityResult(requestCode, resultCode, data)
         }
     }
 
