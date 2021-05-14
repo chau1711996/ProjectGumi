@@ -60,6 +60,11 @@
             android:id="@+id/text_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/image_user_fb"
+            android:layout_marginTop="20dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

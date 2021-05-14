@@ -89,9 +89,10 @@ class SNSLoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        val request = requestCode
+        val result = resultCode
         dialog.show()
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-
         when(requestCode){
             SNS_REQUEST_CODE_GOOGLE ->{
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -103,6 +104,8 @@ class SNSLoginActivity : AppCompatActivity() {
                 } catch (e: ApiException) {
                     // Google Sign In failed, update UI appropriately
                     Log.w(Utils.TAG, "Google sign in failed", e)
+                    Toast.makeText(this, "Google sign in failed", Toast.LENGTH_SHORT).show()
+                    handleCallbackLoginActivity(null)
                 }
             }
             SNS_REQUEST_CODE_PHONE -> {
@@ -118,17 +121,11 @@ class SNSLoginActivity : AppCompatActivity() {
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(Utils.TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                    handleCallbackLoginActivity(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(Utils.TAG, "signInWithCredential:failure", task.exception)
-                    handleCallbackLoginActivity(null)
-                }
+            .addOnSuccessListener { task ->
+                handleCallbackLoginActivity(task.user)
+            }
+            .addOnFailureListener {
+                handleCallbackLoginActivity(null)
             }
     }
 
@@ -165,7 +162,11 @@ class SNSLoginActivity : AppCompatActivity() {
             }
 
             override fun onCancel() {
-                Log.d(Utils.TAG, "facebook:onCancel")
+                handleCallbackLoginActivity(null)
+                Toast.makeText(
+                    baseContext, "Facebbok cancel.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             override fun onError(error: FacebookException) {

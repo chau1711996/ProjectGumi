@@ -2,26 +2,27 @@ package com.example.projectgumi.ui.login
 
 import android.app.AlertDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ActivityLoginBinding
 import com.example.projectgumi.sns.SNSLoginActivity
-import com.example.projectgumi.ui.signInPhone.PhoneLoginActivity
 import com.example.projectgumi.utils.SNSLoginType
 import com.example.projectgumi.utils.Utils.SNS_LOGIN_TYPE
 import com.example.projectgumi.utils.Utils.SNS_REQUEST_CODE
 import com.example.projectgumi.utils.Utils.SNS_RESULT_CODE
 import com.example.projectgumi.utils.Utils.SNS_RESULT_DATA
 import com.example.projectgumi.utils.Utils.showProgressBar
+import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
