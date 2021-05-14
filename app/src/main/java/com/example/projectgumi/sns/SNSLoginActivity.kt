@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.projectgumi.R
+import com.example.projectgumi.utils.SNSLoginType
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -13,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.projectgumi.utils.Utils
+import com.example.projectgumi.utils.Utils.SNS_LOGIN_TYPE
 import com.example.projectgumi.utils.Utils.SNS_REQUEST_CODE
 import com.example.projectgumi.utils.Utils.SNS_RESULT_CODE
 import com.example.projectgumi.utils.Utils.SNS_RESULT_DATA
@@ -28,16 +30,15 @@ class SNSLoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
-        val resultData = intent.extras?.get()
+        val resultData = intent.extras?.get(SNS_LOGIN_TYPE) as SNSLoginType
+        when(resultData){
+            SNSLoginType.Google -> signInGoogle()
+        }
     }
 
     private fun init() {
         auth = Firebase.auth
-    }
-
-    private fun signInGoogle() {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, SNS_REQUEST_CODE)
+        instanceGoogleSignIn()
     }
 
     private fun instanceGoogleSignIn() {
@@ -48,6 +49,11 @@ class SNSLoginActivity : AppCompatActivity() {
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
+    }
+
+    private fun signInGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, SNS_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
