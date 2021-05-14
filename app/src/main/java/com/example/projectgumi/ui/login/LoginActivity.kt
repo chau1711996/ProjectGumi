@@ -8,7 +8,6 @@ import android.view.View
 import coil.load
 import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ActivityLoginBinding
-import com.example.projectgumi.model.SNSLoginModel
 import com.example.projectgumi.sns.SNSLoginActivity
 import com.example.projectgumi.ui.signInPhone.PhoneLoginActivity
 import com.example.projectgumi.utils.SNSLoginType
