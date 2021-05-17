@@ -89,8 +89,7 @@ class SNSLoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val request = requestCode
-        val result = resultCode
+
         dialog.show()
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         when(requestCode){
