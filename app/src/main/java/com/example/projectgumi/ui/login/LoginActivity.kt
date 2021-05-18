@@ -29,12 +29,27 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var dialog: AlertDialog
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         currentUser?.let {
             updateUI(it)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        init()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == SNS_REQUEST_CODE && resultCode == SNS_RESULT_CODE){
+            val user = data?.extras?.get(SNS_RESULT_DATA) as FirebaseUser?
+            updateUI(user)
         }
     }
 
@@ -48,13 +63,6 @@ class LoginActivity : AppCompatActivity() {
             binding.textEmail.text = it.displayName
             binding.textPhone.text = it.phoneNumber
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        init()
     }
 
     private fun init() {
@@ -114,11 +122,5 @@ class LoginActivity : AppCompatActivity() {
         updateUI(null)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == SNS_REQUEST_CODE && resultCode == SNS_RESULT_CODE){
-            val user = data?.extras?.get(SNS_RESULT_DATA) as FirebaseUser?
-            updateUI(user)
-        }
-    }
+
 }

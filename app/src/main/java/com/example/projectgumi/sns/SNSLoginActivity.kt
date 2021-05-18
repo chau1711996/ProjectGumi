@@ -33,7 +33,7 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
-class SNSLoginActivity : AppCompatActivity() {
+abstract class SNSLoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -53,43 +53,15 @@ class SNSLoginActivity : AppCompatActivity() {
                 instanceFacebookSignIn()
                 signInFb()
             }
-            else -> singInPhone()
+            SNSLoginType.PhoneNumber ->{
+                signInPhone()
+            }
         }
     }
 
-    private fun init() {
-        auth = Firebase.auth
-        dialog = showProgressBar(this, "Loading...")
-    }
-
-    private fun instanceGoogleSignIn() {
-        // Configure Google Sign In
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-    }
-
-    private fun singInPhone() {
-        val intent = Intent(this, PhoneLoginActivity::class.java)
-        startActivityForResult(intent, SNS_REQUEST_CODE_PHONE)
-    }
-
-    private fun signInGoogle() {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, SNS_REQUEST_CODE_GOOGLE)
-    }
-
-    private fun signInFb() {
-        LoginManager.getInstance()
-            .logInWithReadPermissions(this, arrayListOf("public_profile", "user_friends"))
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         dialog.show()
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         when(requestCode){
@@ -115,6 +87,36 @@ class SNSLoginActivity : AppCompatActivity() {
             }
             else -> fbCallbackManager.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    private fun init() {
+        auth = Firebase.auth
+        dialog = showProgressBar(this, "Loading...")
+    }
+
+    private fun instanceGoogleSignIn() {
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+    }
+
+    private fun signInPhone() {
+        val intent = Intent(this, PhoneLoginActivity::class.java)
+        startActivityForResult(intent, SNS_REQUEST_CODE_PHONE)
+    }
+
+    private fun signInGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, SNS_REQUEST_CODE_GOOGLE)
+    }
+
+    private fun signInFb() {
+        LoginManager.getInstance()
+            .logInWithReadPermissions(this, arrayListOf("public_profile", "user_friends"))
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
@@ -175,11 +177,9 @@ class SNSLoginActivity : AppCompatActivity() {
     }
 
     private fun handleCallbackLoginActivity(user: FirebaseUser?) {
-        val intent = Intent()
-        intent.putExtra(SNS_RESULT_DATA, user)
-        setResult(SNS_RESULT_CODE, intent)
-        dialog.dismiss()
+      
         finish()
     }
 
+    abstract fun resultData(user: FirebaseUser?)
 }
