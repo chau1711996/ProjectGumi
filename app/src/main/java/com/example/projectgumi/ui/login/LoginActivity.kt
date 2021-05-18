@@ -1,42 +1,15 @@
 package com.example.projectgumi.ui.login
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import coil.load
-import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ActivityLoginBinding
 import com.example.projectgumi.sns.SNSLoginActivity
-import com.example.projectgumi.utils.SNSLoginType
-import com.example.projectgumi.utils.Utils.SNS_LOGIN_TYPE
-import com.example.projectgumi.utils.Utils.SNS_REQUEST_CODE
-import com.example.projectgumi.utils.Utils.SNS_RESULT_CODE
-import com.example.projectgumi.utils.Utils.SNS_RESULT_DATA
-import com.example.projectgumi.utils.Utils.showProgressBar
-import com.facebook.AccessToken
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.example.projectgumi.ui.signInPhone.PhoneLoginActivity
 import com.google.firebase.auth.*
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : SNSLoginActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var auth: FirebaseAuth
-    private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var dialog: AlertDialog
-    override fun onResume() {
-        super.onResume()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        currentUser?.let {
-            updateUI(it)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,82 +18,35 @@ class LoginActivity : AppCompatActivity() {
         init()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == SNS_REQUEST_CODE && resultCode == SNS_RESULT_CODE){
-            val user = data?.extras?.get(SNS_RESULT_DATA) as FirebaseUser?
-            updateUI(user)
-        }
-    }
-
     private fun updateUI(user: FirebaseUser?) {
-        binding.layoutLogout.visibility = View.GONE
-        binding.layoutLogin.visibility = View.VISIBLE
         user?.let {
-            binding.layoutLogout.visibility = View.VISIBLE
-            binding.layoutLogin.visibility = View.GONE
-            binding.imageUser.load(it.photoUrl)
-            binding.textEmail.text = it.displayName
-            binding.textPhone.text = it.phoneNumber
+            val intent = Intent(this, PhoneLoginActivity::class.java)
+            intent.putExtra(LOGIN_RESULT_DATA, it)
+            startActivity(intent)
+            finish()
         }
     }
 
     private fun init() {
-        //Instance firebase auth
-        auth = Firebase.auth
 
-        dialog = showProgressBar(this, "Loading login...")
-
-        instanceGoogleSignIn()
+        auth.currentUser?.let {
+            updateUI(it)
+        }
 
         binding.buttonLoginGg.setOnClickListener {
-            signInGg()
+            signInGoogle()
         }
         binding.buttonLoginFb.setOnClickListener {
             signInFb()
         }
-        binding.buttonLoginPhone.setOnClickListener {
-            singInPhone()
-        }
-        binding.buttonLogout.setOnClickListener {
-            signOut()
-        }
 
     }
 
-    private fun instanceGoogleSignIn() {
-        // Configure Google Sign In
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+    override fun resultData(user: FirebaseUser?) {
+        updateUI(user)
+        dialog.dismiss()
     }
-
-    private fun singInPhone() {
-        val intent = Intent(this, SNSLoginActivity::class.java)
-        intent.putExtra(SNS_LOGIN_TYPE, SNSLoginType.PhoneNumber)
-        startActivityForResult(intent, SNS_REQUEST_CODE)
+    companion object{
+        const val LOGIN_RESULT_DATA = "LOGIN_RESULT_DATA"
     }
-
-    private fun signInFb() {
-        val intent = Intent(this, SNSLoginActivity::class.java)
-        intent.putExtra(SNS_LOGIN_TYPE, SNSLoginType.Facebook)
-        startActivityForResult(intent, SNS_REQUEST_CODE)
-    }
-
-    private fun signInGg() {
-        val intent = Intent(this, SNSLoginActivity::class.java)
-        intent.putExtra(SNS_LOGIN_TYPE, SNSLoginType.Google)
-        startActivityForResult(intent, SNS_REQUEST_CODE)
-    }
-
-    private fun signOut() {
-        googleSignInClient.signOut()
-        auth.signOut()
-        updateUI(null)
-    }
-
-
 }

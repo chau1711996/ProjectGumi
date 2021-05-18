@@ -1,4 +1,7 @@
 package com.example.projectgumi.di
 
-class module {
+import org.koin.dsl.module
+
+val applicationModule = module{
+
 }

@@ -7,21 +7,15 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.projectgumi.R
-import com.example.projectgumi.ui.signInPhone.PhoneLoginActivity
-import com.example.projectgumi.utils.SNSLoginType
+import com.example.projectgumi.ui.signInPhone.PhoneLoginCodeActivity
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.projectgumi.utils.Utils
-import com.example.projectgumi.utils.Utils.SNS_LOGIN_TYPE
 import com.example.projectgumi.utils.Utils.SNS_REQUEST_CODE_GOOGLE
-import com.example.projectgumi.utils.Utils.SNS_REQUEST_CODE_PHONE
-import com.example.projectgumi.utils.Utils.SNS_RESULT_CODE
-import com.example.projectgumi.utils.Utils.SNS_RESULT_DATA
 import com.example.projectgumi.utils.Utils.showProgressBar
 import com.facebook.AccessToken
 import com.facebook.FacebookCallback
@@ -29,43 +23,35 @@ import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.FirebaseException
+import com.google.firebase.auth.*
+import java.util.concurrent.TimeUnit
 
 abstract class SNSLoginActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var fbCallbackManager: CallbackManager
-    private lateinit var dialog: AlertDialog
+
+    private lateinit var phoneCallBack: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    private lateinit var forceResend: PhoneAuthProvider.ForceResendingToken
+    private lateinit var verificationId: String
+
+    protected lateinit var dialog: AlertDialog
+    protected lateinit var auth: FirebaseAuth
+    protected lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
-
-        when(intent.extras?.get(SNS_LOGIN_TYPE) as SNSLoginType){
-            SNSLoginType.Google -> {
-                instanceGoogleSignIn()
-                signInGoogle()
-            }
-            SNSLoginType.Facebook -> {
-                instanceFacebookSignIn()
-                signInFb()
-            }
-            SNSLoginType.PhoneNumber ->{
-                signInPhone()
-            }
-        }
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
         dialog.show()
+        super.onActivityResult(requestCode, resultCode, data)
+        fbCallbackManager.onActivityResult(requestCode, resultCode, data)
+
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        when(requestCode){
-            SNS_REQUEST_CODE_GOOGLE ->{
+        when (requestCode) {
+            SNS_REQUEST_CODE_GOOGLE -> {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 try {
                     // Google Sign In was successful, authenticate with Firebase
@@ -79,19 +65,21 @@ abstract class SNSLoginActivity : AppCompatActivity() {
                     handleCallbackLoginActivity(null)
                 }
             }
-            SNS_REQUEST_CODE_PHONE -> {
-                if(resultCode == SNS_RESULT_CODE){
-                    val resultData = data?.extras?.get(SNS_RESULT_DATA) as FirebaseUser?
-                    handleCallbackLoginActivity(resultData)
-                }
-            }
-            else -> fbCallbackManager.onActivityResult(requestCode, resultCode, data)
         }
     }
 
     private fun init() {
         auth = Firebase.auth
+        instanceFacebookSignIn()
+        instanceGoogleSignIn()
         dialog = showProgressBar(this, "Loading...")
+    }
+
+    // handle google
+    //begin
+    protected fun signInGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, SNS_REQUEST_CODE_GOOGLE)
     }
 
     private fun instanceGoogleSignIn() {
@@ -104,21 +92,6 @@ abstract class SNSLoginActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
-    private fun signInPhone() {
-        val intent = Intent(this, PhoneLoginActivity::class.java)
-        startActivityForResult(intent, SNS_REQUEST_CODE_PHONE)
-    }
-
-    private fun signInGoogle() {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, SNS_REQUEST_CODE_GOOGLE)
-    }
-
-    private fun signInFb() {
-        LoginManager.getInstance()
-            .logInWithReadPermissions(this, arrayListOf("public_profile", "user_friends"))
-    }
-
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
@@ -127,7 +100,44 @@ abstract class SNSLoginActivity : AppCompatActivity() {
             }
             .addOnFailureListener {
                 handleCallbackLoginActivity(null)
+                Toast.makeText(
+                    baseContext,
+                    "Login google failed",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+    }
+    //end
+
+
+    // handle facebook
+    //begin
+    protected fun signInFb() {
+        LoginManager.getInstance()
+            .logInWithReadPermissions(this, arrayListOf("public_profile", "user_friends"))
+    }
+
+    private fun instanceFacebookSignIn() {
+        fbCallbackManager = CallbackManager.Factory.create()
+        LoginManager.getInstance().registerCallback(fbCallbackManager, object :
+            FacebookCallback<LoginResult> {
+            override fun onSuccess(loginResult: LoginResult) {
+                Log.d(Utils.TAG, "facebook:onSuccess:$loginResult")
+                handleFacebookAccessToken(loginResult.accessToken)
+            }
+
+            override fun onCancel() {
+                handleCallbackLoginActivity(null)
+                Toast.makeText(
+                    baseContext, "facebook cancel.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onError(error: FacebookException) {
+                Log.d(Utils.TAG, "facebook:onError", error)
+            }
+        })
     }
 
     private fun handleFacebookAccessToken(token: AccessToken) {
@@ -143,42 +153,101 @@ abstract class SNSLoginActivity : AppCompatActivity() {
                     handleCallbackLoginActivity(user)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w("TAG", "signInWithCredential:failure", task.exception)
                     Toast.makeText(
-                        baseContext, "Authentication failed.",
+                        baseContext, "Login facebook failed.",
                         Toast.LENGTH_SHORT
                     ).show()
                     handleCallbackLoginActivity(null)
                 }
             }
     }
+    //end facebook
 
-    private fun instanceFacebookSignIn() {
-        fbCallbackManager = CallbackManager.Factory.create()
-        LoginManager.getInstance().registerCallback(fbCallbackManager, object :
-            FacebookCallback<LoginResult> {
-            override fun onSuccess(loginResult: LoginResult) {
-                Log.d(Utils.TAG, "facebook:onSuccess:$loginResult")
-                handleFacebookAccessToken(loginResult.accessToken)
-            }
 
-            override fun onCancel() {
-                handleCallbackLoginActivity(null)
-                Toast.makeText(
-                    baseContext, "Facebbok cancel.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-            override fun onError(error: FacebookException) {
-                Log.d(Utils.TAG, "facebook:onError", error)
-            }
-        })
+    // handle phone
+    //begin
+    protected fun signInPhone(phone: String) {
+        instancePhoneSignIn()
+        startPhoneNumberVerification("+84$phone")
     }
 
+    private fun instancePhoneSignIn() {
+        phoneCallBack = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            override fun onVerificationCompleted(p0: PhoneAuthCredential) {
+//                signInWithPhoneAuthCredential(p0)
+            }
+
+            override fun onVerificationFailed(p0: FirebaseException) {
+                Toast.makeText(
+                    baseContext, "Phone number was used in other account",
+                    Toast.LENGTH_SHORT
+                ).show()
+                dialog.dismiss()
+            }
+
+            override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
+                super.onCodeSent(p0, p1)
+                verificationId = p0
+                forceResend = p1
+                dialog.dismiss()
+            }
+        }
+    }
+
+    private fun startPhoneNumberVerification(phoneNumber: String) {
+        dialog = showProgressBar(this, "Verifying Phone Number...")
+        dialog.show()
+
+        val options = PhoneAuthOptions.newBuilder(auth)
+            .setPhoneNumber(phoneNumber)       // Phone number to verify
+            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+            .setActivity(this)                 // Activity (for callback binding)
+            .setCallbacks(phoneCallBack)          // OnVerificationStateChangedCallbacks
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
+    }
+
+    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+        auth.currentUser?.let {
+            it.linkWithCredential(credential)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        resultData(task.result?.user)
+                    } else {
+                        Toast.makeText(
+                            baseContext, "Login phone number failed.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+        }
+    }
+
+    protected fun resendVerificationCode(phoneNumber: String) {
+        dialog = showProgressBar(this, "Resend Code...")
+        dialog.show()
+
+        val options = PhoneAuthOptions.newBuilder(auth)
+            .setPhoneNumber(phoneNumber)       // Phone number to verify
+            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+            .setActivity(this)                 // Activity (for callback binding)
+            .setCallbacks(phoneCallBack)          // OnVerificationStateChangedCallbacks
+            .setForceResendingToken(forceResend)
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
+
+    }
+
+    protected fun verifyPhoneNumberWithCode(code: String) {
+        val credential = PhoneAuthProvider.getCredential(verificationId, code)
+        signInWithPhoneAuthCredential(credential)
+    }
+    //end phone
+
+
     private fun handleCallbackLoginActivity(user: FirebaseUser?) {
-      
-        finish()
+        resultData(user)
+        dialog.dismiss()
     }
 
     abstract fun resultData(user: FirebaseUser?)

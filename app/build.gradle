@@ -53,13 +53,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    def koin_version = '2.0.1'
-    // Koin for Android
-    implementation "io.insert-koin:koin-android:$koin_version"
-    // or Koin for Lifecycle scoping
-    implementation "io.insert-koin:koin-android-scope:$koin_version"
-    // or Koin for Android Architecture ViewModel
-    implementation "io.insert-koin:koin-android-viewmodel:$koin_version"
+    // Koin AndroidX Scope features
+    implementation "io.insert-koin:koin-androidx-scope:$koin_version"
+    // Koin AndroidX ViewModel features
+    implementation "io.insert-koin:koin-androidx-viewmodel:$koin_version"
+    // Koin AndroidX Fragment features
+    implementation "io.insert-koin:koin-androidx-fragment:$koin_version"
 
     //Coil for load image
     implementation("io.coil-kt:coil:1.2.1")
