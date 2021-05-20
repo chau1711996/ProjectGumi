@@ -3,7 +3,6 @@ package com.example.projectgumi.ui.signInPhone
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import com.example.projectgumi.databinding.ActivityPhoneLoginBinding
 import com.example.projectgumi.sns.SNSLoginActivity
@@ -17,19 +16,21 @@ class PhoneLoginActivity : SNSLoginActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPhoneLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         init()
     }
 
     @SuppressLint("SetTextI18n")
     private fun init() {
-        val user = intent?.extras?.get(LoginActivity.LOGIN_RESULT_DATA) as FirebaseUser
         binding.apply {
-            layoutHead.caption.text = "Hello ${user.displayName}"
-            layoutHead.title.text = "Please enter your mobie phone number"
+            layoutHead.title.text = "Hello ${auth.currentUser?.displayName}"
+            layoutHead.caption.text = "Please enter your mobie phone number"
             layoutHead.imageLeft.setOnClickListener {
                 googleSignInClient.signOut()
                 auth.signOut()
-                startActivity(Intent(this@PhoneLoginActivity, LoginActivity::class.java))
+                val intent = Intent(this@PhoneLoginActivity, LoginActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(com.example.projectgumi.R.anim.slide_in_right, com.example.projectgumi.R.anim.slide_out_left)
                 finish()
             }
             flGetCode.setOnClickListener {
@@ -44,17 +45,20 @@ class PhoneLoginActivity : SNSLoginActivity() {
                     signInPhone(phone)
                 }
             }
-//            textResend.setOnClickListener {
-//                val phone = editPhoneNumber.text.toString()
-//                resendVerificationCode(phone)
-//            }
         }
 
     }
 
-    override fun resultData(user: FirebaseUser?) {
-        user?.let {
-
+    override fun resultData(data: String?) {
+        data?.let {
+            val intent = Intent(this@PhoneLoginActivity, PhoneLoginCodeActivity::class.java)
+            intent.putExtra(PHONE_NUMBER_VALUE, it)
+            startActivity(intent)
+            overridePendingTransition(com.example.projectgumi.R.anim.slide_out_left, com.example.projectgumi.R.anim.slide_in_right)
+            finish()
         }
+    }
+    companion object{
+        const val PHONE_NUMBER_VALUE = "PHONE_NUMBER_VALUE"
     }
 }

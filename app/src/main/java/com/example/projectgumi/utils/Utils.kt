@@ -7,6 +7,8 @@ import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ProgressBarBinding
 
 object Utils {
+    const val API_URL = "http://10.0.0.182/gumi/"
+
     const val TAG = "TAG"
 
     const val SNS_REQUEST_CODE = 888

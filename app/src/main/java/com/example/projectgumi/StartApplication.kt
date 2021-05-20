@@ -5,11 +5,11 @@ import com.example.projectgumi.di.applicationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class StartActivity : Application() {
+class StartApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin{
-            androidContext(this@StartActivity)
+            androidContext(this@StartApplication)
             modules(listOf(applicationModule))
         }
     }

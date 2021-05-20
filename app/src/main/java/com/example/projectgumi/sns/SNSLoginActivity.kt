@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.projectgumi.R
-import com.example.projectgumi.ui.signInPhone.PhoneLoginCodeActivity
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -33,7 +32,6 @@ abstract class SNSLoginActivity : AppCompatActivity() {
 
     private lateinit var phoneCallBack: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private lateinit var forceResend: PhoneAuthProvider.ForceResendingToken
-    private lateinit var verificationId: String
 
     protected lateinit var dialog: AlertDialog
     protected lateinit var auth: FirebaseAuth
@@ -167,28 +165,25 @@ abstract class SNSLoginActivity : AppCompatActivity() {
     // handle phone
     //begin
     protected fun signInPhone(phone: String) {
-        instancePhoneSignIn()
+        instancePhoneSignIn("0$phone")
         startPhoneNumberVerification("+84$phone")
     }
 
-    private fun instancePhoneSignIn() {
+    private fun instancePhoneSignIn(phone: String) {
         phoneCallBack = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(p0: PhoneAuthCredential) {
 //                signInWithPhoneAuthCredential(p0)
             }
 
             override fun onVerificationFailed(p0: FirebaseException) {
-                Toast.makeText(
-                    baseContext, "Phone number was used in other account",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Log.i("chaudangAPI", p0.message.toString())
                 dialog.dismiss()
             }
 
             override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
                 super.onCodeSent(p0, p1)
-                verificationId = p0
                 forceResend = p1
+                resultData("$phone $p0")
                 dialog.dismiss()
             }
         }
@@ -208,12 +203,15 @@ abstract class SNSLoginActivity : AppCompatActivity() {
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+
         auth.currentUser?.let {
             it.linkWithCredential(credential)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        resultData(task.result?.user)
+                        val phone = task.result?.user?.phoneNumber
+                        resultData(phone)
                     } else {
+                        Log.i("chaudangAPI", task.exception?.message.toString())
                         Toast.makeText(
                             baseContext, "Login phone number failed.",
                             Toast.LENGTH_SHORT
@@ -238,7 +236,7 @@ abstract class SNSLoginActivity : AppCompatActivity() {
 
     }
 
-    protected fun verifyPhoneNumberWithCode(code: String) {
+    protected fun verifyPhoneNumberWithCode(verificationId: String, code: String) {
         val credential = PhoneAuthProvider.getCredential(verificationId, code)
         signInWithPhoneAuthCredential(credential)
     }
@@ -246,9 +244,11 @@ abstract class SNSLoginActivity : AppCompatActivity() {
 
 
     private fun handleCallbackLoginActivity(user: FirebaseUser?) {
-        resultData(user)
+        user?.let {
+            resultData(it.uid)
+        }
         dialog.dismiss()
     }
 
-    abstract fun resultData(user: FirebaseUser?)
+    abstract fun resultData(data: String?)
 }
