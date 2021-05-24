@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
 class LoginViewModel(private val reposity: MyReposity) : ViewModel() {
     val status = MutableLiveData<String?>()
 
-    fun createUser(userModel: UserModel) {
+    fun checkUser(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try{
-                status.postValue(reposity.createUser(userModel).body()?.status)
+                status.postValue(reposity.checkUser(userId).body()?.status)
             }catch (e: Exception){
                 Log.i("chaudangAPI", e.message.toString())
             }
