@@ -9,6 +9,7 @@ import coil.load
 import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ActivityProfileBinding
 import com.example.projectgumi.ui.signInPhone.PhoneLoginActivity.Companion.USER_ID
+import com.example.projectgumi.utils.Utils
 import com.example.projectgumi.viewmodel.LoginViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -37,6 +38,14 @@ class ProfileActivity : AppCompatActivity() {
             spinnerDistrict.adapter = districtAdapter
             spinnerWards.adapter = wardstAdapter
             loginViewModel = model
+        }
+
+        model.status.observe(this){
+            it?.let {
+                if(it.equals(Utils.SUCCESS_CITY)){
+
+                }
+            }
         }
     }
 }
