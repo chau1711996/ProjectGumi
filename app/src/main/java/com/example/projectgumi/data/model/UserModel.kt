@@ -9,7 +9,6 @@ data class UserModel(
     val userId: String,
     val userName: String,
     val phoneNumber: String? = null,
-    val token: String? = null,
     val city: String? = null,
     val district: String? = null,
     val wards: String? = null,

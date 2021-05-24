@@ -28,23 +28,20 @@ class MainActivity : AppCompatActivity() {
         val titles = listOf(getString(R.string.shop), getString(R.string.explore),getString(R.string.cart), getString(R.string.favorite), getString(R.string.account))
 
         val fragments = mutableListOf(
-            ShopFragment.newInstance("Shop", "To Shop"),
+            ShopFragment(),
             ExploreFragment.newInstance("Explore", "To Explore"),
             CartFragment.newInstance("Cart", "To Cart"),
             FavoriteFragment.newInstance("Favorite", "To Favorite"),
             AccountFragment.newInstance("Account", "To Account")
         )
-        binding?.let {
-            it.viewPager.adapter = ViewPagerFragmentAdapter(supportFragmentManager, fragments, lifecycle)
-
+        binding?.apply {
             //chặn user vuốt ngang viewpager
-            it.viewPager.isUserInputEnabled = false
+            viewPager.isUserInputEnabled = false
 
-            TabLayoutMediator(it.tabLayout, it.viewPager){tab, pos ->
-                run {
-                    tab.text = titles[pos]
-                    tab.icon = ContextCompat.getDrawable(this, images[pos])
-                }
+            viewPager.adapter = ViewPagerFragmentAdapter(supportFragmentManager, fragments, lifecycle)
+            TabLayoutMediator(tabLayout, viewPager){ tab, pos ->
+                tab.icon = ContextCompat.getDrawable(this@MainActivity, images[pos])
+                tab.text = titles[pos]
             }.attach()
         }
     }

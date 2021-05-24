@@ -2,7 +2,6 @@ package com.example.projectgumi.viewmodel
 
 import android.net.Uri
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,7 +25,8 @@ class LoginViewModel(private val reposity: MyReposity) : ViewModel() {
     fun checkUser(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                status.postValue(reposity.checkUser(userId).body()?.status)
+                val result = reposity.checkUser(userId).body()
+                status.postValue(result?.status)
             } catch (e: Exception) {
                 Log.i("chauAPI", e.message.toString())
             }

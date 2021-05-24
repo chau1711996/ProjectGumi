@@ -7,7 +7,7 @@ import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ProgressBarBinding
 
 object Utils {
-    const val API_URL = "http://10.0.0.182/gumi/"
+    const val API_URL = "http://10.0.0.250/gumi/"
 
     const val TAG = "TAG"
 

@@ -5,6 +5,7 @@ import com.example.projectgumi.data.api.ApiService
 import com.example.projectgumi.data.reposity.MyReposity
 import com.example.projectgumi.utils.Utils
 import com.example.projectgumi.viewmodel.LoginViewModel
+import com.example.projectgumi.viewmodel.ShopViewModel
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -21,7 +22,7 @@ val applicationModule = module {
     single { MyReposity(get()) }
 
     viewModel { LoginViewModel(get()) }
-
+    viewModel { ShopViewModel(get()) }
 }
 
 private fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =

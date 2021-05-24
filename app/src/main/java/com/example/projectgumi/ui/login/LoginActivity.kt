@@ -3,11 +3,13 @@ package com.example.projectgumi.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import com.example.projectgumi.MainActivity
 import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ActivityLoginBinding
 import com.example.projectgumi.sns.SNSLoginActivity
 import com.example.projectgumi.ui.account.ProfileActivity
 import com.example.projectgumi.ui.signInPhone.PhoneLoginActivity
+import com.example.projectgumi.ui.signInPhone.PhoneLoginActivity.Companion.USER_ID
 import com.example.projectgumi.viewmodel.LoginViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -47,8 +49,10 @@ class LoginActivity : SNSLoginActivity() {
     }
 
     private fun loginHome() {
-        Toast.makeText(baseContext, "loginHome", Toast.LENGTH_SHORT).show()
-        loginPhoneNumber()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        finish()
     }
 
     private fun loginPhoneNumber() {
@@ -77,9 +81,5 @@ class LoginActivity : SNSLoginActivity() {
         data?.let {
             checkUser(it)
         }
-    }
-
-    companion object {
-        const val LOGIN_RESULT_DATA = "LOGIN_RESULT_DATA"
     }
 }
