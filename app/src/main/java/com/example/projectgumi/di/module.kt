@@ -4,18 +4,14 @@ import com.example.gumiproject8.data.RequestInterceptor
 import com.example.projectgumi.data.api.ApiService
 import com.example.projectgumi.data.reposity.MyReposity
 import com.example.projectgumi.utils.Utils
-import com.example.projectgumi.ui.login.LoginViewModel
+import com.example.projectgumi.viewmodel.LoginViewModel
 import com.google.gson.GsonBuilder
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 val applicationModule = module {

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.account.ProfileActivity">
+
+        <include
+            android:id="@+id/layoutHead"
+            layout="@layout/layout_head"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="30dp">
+
+            <Button
+                android:id="@+id/buttonSubmitProfile"
+                style="@style/TextAppearance.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/bg_button_green"
+                android:onClick="@{()->loginViewModel.onClick()}"
+                android:text="submit"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageProfile"
+                loadImage="@{loginViewModel.urlImage}"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="70dp"
+                android:src="@drawable/ic_launcher_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerCity"
+                getItemSpinner="@{loginViewModel.city}"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:spinnerMode="dialog"
+                app:layout_constraintTop_toBottomOf="@id/editUserName" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerDistrict"
+                getItemSpinner="@{loginViewModel.district}"
+                android:layout_width="170dp"
+                android:layout_height="50dp"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_marginTop="20dp"
+                android:spinnerMode="dialog"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinnerCity" />
+
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerWards"
+                getItemSpinner="@{loginViewModel.wards}"
+                android:layout_width="170dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:spinnerMode="dialog"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinnerCity" />
+
+
+            <EditText
+                android:id="@+id/editHouse"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="House number and street"
+                android:paddingStart="20dp"
+                android:inputType="text"
+                android:paddingEnd="20dp"
+                android:text="@={loginViewModel.house}"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinnerWards" />
+
+
+            <EditText
+                android:id="@+id/editUserName"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_height="50dp"
+                android:paddingStart="20dp"
+                android:inputType="text"
+                android:paddingEnd="20dp"
+                android:hint="Username"
+                android:text="@={loginViewModel.userName}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageProfile" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <variable
+            name="loginViewModel"
+            type="com.example.projectgumi.viewmodel.LoginViewModel" />
+    </data>
+</layout>

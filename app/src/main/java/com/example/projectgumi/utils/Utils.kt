@@ -11,17 +11,18 @@ object Utils {
 
     const val TAG = "TAG"
 
-    const val SNS_REQUEST_CODE = 888
+    const val INSERT_PHONE = "insert_phone"
 
-    const val SNS_RESULT_CODE = 777
+    const val SUCCESS_PHONE = "success_phone"
 
-    const val SNS_RESULT_DATA = "SNS_RESULT_DATA"
+    const val INSERT_CITY = "insert_city"
 
-    const val SNS_LOGIN_TYPE = "SNS_LOGIN_TYPE"
+    const val SUCCESS_CITY = "success_city"
+
+    const val API_ERROR = "error"
+
 
     const val SNS_REQUEST_CODE_GOOGLE = 887
-
-    const val SNS_REQUEST_CODE_PHONE = 886
 
     fun showProgressBar(context: Context, message: String): AlertDialog{
         val builder = AlertDialog.Builder(context)

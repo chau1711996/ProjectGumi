@@ -7,9 +7,29 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiService {
-    @POST("user/create_user.php")
+    @POST("user/check_user.php")
     @FormUrlEncoded
-    suspend fun createUser(@Field("key") key: String,
-                           @Field("userId") userId: String,
-                           @Field("userName") userName: String): Response<StatusRespone>
+    suspend fun checkUser(
+        @Field("userId") userId: String
+    ): Response<StatusRespone>
+
+    @POST("user/user.php")
+    @FormUrlEncoded
+    suspend fun updatePhoneUser(
+        @Field("key") key: String,
+        @Field("userId") userId: String,
+        @Field("userName") userName: String,
+        @Field("phoneNumber") phoneNumber: String
+    ): Response<StatusRespone>
+    @POST("user/user.php")
+    @FormUrlEncoded
+    suspend fun updateAddress(
+        @Field("key") key: String,
+        @Field("userId") userId: String,
+        @Field("city") city: String,
+        @Field("district") district: String,
+        @Field("wards") wards: String,
+        @Field("street") street: String
+    ): Response<StatusRespone>
+
 }

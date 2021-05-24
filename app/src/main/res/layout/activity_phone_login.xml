@@ -44,18 +44,54 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/edit_phoneNumber"
+            android:focusable="true"
             android:padding="20dp"
+            android:focusableInTouchMode="true"
             android:hint="@string/enter_phone_number"
             android:layout_width="0dp"
             android:inputType="phone"
             android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <EditText
+        android:id="@+id/edit_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_code"
+        android:inputType="number"
+        android:padding="20dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_head" />
+
+    <TextView
+        android:id="@+id/text_resend"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="@string/resend_code"
+        android:textColor="@color/button_bg"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/flSendCode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/flSendCode" />
+
     <ImageView
         android:id="@+id/flGetCode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="20dp"
+        android:background="@drawable/bg_botron"
+        android:src="@drawable/ic_arrow_right"
+        android:layout_width="60dp"
+        android:layout_height="60dp"/>
+    <ImageView
+        android:id="@+id/flSendCode"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20dp"
+        android:visibility="gone"
         android:background="@drawable/bg_botron"
         android:src="@drawable/ic_arrow_right"
         android:layout_width="60dp"

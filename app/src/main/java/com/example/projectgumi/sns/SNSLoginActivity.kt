@@ -30,8 +30,7 @@ abstract class SNSLoginActivity : AppCompatActivity() {
 
     private lateinit var fbCallbackManager: CallbackManager
 
-    private lateinit var phoneCallBack: PhoneAuthProvider.OnVerificationStateChangedCallbacks
-    private lateinit var forceResend: PhoneAuthProvider.ForceResendingToken
+
 
     protected lateinit var dialog: AlertDialog
     protected lateinit var auth: FirebaseAuth
@@ -164,84 +163,10 @@ abstract class SNSLoginActivity : AppCompatActivity() {
 
     // handle phone
     //begin
-    protected fun signInPhone(phone: String) {
-        instancePhoneSignIn("0$phone")
-        startPhoneNumberVerification("+84$phone")
-    }
 
-    private fun instancePhoneSignIn(phone: String) {
-        phoneCallBack = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-//                signInWithPhoneAuthCredential(p0)
-            }
 
-            override fun onVerificationFailed(p0: FirebaseException) {
-                Log.i("chaudangAPI", p0.message.toString())
-                dialog.dismiss()
-            }
 
-            override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
-                super.onCodeSent(p0, p1)
-                forceResend = p1
-                resultData("$phone $p0")
-                dialog.dismiss()
-            }
-        }
-    }
-
-    private fun startPhoneNumberVerification(phoneNumber: String) {
-        dialog = showProgressBar(this, "Verifying Phone Number...")
-        dialog.show()
-
-        val options = PhoneAuthOptions.newBuilder(auth)
-            .setPhoneNumber(phoneNumber)       // Phone number to verify
-            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-            .setActivity(this)                 // Activity (for callback binding)
-            .setCallbacks(phoneCallBack)          // OnVerificationStateChangedCallbacks
-            .build()
-        PhoneAuthProvider.verifyPhoneNumber(options)
-    }
-
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-
-        auth.currentUser?.let {
-            it.linkWithCredential(credential)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val phone = task.result?.user?.phoneNumber
-                        resultData(phone)
-                    } else {
-                        Log.i("chaudangAPI", task.exception?.message.toString())
-                        Toast.makeText(
-                            baseContext, "Login phone number failed.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-        }
-    }
-
-    protected fun resendVerificationCode(phoneNumber: String) {
-        dialog = showProgressBar(this, "Resend Code...")
-        dialog.show()
-
-        val options = PhoneAuthOptions.newBuilder(auth)
-            .setPhoneNumber(phoneNumber)       // Phone number to verify
-            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-            .setActivity(this)                 // Activity (for callback binding)
-            .setCallbacks(phoneCallBack)          // OnVerificationStateChangedCallbacks
-            .setForceResendingToken(forceResend)
-            .build()
-        PhoneAuthProvider.verifyPhoneNumber(options)
-
-    }
-
-    protected fun verifyPhoneNumberWithCode(verificationId: String, code: String) {
-        val credential = PhoneAuthProvider.getCredential(verificationId, code)
-        signInWithPhoneAuthCredential(credential)
-    }
     //end phone
-
 
     private fun handleCallbackLoginActivity(user: FirebaseUser?) {
         user?.let {
