@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.projectgumi.R
 import com.example.projectgumi.data.model.ImageSlideModel
 import com.example.projectgumi.databinding.AdapterSlideBinding
@@ -13,6 +14,9 @@ class SlideAdapter(val action: (String) -> Unit): ListAdapter<ImageSlideModel, S
     inner class SlideViewHolder(val binding: AdapterSlideBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item: ImageSlideModel){
             binding.apply {
+                imageBanner.load(item.url){
+                    placeholder(R.drawable.ic_launcher_foreground)
+                }
                 layoutSlide.setOnClickListener {
                     action(item.id)
                 }

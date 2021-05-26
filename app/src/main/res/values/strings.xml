@@ -32,5 +32,9 @@
     <string name="resend_code">Resend Code</string>
     <string name="get_code">Get Code</string>
     <string name="logout">logout</string>
+    <string name="exclusive_offer">Exclusive Offer</string>
+    <string name="see_all">See All</string>
+    <string name="best_selling">Best Selling</string>
+    <string name="catelory">Catelory</string>
 
 </resources>

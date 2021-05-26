@@ -6,8 +6,12 @@ import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.projectgumi.R
+import com.example.projectgumi.ui.shop.CateloryAdapter
+import com.example.projectgumi.ui.shop.ProductItemAdapter
 import com.google.android.material.textfield.TextInputEditText
 
 object Binding {
@@ -30,6 +34,19 @@ object Binding {
         textView.doAfterTextChanged {
             textItemChoose.postValue(it.toString())
         }
+    }
+
+    @BindingAdapter("productItemAdapter")
+    @JvmStatic
+    fun productItemAdapter(rec: RecyclerView, adapterProductItem: ProductItemAdapter) {
+        rec.adapter = adapterProductItem
+        rec.layoutManager = LinearLayoutManager(rec.context, LinearLayoutManager.HORIZONTAL, false)
+    }
+    @BindingAdapter("cateloryItemAdapter")
+    @JvmStatic
+    fun cateloryItemAdapter(rec: RecyclerView, adapterCatelory: CateloryAdapter) {
+        rec.adapter = adapterCatelory
+        rec.layoutManager = LinearLayoutManager(rec.context, LinearLayoutManager.HORIZONTAL, false)
     }
 
 }

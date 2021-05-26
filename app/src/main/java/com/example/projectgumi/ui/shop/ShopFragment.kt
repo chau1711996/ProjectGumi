@@ -11,46 +11,146 @@ import com.example.projectgumi.data.model.ImageSlideModel
 import com.example.projectgumi.databinding.FragmentShopBinding
 import com.example.projectgumi.viewmodel.ShopViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ShopFragment : Fragment() {
 
+    private lateinit var slideAdapter: SlideAdapter
+    private lateinit var exclusiveAdapter: ProductItemAdapter
+    private lateinit var bestSellingAdapter: ProductItemAdapter
+    private lateinit var cateloryAdapter: CateloryAdapter
+    private lateinit var productAdapter: ProductItemAdapter
     private lateinit var binding: FragmentShopBinding
-    private val model by viewModel<ShopViewModel> ()
+    private val model by viewModel<ShopViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        val images = listOf<ImageSlideModel>(
-            ImageSlideModel("0","https://i.pinimg.com/originals/9d/60/22/9d6022f153768025ad37f51d89d29ece.jpg"),
-            ImageSlideModel("1","https://wall.vn/wp-content/uploads/2020/03/hinh-nen-dep-may-tinh-1.jpg"),
-            ImageSlideModel("2","https://maytinhvui.com/wp-content/uploads/2020/11/hinh-nen-may-tinh-4k-game-min.jpg"),
-            ImageSlideModel("3","https://pdp.edu.vn/wp-content/uploads/2021/01/hinh-nen-4k-tuyet-dep-cho-may-tinh.jpg"),
-            ImageSlideModel("4","https://luongsport.com/wp-content/uploads/2020/10/1039991.jpg")
-        )
-
-        val slideAdapter = SlideAdapter(){
-
-        }
-
-        slideAdapter.submitList(images)
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shop, container, false)
         binding.model = model
         binding.lifecycleOwner = this
-        binding.apply {
 
-            viewPager.adapter = slideAdapter
+        init()
 
-            TabLayoutMediator(tabLayout, viewPager){tab, pos ->
 
-            }.attach()
-        }
+
+        model.loadImage()
+        model.loadExclusive()
+        model.loadBestSelling()
+        model.loadCatelory()
+        model.loadProductCatelory("0")
 
         // Inflate the layout for this fragment
         return binding.root
     }
+
+    private fun init() {
+        slideAdapter = SlideAdapter { clickSlideShow(it) }
+
+        exclusiveAdapter = ProductItemAdapter { clickExclusive(it) }
+
+        bestSellingAdapter = ProductItemAdapter { clickBestSelling(it) }
+
+        cateloryAdapter = CateloryAdapter { clickCatelory(it) }
+
+        productAdapter = ProductItemAdapter { clickProduct(it) }
+
+        initViewPager()
+
+
+        initAdapter()
+
+        model.imageSlideShow.observe(requireActivity()) {
+            it?.let {
+                slideAdapter.submitList(it)
+                autoSlideShow(it)
+            }
+        }
+        model.dataExclusive.observe(requireActivity()) {
+            it?.let {
+                exclusiveAdapter.submitList(it)
+            }
+        }
+        model.dataBestSelling.observe(requireActivity()) {
+            it?.let {
+                bestSellingAdapter.submitList(it)
+            }
+        }
+        model.dataCategory.observe(requireActivity()){
+            it?.let{
+                cateloryAdapter.submitList(it)
+            }
+        }
+        model.dataProduct.observe(requireActivity()){
+            it?.let {
+                productAdapter.submitList(it)
+            }
+        }
+    }
+
+    private fun initAdapter() {
+        binding.apply {
+            adapterExclusive = exclusiveAdapter
+            adapterBestSelling = bestSellingAdapter
+            adapterCatelory = cateloryAdapter
+            adapterProduct = productAdapter
+        }
+    }
+
+    private fun initViewPager() {
+        binding.apply {
+
+            viewPager.adapter = slideAdapter
+
+            TabLayoutMediator(tabLayout, viewPager) { tab, pos ->
+
+            }.attach()
+
+        }
+    }
+
+    private fun clickProduct(productId: String) {
+
+    }
+
+    private fun clickExclusive(productId: String) {
+
+    }
+
+    private fun clickSlideShow(productId: String) {
+
+    }
+
+    private fun clickBestSelling(productId: String) {
+
+    }
+
+    private fun clickCatelory(cateloryId: String) {
+        model.loadProductCatelory(cateloryId)
+    }
+
+    private fun autoSlideShow(list: MutableList<ImageSlideModel>) {
+        GlobalScope.launch(Dispatchers.Main) {
+            var index = 0
+            while (true) {
+                if (index < list.size) {
+                    binding.viewPager.setCurrentItem(index, true)
+                    index++
+                    delay(2000)
+                } else {
+                    index = 0
+                }
+
+            }
+        }
+    }
+
 }

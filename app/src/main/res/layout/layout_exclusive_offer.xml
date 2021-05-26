@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="adapterExclusive"
+            type="com.example.projectgumi.ui.shop.ProductItemAdapter" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textExclusive"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/exclusive_offer"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/textSeeAll"
+            app:layout_constraintBottom_toBottomOf="@id/textExclusive"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/see_all"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:textColor="@color/button_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="30dp"
+            productItemAdapter="@{adapterExclusive}"
+            app:layout_constraintTop_toBottomOf="@id/textSeeAll"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
