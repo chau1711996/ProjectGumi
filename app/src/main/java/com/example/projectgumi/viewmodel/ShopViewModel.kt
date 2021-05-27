@@ -64,12 +64,22 @@ class ShopViewModel(private val reposity: MyReposity) : ViewModel() {
     fun loadBestSelling() {
         dataBestSelling.postValue(
             mutableListOf(
-                Product("1", "Organic Bananas", "7pcs, Priceg", "$4.99", "0", R.drawable.banana),
-                Product("0", "Red Apple", "1kg, Priceg", "$4.99", "1", R.drawable.apple),
+                Product("0", "Organic Bananas", "7pcs, Priceg", "$4.99", "0", R.drawable.banana),
+                Product("1", "Red Apple", "1kg, Priceg", "$4.99", "0", R.drawable.apple),
                 Product("2", "Red Apple", "1kg, Priceg", "$4.99", "1", R.drawable.apple),
-                Product("4", "Red Apple", "1kg, Priceg", "$4.99", "1", R.drawable.apple),
-                Product("3", "Organic Bananas", "7pcs, Priceg", "$4.99", "0", R.drawable.banana),
-                Product("3", "Organic Bananas", "7pcs, Priceg", "$4.99", "0", R.drawable.banana)
+                Product("3", "Red Apple", "1kg, Priceg", "$4.99", "1", R.drawable.apple),
+                Product("4", "Organic Bananas", "7pcs, Priceg", "$4.99", "2", R.drawable.banana),
+                Product("5", "Red Apple", "1kg, Priceg", "$4.99", "2", R.drawable.apple),
+                Product("6", "Organic Bananas", "7pcs, Priceg", "$4.99", "3", R.drawable.banana),
+                Product("7", "Red Apple", "1kg, Priceg", "$4.99", "3", R.drawable.apple),
+                Product("8", "Organic Bananas", "7pcs, Priceg", "$4.99", "4", R.drawable.banana),
+                Product("9", "Red Apple", "1kg, Priceg", "$4.99", "4", R.drawable.apple),
+                Product("10", "Organic Bananas", "7pcs, Priceg", "$4.99", "5", R.drawable.banana),
+                Product("11", "Red Apple", "1kg, Priceg", "$4.99", "5", R.drawable.apple),
+                Product("12", "Organic Bananas", "7pcs, Priceg", "$4.99", "6", R.drawable.banana),
+                Product("13", "Red Apple", "1kg, Priceg", "$4.99", "6", R.drawable.apple),
+                Product("14", "Organic Bananas", "7pcs, Priceg", "$4.99", "7", R.drawable.banana),
+                Product("15", "Organic Bananas", "7pcs, Priceg", "$4.99", "7", R.drawable.banana)
             )
         )
     }
@@ -79,9 +89,12 @@ class ShopViewModel(private val reposity: MyReposity) : ViewModel() {
             mutableListOf(
                 Catelory("0", "Pules", R.drawable.pules),
                 Catelory("1", "Rice", R.drawable.rice),
-                Catelory("1", "Rice", R.drawable.rice),
-                Catelory("0", "Pules", R.drawable.pules),
-                Catelory("1", "Rice", R.drawable.rice)
+                Catelory("2", "Frash Fruits & Vegetable", R.drawable.vegetable),
+                Catelory("3", "Cooking Oil & Ghee", R.drawable.oil),
+                Catelory("4", "Meat & Fish", R.drawable.meat),
+                Catelory("5", "Bakery & Snacks", R.drawable.bakery),
+                Catelory("6", "Dairy & Eggs", R.drawable.dairy),
+                Catelory("7", "Bevergaes", R.drawable.beverages)
             )
         )
     }

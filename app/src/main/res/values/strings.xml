@@ -36,5 +36,9 @@
     <string name="see_all">See All</string>
     <string name="best_selling">Best Selling</string>
     <string name="catelory">Catelory</string>
+    <string name="cart_name">My Cart</string>
+    <string name="go_to_checkout">go to checkout</string>
+    <string name="add_all_to_cart">add all to cart</string>
+    <string name="favorite_name">Favorite</string>
 
 </resources>
