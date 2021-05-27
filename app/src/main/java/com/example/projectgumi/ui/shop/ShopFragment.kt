@@ -7,8 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.projectgumi.R
+import com.example.projectgumi.adapter.CateloryAdapter
+import com.example.projectgumi.adapter.ProductItemAdapter
+import com.example.projectgumi.adapter.SlideAdapter
 import com.example.projectgumi.data.model.ImageSlideModel
 import com.example.projectgumi.databinding.FragmentShopBinding
+import com.example.projectgumi.utils.Utils.TYPE_SHOP
 import com.example.projectgumi.viewmodel.ShopViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.Dispatchers
@@ -55,13 +59,13 @@ class ShopFragment : Fragment() {
     private fun init() {
         slideAdapter = SlideAdapter { clickSlideShow(it) }
 
-        exclusiveAdapter = ProductItemAdapter { clickExclusive(it) }
+        exclusiveAdapter = ProductItemAdapter(TYPE_SHOP) { clickExclusive(it) }
 
-        bestSellingAdapter = ProductItemAdapter { clickBestSelling(it) }
+        bestSellingAdapter = ProductItemAdapter(TYPE_SHOP) { clickBestSelling(it) }
 
-        cateloryAdapter = CateloryAdapter { clickCatelory(it) }
+        cateloryAdapter = CateloryAdapter (TYPE_SHOP){ clickCatelory(it) }
 
-        productAdapter = ProductItemAdapter { clickProduct(it) }
+        productAdapter = ProductItemAdapter(TYPE_SHOP) { clickProduct(it) }
 
         initViewPager()
 

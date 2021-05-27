@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="catelory"
+            type="com.example.projectgumi.data.model.Catelory" />
+    </data>
+    <androidx.cardview.widget.CardView
+        android:layout_width="180dp"
+        android:id="@+id/layoutItemCatelory"
+        app:cardCornerRadius="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="250dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:padding="30dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                loadImageProduct="@{catelory.cateloryImage}"
+                android:id="@+id/imageCatelory"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="100dp"
+                android:layout_height="100dp"/>
+            <TextView
+                android:id="@+id/textCateloryName"
+                app:layout_constraintTop_toBottomOf="@id/imageCatelory"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="@{catelory.cateloryName}"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

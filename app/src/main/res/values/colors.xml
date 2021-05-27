@@ -15,11 +15,5 @@
     <color name="catelory2">#F8A44C</color>
     <color name="catelory3">#F7A593</color>
     <color name="catelory4">#D3B0E0</color>
-
-    <array name="randomBG">
-        <item>@color/catelory1</item>
-        <item>@color/catelory2</item>
-        <item>@color/catelory3</item>
-        <item>@color/catelory4</item>
-    </array>
+    <color name="transparent">#05000000</color>
 </resources>

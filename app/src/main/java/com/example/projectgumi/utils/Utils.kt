@@ -3,6 +3,8 @@ package com.example.projectgumi.utils
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ProgressBarBinding
 
@@ -21,6 +23,11 @@ object Utils {
 
     const val API_ERROR = "error"
 
+    const val TYPE_SHOP = 0
+
+    const val TYPE_EXPLORE = 1
+
+    const val TYPE_FAVORITE = 2
 
     const val SNS_REQUEST_CODE_GOOGLE = 887
 
@@ -33,4 +40,15 @@ object Utils {
         return builder.create()
     }
 
+    fun showFragmentById(id: String, activity: FragmentActivity?, fragment: Fragment){
+        activity?.apply {
+            supportFragmentManager.beginTransaction()
+                .add(
+                    R.id.fragment_container,
+                    fragment
+                )
+                .addToBackStack(null)
+                .commit()
+        }
+    }
 }

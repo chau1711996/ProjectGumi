@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-    <androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.core.widget.NestedScrollView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.shop.ShopFragment">
@@ -78,17 +79,17 @@
 
         <variable
             name="adapterExclusive"
-            type="com.example.projectgumi.ui.shop.ProductItemAdapter" />
+            type="com.example.projectgumi.adapter.ProductItemAdapter" />
 
         <variable
             name="adapterBestSelling"
-            type="com.example.projectgumi.ui.shop.ProductItemAdapter" />
+            type="com.example.projectgumi.adapter.ProductItemAdapter" />
 
         <variable
             name="adapterCatelory"
-            type="com.example.projectgumi.ui.shop.CateloryAdapter" />
+            type="com.example.projectgumi.adapter.CateloryAdapter" />
         <variable
             name="adapterProduct"
-            type="com.example.projectgumi.ui.shop.ProductItemAdapter" />
+            type="com.example.projectgumi.adapter.ProductItemAdapter" />
     </data>
 </layout>

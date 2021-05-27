@@ -1,4 +1,4 @@
-package com.example.projectgumi.ui.shop
+package com.example.projectgumi.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +10,9 @@ import com.example.projectgumi.R
 import com.example.projectgumi.data.model.ImageSlideModel
 import com.example.projectgumi.databinding.AdapterSlideBinding
 
-class SlideAdapter(val action: (String) -> Unit): ListAdapter<ImageSlideModel, SlideAdapter.SlideViewHolder>(SlideCallback()) {
+class SlideAdapter(val action: (String) -> Unit): ListAdapter<ImageSlideModel, SlideAdapter.SlideViewHolder>(
+    SlideCallback()
+) {
     inner class SlideViewHolder(val binding: AdapterSlideBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item: ImageSlideModel){
             binding.apply {

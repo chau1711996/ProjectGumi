@@ -29,10 +29,10 @@ class MainActivity : AppCompatActivity() {
 
         val fragments = mutableListOf(
             ShopFragment(),
-            ExploreFragment.newInstance("Explore", "To Explore"),
-            CartFragment.newInstance("Cart", "To Cart"),
-            FavoriteFragment.newInstance("Favorite", "To Favorite"),
-            AccountFragment.newInstance("Account", "To Account")
+            ExploreFragment(),
+            CartFragment(),
+            FavoriteFragment(),
+            AccountFragment()
         )
         binding?.apply {
             //chặn user vuốt ngang viewpager
