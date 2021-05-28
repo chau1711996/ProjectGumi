@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import com.example.projectgumi.R
 import com.example.projectgumi.adapter.ProductItemAdapter
 import com.example.projectgumi.databinding.FragmentFavoriteBinding
+import com.example.projectgumi.ui.order.OrderFailedFragment
 import com.example.projectgumi.utils.Utils.TYPE_FAVORITE
+import com.example.projectgumi.utils.Utils.showDialogFragment
 import com.example.projectgumi.viewmodel.FavoriteViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -42,6 +44,9 @@ class FavoriteFragment : Fragment() {
 
         binding.apply {
             adapterProduct = productAdapter
+            btnFavorite.setOnClickListener {
+                showDialogFragment(activity, OrderFailedFragment(), OrderFailedFragment.TAG)
+            }
         }
 
         viewModel.dataProduct.observe(requireActivity()){

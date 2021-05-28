@@ -5,16 +5,27 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="match_parent"
         tools:context=".ui.favorite.FavoriteFragment">
+
+        <View
+            app:layout_constraintTop_toTopOf="@id/adapterMyFavorite"
+            android:background="@color/search_store_bg"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+        <View
+            app:layout_constraintTop_toBottomOf="@id/adapterMyFavorite"
+            android:background="@color/search_store_bg"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
 
         <Button
             android:id="@+id/btnFavorite"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_margin="20dp"
             android:background="@drawable/bg_button_green"
             android:text="@string/add_all_to_cart"
             android:textAllCaps="true"
@@ -32,10 +43,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/adapterMyFavorite"
             favoriteAdapter="@{adapterProduct}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toTopOf="@id/btnFavorite"
             app:layout_constraintTop_toBottomOf="@id/textCartName" />
     </androidx.constraintlayout.widget.ConstraintLayout>

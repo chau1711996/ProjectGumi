@@ -5,6 +5,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="match_parent"
         tools:context=".ui.cart.CartFragment">
 
@@ -13,7 +14,7 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_margin="20dp"
             android:background="@drawable/bg_button_green"
             android:text="@string/go_to_checkout"
             android:textAllCaps="true"
@@ -25,7 +26,7 @@
             app:layout_constraintBottom_toBottomOf="@id/btnCart"
             android:textColor="@color/white"
             android:layout_marginEnd="20dp"
-            mySetText="@{String.valueOf(model.sumMoney)}"
+            android:text="@{String.valueOf(model.sumMoney)}"
             android:background="#489E67"
             android:translationZ="2dp"
             android:layout_width="wrap_content"
@@ -42,11 +43,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            app:layout_constraintTop_toTopOf="@id/adapterMyCart"
+            android:background="@color/search_store_bg"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+        <View
+            app:layout_constraintTop_toBottomOf="@id/adapterMyCart"
+            android:background="@color/search_store_bg"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/adapterMyCart"
             cartAdapter="@{adapterCart}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toTopOf="@id/btnCart"
             app:layout_constraintTop_toBottomOf="@id/textCartName" />
     </androidx.constraintlayout.widget.ConstraintLayout>

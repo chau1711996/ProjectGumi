@@ -2,12 +2,15 @@ package com.example.projectgumi.utils
 
 import android.app.AlertDialog
 import android.content.Context
+import android.transition.Transition
 import android.view.LayoutInflater
+import android.view.SurfaceControl
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ProgressBarBinding
+import javax.xml.transform.Transformer
 
 object Utils {
     const val API_URL = "http://10.0.0.250/gumi/"
@@ -52,10 +55,10 @@ object Utils {
                 .commit()
         }
     }
-    fun showFragment(activity: FragmentActivity?, fragment: Fragment){
+    fun showReplaceFragment(activity: FragmentActivity?, fragment: Fragment){
         activity?.apply {
             supportFragmentManager.beginTransaction()
-                .add(
+                .replace(
                     R.id.fragment_container,
                     fragment
                 )
@@ -66,7 +69,6 @@ object Utils {
         activity?.apply {
             supportFragmentManager.beginTransaction()
                 .add(
-
                     fragment,
                     tag
                 )

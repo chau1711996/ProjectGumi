@@ -40,7 +40,14 @@
     <string name="go_to_checkout">go to checkout</string>
     <string name="add_all_to_cart">add all to cart</string>
     <string name="favorite_name">Favorite</string>
-    <string name="checkout">By placing an order you agree to our <b>Terms</b> And <b>Conditions</b></string>
+    <string name="checkout">By placing an order you agree to our <b>Terms</b> <b>Conditions</b> And <br /></string>
     <string name="place_order">Place Order</string>
+    <string name="accepted_title">Your Order has been <br /> accepted</string>
+    <string name="accepted_caption">Your items has been placcd and is on <br /> it’s way to being processed</string>
+    <string name="back_home">back to home</string>
+    <string name="track_order">Track Order</string>
+    <string name="try_again">try again</string>
+    <string name="failed_title">Oops! Order Failed</string>
+    <string name="failed_caption">Something went tembly wrong.</string>
 
 </resources>

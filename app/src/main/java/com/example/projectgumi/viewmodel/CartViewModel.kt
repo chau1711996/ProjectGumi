@@ -5,13 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.projectgumi.R
 import com.example.projectgumi.data.model.CartModel
-import com.example.projectgumi.data.model.Catelory
-import com.example.projectgumi.data.model.ImageSlideModel
 import com.example.projectgumi.data.model.Product
 import com.example.projectgumi.data.reposity.MyReposity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.internal.filterList
 
 class CartViewModel(private val reposity: MyReposity) : ViewModel() {
 
@@ -46,7 +43,7 @@ class CartViewModel(private val reposity: MyReposity) : ViewModel() {
             dataProduct.value?.let {
                 val cart = mutableListOf<CartModel>()
                 it.forEach {
-                    cart.add(  CartModel(id.toString(), (1..9).random().toString(), it))
+                    cart.add(CartModel(id.toString(), (1..9).random().toString(), it))
                     id++
                 }
                 resultCart.postValue(cart)
@@ -54,10 +51,12 @@ class CartViewModel(private val reposity: MyReposity) : ViewModel() {
         }
     }
 
-    fun sumMyMoney(money:String){
-        viewModelScope.launch(Dispatchers.IO) {
-            sumMoney.postValue("$$money")
+    fun sumMyMoney(money: String) {
+        var sum = money
+        if(sum.length>6){
+            sum = sum.substring(0,6)
         }
+        sumMoney.postValue("$$sum")
     }
 
 }

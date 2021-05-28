@@ -8,16 +8,14 @@ import android.view.ViewGroup
 import com.example.projectgumi.R
 import com.example.projectgumi.adapter.CartAdapter
 import com.example.projectgumi.databinding.FragmentCartBinding
-import com.example.projectgumi.ui.CheckoutFragment
+import com.example.projectgumi.ui.checkout.CheckoutFragment
 import com.example.projectgumi.utils.Utils.showDialogFragment
-import com.example.projectgumi.utils.Utils.showFragment
 import com.example.projectgumi.viewmodel.CartViewModel
-import org.koin.android.ext.android.bind
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CartFragment : Fragment() {
     private lateinit var binding: FragmentCartBinding
-    private val model by viewModel<CartViewModel>()
+    private val cartViewModel by viewModel<CartViewModel>()
     private lateinit var cartAdapter: CartAdapter
 
     override fun onCreateView(
@@ -31,7 +29,7 @@ class CartFragment : Fragment() {
 
         binding.apply {
             lifecycleOwner = this@CartFragment
-            model = model
+            model = cartViewModel
             adapterCart = cartAdapter
             btnCart.setOnClickListener {
                 val tag = CheckoutFragment.TAG
@@ -39,9 +37,9 @@ class CartFragment : Fragment() {
             }
         }
 
-        model.loadCart()
+        cartViewModel.loadCart()
 
-        model.resultCart.observe(requireActivity()) {
+        cartViewModel.resultCart.observe(requireActivity()) {
             it?.let {
                 cartAdapter.submitList(it)
                 var money = 0.0
@@ -49,7 +47,7 @@ class CartFragment : Fragment() {
                     val price = it.product.productMoney.substring(1).toDouble()
                     money += price*it.unit.toDouble()
                 }
-                model.sumMyMoney(money.toString())
+                cartViewModel.sumMyMoney(money.toString())
             }
         }
 

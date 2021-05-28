@@ -1,4 +1,4 @@
-package com.example.projectgumi.ui
+package com.example.projectgumi.ui.checkout
 
 import android.os.Bundle
 import android.view.Gravity
@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.projectgumi.R
 import com.example.projectgumi.databinding.FragmentCheckoutBinding
+import com.example.projectgumi.ui.order.OrderAcceptedFragment
+import com.example.projectgumi.utils.Utils
 
 class CheckoutFragment : DialogFragment() {
 
@@ -25,12 +27,31 @@ class CheckoutFragment : DialogFragment() {
         //dialog_picker?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         dialog?.window?.setBackgroundDrawableResource(R.color.transparent)
 
-        binding = FragmentCheckoutBinding.bind(inflater.inflate(R.layout.fragment_checkout, container, false))
-        binding.imageClose.setOnClickListener {
-            dismiss()
+        binding = FragmentCheckoutBinding.bind(
+            inflater.inflate(
+                R.layout.fragment_checkout,
+                container,
+                false
+            )
+        )
+        binding.apply {
+            lifecycleOwner = this@CheckoutFragment
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            imageClose.setOnClickListener {
+                dismiss()
+            }
+            btnCheckout.setOnClickListener {
+                dismiss()
+                Utils.showDialogFragment(activity, OrderAcceptedFragment(), OrderAcceptedFragment.TAG)
+            }
+        }
     }
 
     override fun onStart() {
@@ -41,7 +62,7 @@ class CheckoutFragment : DialogFragment() {
         )
     }
 
-    companion object{
+    companion object {
         const val TAG = "CheckoutFragment"
     }
 

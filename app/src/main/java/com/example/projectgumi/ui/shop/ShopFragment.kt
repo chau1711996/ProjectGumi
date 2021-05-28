@@ -6,6 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.viewpager2.widget.ViewPager2
 import com.example.projectgumi.R
 import com.example.projectgumi.adapter.CateloryAdapter
 import com.example.projectgumi.adapter.ProductItemAdapter
@@ -15,10 +19,7 @@ import com.example.projectgumi.databinding.FragmentShopBinding
 import com.example.projectgumi.utils.Utils.TYPE_SHOP
 import com.example.projectgumi.viewmodel.ShopViewModel
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -37,20 +38,16 @@ class ShopFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shop, container, false)
         binding.model = model
         binding.lifecycleOwner = this
 
         init()
 
-
-
         model.loadImage()
         model.loadExclusive()
         model.loadBestSelling()
         model.loadCatelory()
-        model.loadProductCatelory("0")
 
         // Inflate the layout for this fragment
         return binding.root
@@ -63,7 +60,7 @@ class ShopFragment : Fragment() {
 
         bestSellingAdapter = ProductItemAdapter(TYPE_SHOP) { clickBestSelling(it) }
 
-        cateloryAdapter = CateloryAdapter (TYPE_SHOP){ clickCatelory(it) }
+        cateloryAdapter = CateloryAdapter(TYPE_SHOP) { clickCatelory(it) }
 
         productAdapter = ProductItemAdapter(TYPE_SHOP) { clickProduct(it) }
 
@@ -86,14 +83,15 @@ class ShopFragment : Fragment() {
         model.dataBestSelling.observe(requireActivity()) {
             it?.let {
                 bestSellingAdapter.submitList(it)
+                model.loadProductCatelory("0")
             }
         }
-        model.dataCategory.observe(requireActivity()){
-            it?.let{
+        model.dataCategory.observe(requireActivity()) {
+            it?.let {
                 cateloryAdapter.submitList(it)
             }
         }
-        model.dataProduct.observe(requireActivity()){
+        model.dataProduct.observe(requireActivity()) {
             it?.let {
                 productAdapter.submitList(it)
             }
@@ -141,12 +139,13 @@ class ShopFragment : Fragment() {
         model.loadProductCatelory(cateloryId)
     }
 
-    private fun autoSlideShow(list: MutableList<ImageSlideModel>) {
-        GlobalScope.launch(Dispatchers.Main) {
-            var index = 0
+    class SlideShowAuto(list: MutableList<ImageSlideModel>, view: ViewPager2) : LifecycleObserver {
+        var index = 0
+
+        val job = GlobalScope.launch(Dispatchers.Main) {
             while (true) {
                 if (index < list.size) {
-                    binding.viewPager.setCurrentItem(index, true)
+                    view.setCurrentItem(index, true)
                     index++
                     delay(2000)
                 } else {
@@ -155,6 +154,19 @@ class ShopFragment : Fragment() {
 
             }
         }
+        @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        fun start() {
+            job.start()
+        }
+        @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+        fun stop() {
+            job.cancel()
+        }
+    }
+
+    private fun autoSlideShow(list: MutableList<ImageSlideModel>) {
+        val slideShow = SlideShowAuto(list, binding.viewPager)
+        lifecycle.addObserver(slideShow)
     }
 
 }
