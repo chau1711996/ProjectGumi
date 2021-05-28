@@ -25,6 +25,7 @@ val applicationModule = module {
     viewModel { ExploreViewModel(get()) }
     viewModel { CartViewModel(get()) }
     viewModel { FavoriteViewModel(get()) }
+    viewModel { AccountViewModel(get()) }
 }
 
 private fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =

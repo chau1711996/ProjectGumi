@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.projectgumi.R
+import com.example.projectgumi.adapter.AccountAdapter
 import com.example.projectgumi.adapter.CartAdapter
 import com.example.projectgumi.adapter.CateloryAdapter
 import com.example.projectgumi.adapter.ProductItemAdapter
@@ -78,6 +79,13 @@ object Binding {
     @JvmStatic
     fun cartAdapter(rec: RecyclerView, adapterCart: CartAdapter) {
         rec.adapter = adapterCart
+        rec.layoutManager = LinearLayoutManager(rec.context)
+    }
+
+    @BindingAdapter("accountAdapter")
+    @JvmStatic
+    fun accountAdapter(rec: RecyclerView, adapterAccount: AccountAdapter) {
+        rec.adapter = adapterAccount
         rec.layoutManager = LinearLayoutManager(rec.context)
     }
 

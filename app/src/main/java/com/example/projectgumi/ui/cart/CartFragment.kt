@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import com.example.projectgumi.R
 import com.example.projectgumi.adapter.CartAdapter
 import com.example.projectgumi.databinding.FragmentCartBinding
+import com.example.projectgumi.ui.CheckoutFragment
+import com.example.projectgumi.utils.Utils.showDialogFragment
+import com.example.projectgumi.utils.Utils.showFragment
 import com.example.projectgumi.viewmodel.CartViewModel
 import org.koin.android.ext.android.bind
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,6 +33,10 @@ class CartFragment : Fragment() {
             lifecycleOwner = this@CartFragment
             model = model
             adapterCart = cartAdapter
+            btnCart.setOnClickListener {
+                val tag = CheckoutFragment.TAG
+                showDialogFragment(activity, CheckoutFragment(), tag)
+            }
         }
 
         model.loadCart()
