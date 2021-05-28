@@ -18,7 +18,8 @@
                 <ImageView
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:src="@drawable/ic_launcher_background"
+                    android:src="@drawable/dog"
+                    android:scaleType="centerCrop"
                     android:layout_width="100dp"
                     android:layout_height="100dp"/>
         </androidx.cardview.widget.CardView>
