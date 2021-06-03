@@ -13,7 +13,7 @@ import com.example.projectgumi.databinding.ProgressBarBinding
 import javax.xml.transform.Transformer
 
 object Utils {
-    const val API_URL = "http://10.0.0.250/gumi/"
+    const val API_URL = "http://192.168.1.29/gumi/"
 
     const val TAG = "TAG"
 
@@ -24,6 +24,8 @@ object Utils {
     const val INSERT_CITY = "insert_city"
 
     const val SUCCESS_CITY = "success_city"
+
+    const val SUCCESS = "success"
 
     const val API_ERROR = "error"
 
@@ -44,7 +46,7 @@ object Utils {
         return builder.create()
     }
 
-    fun showFragmentById(id: String, activity: FragmentActivity?, fragment: Fragment){
+    fun showFragmentById(activity: FragmentActivity?, fragment: Fragment){
         activity?.apply {
             supportFragmentManager.beginTransaction()
                 .add(

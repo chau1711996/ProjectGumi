@@ -15,7 +15,7 @@ import com.example.projectgumi.databinding.ItemExploreBinding
 import com.example.projectgumi.utils.Utils.TYPE_EXPLORE
 import com.example.projectgumi.utils.Utils.TYPE_SHOP
 
-class CateloryAdapter(val type: Int, val action: (String) -> Unit) :
+class CateloryAdapter(val type: Int, val action: (Catelory) -> Unit) :
     ListAdapter<Catelory, RecyclerView.ViewHolder>(
         CateloryCallback()
     ) {
@@ -31,7 +31,7 @@ class CateloryAdapter(val type: Int, val action: (String) -> Unit) :
                     )
                 )
                 layoutItemCatelory.setOnClickListener {
-                    action(cate.cateloryId)
+                    action(cate)
                 }
             }
         }
@@ -41,15 +41,14 @@ class CateloryAdapter(val type: Int, val action: (String) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(cate: Catelory) {
             binding.apply {
-                catelory = cate
-                layoutItemCatelory.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        binding.root.context,
-                        randomBackground()
-                    )
+                val color = ContextCompat.getColor(
+                    binding.root.context,
+                    randomBackground()
                 )
+                catelory = cate
+                layoutItemCatelory.setCardBackgroundColor(color)
                 layoutItemCatelory.setOnClickListener {
-                    action(cate.cateloryId)
+                    action(cate)
                 }
             }
         }

@@ -1,9 +1,7 @@
 package com.example.projectgumi.data.reposity
 
 import com.example.projectgumi.data.api.ApiService
-import com.example.projectgumi.data.model.ProductRespone
-import com.example.projectgumi.data.model.StatusRespone
-import com.example.projectgumi.data.model.UserModel
+import com.example.projectgumi.data.model.*
 import retrofit2.Response
 
 class MyReposity(private val apiService: ApiService) {
@@ -22,4 +20,12 @@ class MyReposity(private val apiService: ApiService) {
         wards: String,
         street: String
     ) = apiService.updateAddress(key, id, city, district, wards, street)
+    suspend fun getAllBestSelling(): Response<ProductRespone> = apiService.getAllBestSelling()
+    suspend fun getBestSellingLimit(): Response<ProductRespone> = apiService.getBestSellingLimit()
+    suspend fun getAllExclusive(): Response<ProductRespone> = apiService.getAllExclusive()
+    suspend fun getExclusiveLimit(): Response<ProductRespone> = apiService.getExclusiveLimit()
+    suspend fun getImageByProductId(productId: Int): Response<ImagesRespone> = apiService.getImageByProductId(productId)
+    suspend fun getAllCatelory(): Response<CateloryRespone> = apiService.getAllCatelory()
+    suspend fun getProductByCateloryId(cateloryId: Int): Response<ProductRespone> = apiService.getProductByCateloryId(cateloryId)
+    suspend fun getProductById(productId: Int): Response<ProductDetailRespone> = apiService.getProductById(productId)
 }

@@ -21,14 +21,14 @@
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/imageCatelory"
-                loadImageProduct="@{catelory.cateloryImage}"
+                loadImageProduct="@{catelory.url}"
                 android:layout_width="70dp"
                 android:layout_height="70dp"/>
             <TextView
                 android:id="@+id/textCateloryName"
                 android:layout_marginStart="20dp"
                 style="@style/TextAppearance.AppCompat.Title"
-                android:text="@{catelory.cateloryName}"
+                android:text="@{catelory.name}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

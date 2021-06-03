@@ -22,7 +22,7 @@ class FavoriteFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFavoriteBinding.bind(
             inflater.inflate(
                 R.layout.fragment_favorite,
@@ -40,22 +40,22 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        productAdapter = ProductItemAdapter(TYPE_FAVORITE) { clickFavorite(it) }
-
-        binding.apply {
-            adapterProduct = productAdapter
-            btnFavorite.setOnClickListener {
-                showDialogFragment(activity, OrderFailedFragment(), OrderFailedFragment.TAG)
-            }
-        }
-
-        viewModel.dataProduct.observe(requireActivity()){
-            productAdapter.submitList(it)
-        }
+//        productAdapter = ProductItemAdapter(TYPE_FAVORITE) { clickFavorite(it) }
+//
+//        binding.apply {
+//            adapterProduct = productAdapter
+//            btnFavorite.setOnClickListener {
+//                showDialogFragment(activity, OrderFailedFragment(), OrderFailedFragment.TAG)
+//            }
+//        }
+//
+//        viewModel.dataProduct.observe(requireActivity()){
+//            productAdapter.submitList(it)
+//        }
 
     }
 
-    private fun clickFavorite(productId: String) {
+    private fun clickFavorite(productId: Int) {
 
     }
 

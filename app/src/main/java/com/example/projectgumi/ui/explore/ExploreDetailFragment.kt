@@ -9,19 +9,24 @@ import com.example.gumiproject8.utils.hide
 import com.example.projectgumi.R
 import com.example.projectgumi.adapter.ProductItemAdapter
 import com.example.projectgumi.databinding.FragmentExploreDetailBinding
+import com.example.projectgumi.ui.productDetail.DetailFragment
+import com.example.projectgumi.utils.Utils
 import com.example.projectgumi.utils.Utils.TYPE_SHOP
 import com.example.projectgumi.viewmodel.ExploreViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val CATELORY_ID = "CATELORY_ID"
+private const val CATELORY_NAME = "CATELORY_NAME"
 
 class ExploreDetailFragment : Fragment() {
-    private var cateloryId: String? = null
+    private var cateloryId: Int? = null
+    private var cateloryName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            cateloryId = it.getString(CATELORY_ID)
+            cateloryId = it.getInt(CATELORY_ID)
+            cateloryName = it.getString(CATELORY_NAME)
         }
     }
 
@@ -34,16 +39,26 @@ class ExploreDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentExploreDetailBinding.bind(inflater.inflate(R.layout.fragment_explore_detail, container, false))
+        binding.apply {
+            lifecycleOwner = this@ExploreDetailFragment
+        }
+        // Inflate the layout for this fragment
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         cateloryId?.let {
-            model.loadCateloryById(it)
-            model.loadProductById(it)
+            model.loadProductByCateloryId(it)
         }
 
         exploreDetailAdapter = ProductItemAdapter(TYPE_SHOP) { clickProduct(it) }
 
         binding.apply {
             layoutHead.layoutSearch.layoutSearchStore.hide()
+            cateloryName?.let {
+                layoutHead.textCateloryName.text = it
+            }
             adapterProduct = exploreDetailAdapter
             layoutHead.imageBack.setOnClickListener {
                 activity?.apply {
@@ -52,32 +67,24 @@ class ExploreDetailFragment : Fragment() {
             }
         }
 
-        model.resultCatelory.observe(requireActivity()){
-            it?.let {
-                binding.layoutHead.textCateloryName.text = it.cateloryName
-            }
-        }
-
-        model.resultProduct.observe(requireActivity()){
+        model.dataProduct.observe(requireActivity()){
             it?.let {
                 exploreDetailAdapter.submitList(it)
             }
         }
-
-        // Inflate the layout for this fragment
-        return binding.root
     }
 
-    private fun clickProduct(productId: String) {
-
+    private fun clickProduct(productId: Int) {
+        Utils.showFragmentById(activity, DetailFragment.newInstance(productId))
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(cateloryId: String) =
+        fun newInstance(cateloryId: Int, cateloryName: String) =
             ExploreDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putString(CATELORY_ID, cateloryId)
+                    putInt(CATELORY_ID, cateloryId)
+                    putString(CATELORY_NAME, cateloryName)
                 }
             }
     }

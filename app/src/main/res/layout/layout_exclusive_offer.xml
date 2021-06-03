@@ -21,9 +21,10 @@
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/textSeeAll"
-            app:layout_constraintBottom_toBottomOf="@id/textExclusive"
             app:layout_constraintEnd_toEndOf="parent"
+            android:padding="10dp"
             android:text="@string/see_all"
+            app:layout_constraintTop_toTopOf="parent"
             style="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/button_bg"
             android:layout_width="wrap_content"

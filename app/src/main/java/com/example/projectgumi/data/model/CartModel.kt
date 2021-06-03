@@ -1,8 +1,18 @@
 package com.example.projectgumi.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.io.Serializable
+
+@Entity(tableName = "cart_table")
 data class CartModel(
-    val id: String,
+    @PrimaryKey(autoGenerate = true)
+    var cartId: Int,
+    val productId: Int,
+    val productName: String,
     val unit: String,
-    val product: Product
-    )
+    val amount: Int,
+    val productPrice: String,
+    val url: String
+): Serializable
 

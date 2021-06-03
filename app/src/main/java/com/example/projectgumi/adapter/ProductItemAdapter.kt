@@ -15,7 +15,7 @@ import com.example.projectgumi.databinding.ItemFavoriteBinding
 import com.example.projectgumi.databinding.ItemProductBinding
 import com.example.projectgumi.utils.Utils
 
-class ProductItemAdapter(private val type:Int, private val action:(String) -> Unit):
+class ProductItemAdapter(private val type:Int, private val action:(Int) -> Unit):
     ListAdapter<Product, RecyclerView.ViewHolder>(ProductItemHolderCallback()) {
     inner class ProductItemHolder(val binding: ItemProductBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(p: Product){

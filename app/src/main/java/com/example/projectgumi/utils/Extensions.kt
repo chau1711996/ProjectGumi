@@ -23,6 +23,7 @@ fun View.hide() {
     this.visibility = View.GONE
 }
 
+
 fun Fragment.hideKeyboard() {
     view?.let { activity?.hideKeyboard(it) }
 }

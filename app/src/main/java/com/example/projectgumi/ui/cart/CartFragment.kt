@@ -21,14 +21,20 @@ class CartFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding =
             FragmentCartBinding.bind(inflater.inflate(R.layout.fragment_cart, container, false))
+        binding.lifecycleOwner = this
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         cartAdapter = CartAdapter()
 
         binding.apply {
-            lifecycleOwner = this@CartFragment
             model = cartViewModel
             adapterCart = cartAdapter
             btnCart.setOnClickListener {
@@ -37,20 +43,12 @@ class CartFragment : Fragment() {
             }
         }
 
-        cartViewModel.loadCart()
+        cartViewModel.loadDataCart()
 
-        cartViewModel.resultCart.observe(requireActivity()) {
+        cartViewModel.dataCart.observe(requireActivity()) {
             it?.let {
                 cartAdapter.submitList(it)
-                var money = 0.0
-                it.forEach {
-                    val price = it.product.productMoney.substring(1).toDouble()
-                    money += price*it.unit.toDouble()
-                }
-                cartViewModel.sumMyMoney(money.toString())
             }
         }
-
-        return binding.root
     }
 }

@@ -3,6 +3,7 @@ package com.example.projectgumi.utils
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.widget.doAfterTextChanged
@@ -29,9 +30,16 @@ object Binding {
             error(R.drawable.ic_launcher_foreground)
         }
     }
+    @BindingAdapter("setRating")
+    @JvmStatic
+    fun setRating(view: RatingBar, rating: String?) {
+        rating?.let{
+            view.rating = it.toFloat()
+        }
+    }
     @BindingAdapter("loadImageProduct")
     @JvmStatic
-    fun loadImageProduct(imageView: ImageView, image: Int) {
+    fun loadImageProduct(imageView: ImageView, image: String) {
         imageView.load(image){
             placeholder(R.drawable.ic_launcher_background)
             error(R.drawable.ic_launcher_foreground)
@@ -75,9 +83,9 @@ object Binding {
         rec.adapter = adapterProduct
         rec.layoutManager = GridLayoutManager(rec.context, 2)
     }
-    @BindingAdapter("cartAdapter")
+    @BindingAdapter("myCartAdapter")
     @JvmStatic
-    fun cartAdapter(rec: RecyclerView, adapterCart: CartAdapter) {
+    fun myCartAdapter(rec: RecyclerView, adapterCart: CartAdapter) {
         rec.adapter = adapterCart
         rec.layoutManager = LinearLayoutManager(rec.context)
     }
@@ -96,17 +104,17 @@ object Binding {
         rec.layoutManager = LinearLayoutManager(rec.context)
     }
 
-    @BindingAdapter("mySetText")
+    @BindingAdapter("setRatingToDouble")
     @JvmStatic
-    fun mySetText(textView: TextView, name: String?) {
-        textView.text = name ?: ""
+    fun setMyRating(view: RatingBar, rating: String) {
+        view.rating = rating.toFloat()
     }
 
     @SuppressLint("SetTextI18n")
     @BindingAdapter("sumMoneyCart")
     @JvmStatic
     fun sumMoneyCart(textView: TextView, cart: CartModel) {
-        var money = (cart.product.productMoney.substring(1).toDouble()*cart.unit.toDouble()).toString()
+        var money = (cart.productPrice.substring(1).toDouble()*cart.amount).toString()
         if(money.length>5){
             money = money.substring(0,5)
         }

@@ -13,11 +13,10 @@ import com.example.projectgumi.data.model.Product
 import com.example.projectgumi.databinding.ItemCartBinding
 import com.example.projectgumi.databinding.ItemProductBinding
 
-class CartAdapter:
+class CartAdapter :
     ListAdapter<CartModel, CartAdapter.CartHolder>(CartCallback()) {
-    inner class CartHolder(val binding: ItemCartBinding) : RecyclerView.ViewHolder(binding.root){
-        @SuppressLint("SetTextI18n")
-        fun bind(cart: CartModel){
+    inner class CartHolder(val binding: ItemCartBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(cart: CartModel) {
             binding.apply {
                 cartModel = cart
                 layoutItemCart.setOnClickListener {
@@ -35,7 +34,7 @@ class CartAdapter:
         holder.bind(getItem(position))
     }
 
-    class CartCallback: DiffUtil.ItemCallback<CartModel>() {
+    class CartCallback : DiffUtil.ItemCallback<CartModel>() {
         override fun areItemsTheSame(oldItem: CartModel, newItem: CartModel): Boolean {
             return oldItem == newItem
         }

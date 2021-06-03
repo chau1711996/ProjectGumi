@@ -1,8 +1,6 @@
 package com.example.projectgumi.data.api
 
-import com.example.projectgumi.data.model.ProductRespone
-import com.example.projectgumi.data.model.StatusRespone
-import com.example.projectgumi.data.model.UserModel
+import com.example.projectgumi.data.model.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -32,6 +30,27 @@ interface ApiService {
         @Field("street") street: String
     ): Response<StatusRespone>
 
+    @GET("product/get_all_bestSelling.php")
+    suspend fun getAllBestSelling(): Response<ProductRespone>
 
+    @GET("product/get_all_bestSelling.php?limit=6")
+    suspend fun getBestSellingLimit(): Response<ProductRespone>
 
+    @GET("product/get_all_exclusive.php")
+    suspend fun getAllExclusive(): Response<ProductRespone>
+
+    @GET("product/get_all_exclusive.php?limit=6")
+    suspend fun getExclusiveLimit(): Response<ProductRespone>
+
+    @GET("product/get_image_by_id.php")
+    suspend fun getImageByProductId(@Query("productId") productId: Int): Response<ImagesRespone>
+
+    @GET("product/get_catelory.php")
+    suspend fun getAllCatelory(): Response<CateloryRespone>
+
+    @GET("product/getProductByCateloryId.php")
+    suspend fun getProductByCateloryId(@Query("cateloryId") cateloryId: Int): Response<ProductRespone>
+
+    @GET("product/getProductById.php")
+    suspend fun getProductById(@Query("productId") productId: Int): Response<ProductDetailRespone>
 }

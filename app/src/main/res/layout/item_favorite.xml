@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
-                loadImageProduct="@{product.productImage}"
+                loadImageProduct="@{product.url}"
                 android:id="@+id/imageProduct"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,7 @@
                 <TextView
                     android:id="@+id/textProductName"
                     style="@style/MyCustomTextProductName"
-                    android:text="@{product.productName}"
+                    android:text="@{product.name}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                     android:id="@+id/textProductPrice"
                     style="@style/MyCustomTextProductPrice"
                     android:layout_marginTop="10dp"
-                    android:text="@{product.productPrice}"
+                    android:text="@{product.unit}"
                     app:layout_constraintTop_toBottomOf="@id/textProductName"
                     app:layout_constraintStart_toStartOf="@id/textProductName"
                     android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/imageNext"
                 app:layout_constraintTop_toTopOf="@id/imageNext"
                 app:layout_constraintEnd_toStartOf="@id/imageNext"
-                android:text="@{product.productMoney}"
+                android:text="@{product.price}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

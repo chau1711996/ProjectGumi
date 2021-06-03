@@ -26,7 +26,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                loadImageProduct="@{cartModel.product.productImage}"
+                loadImageProduct="@{cartModel.url}"
                 android:layout_width="100dp"
                 android:layout_height="100dp"/>
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +40,7 @@
                 <TextView
                     android:id="@+id/textProductName"
                     style="@style/MyCustomTextProductName"
-                    android:text="@{cartModel.product.productName}"
+                    android:text="@{cartModel.productName}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
                     android:id="@+id/textProductPrice"
                     style="@style/MyCustomTextProductPrice"
                     android:layout_marginTop="10dp"
-                    android:text="@{cartModel.product.productPrice}"
+                    android:text="@{cartModel.unit}"
                     app:layout_constraintTop_toBottomOf="@id/textProductName"
                     app:layout_constraintStart_toStartOf="@id/textProductName"
                     android:layout_width="wrap_content"
@@ -79,7 +79,7 @@
                         android:paddingHorizontal="3dp"
                         android:paddingVertical="5dp"
                         android:layout_marginHorizontal="10dp"
-                        android:text="@{cartModel.unit}" />
+                        android:text="@{cartModel.amount}" />
 
                     <ImageView
                         android:src="@drawable/ic_add"
@@ -101,7 +101,6 @@
                 android:id="@+id/textMoney"
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_marginTop="5dp"
-                sumMoneyCart="@{cartModel}"
                 app:layout_constraintBottom_toBottomOf="@id/layoutProduct"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="wrap_content"

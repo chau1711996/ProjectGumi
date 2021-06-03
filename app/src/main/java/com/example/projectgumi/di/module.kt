@@ -1,13 +1,18 @@
 package com.example.projectgumi.di
 
+import androidx.room.Room
 import com.example.gumiproject8.data.RequestInterceptor
+import com.example.gumiproject8.data.room.BaseDatabase
 import com.example.projectgumi.data.api.ApiService
+import com.example.projectgumi.data.reposity.CartReposity
 import com.example.projectgumi.data.reposity.MyReposity
 import com.example.projectgumi.utils.Utils
 import com.example.projectgumi.viewmodel.*
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -19,6 +24,17 @@ val applicationModule = module {
     single { provideOkHttp() }
     single { provideRetrofit(get()) }
     single { MyReposity(get()) }
+    // Room Database
+    single {
+        Room.databaseBuilder(
+            androidApplication(),
+            BaseDatabase::class.java,
+            "room_db"
+        ).fallbackToDestructiveMigration().build()
+    }
+    // CartDAO
+    single { get<BaseDatabase>().cartDAO() }
+    single { CartReposity(get()) }
 
     viewModel { LoginViewModel(get()) }
     viewModel { ShopViewModel(get()) }
@@ -26,6 +42,8 @@ val applicationModule = module {
     viewModel { CartViewModel(get()) }
     viewModel { FavoriteViewModel(get()) }
     viewModel { AccountViewModel(get()) }
+    viewModel { ShopSeeAllViewModel(get()) }
+    viewModel { DetailProductViewModel(get(), get()) }
 }
 
 private fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =

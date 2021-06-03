@@ -16,6 +16,8 @@ import com.example.projectgumi.adapter.ProductItemAdapter
 import com.example.projectgumi.adapter.SlideAdapter
 import com.example.projectgumi.data.model.ImageSlideModel
 import com.example.projectgumi.databinding.FragmentShopBinding
+import com.example.projectgumi.ui.productDetail.DetailFragment
+import com.example.projectgumi.utils.Utils
 import com.example.projectgumi.utils.Utils.TYPE_SHOP
 import com.example.projectgumi.viewmodel.ShopViewModel
 import com.google.android.material.tabs.TabLayoutMediator
@@ -31,7 +33,7 @@ class ShopFragment : Fragment() {
     private lateinit var cateloryAdapter: CateloryAdapter
     private lateinit var productAdapter: ProductItemAdapter
     private lateinit var binding: FragmentShopBinding
-    private val model by viewModel<ShopViewModel>()
+    private val shopViewModel by viewModel<ShopViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,18 +41,30 @@ class ShopFragment : Fragment() {
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shop, container, false)
-        binding.model = model
         binding.lifecycleOwner = this
-
-        init()
-
-        model.loadImage()
-        model.loadExclusive()
-        model.loadBestSelling()
-        model.loadCatelory()
 
         // Inflate the layout for this fragment
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            model = shopViewModel
+            layoutBestSelling.textSeeAll.setOnClickListener {
+                Utils.showFragmentById(activity, ShopSeeAllFragment.newInstance(ShopSeeAllFragment.TYPE_BESTSELLING))
+            }
+            layoutExclusive.textSeeAll.setOnClickListener {
+                Utils.showFragmentById(activity, ShopSeeAllFragment.newInstance(ShopSeeAllFragment.TYPE_EXCLUSIVE))
+            }
+        }
+
+        init()
+
+        shopViewModel.loadImageSlideShow()
+        shopViewModel.loadExclusive()
+        shopViewModel.loadBestSelling()
+        shopViewModel.loadCatelory()
     }
 
     private fun init() {
@@ -60,7 +74,7 @@ class ShopFragment : Fragment() {
 
         bestSellingAdapter = ProductItemAdapter(TYPE_SHOP) { clickBestSelling(it) }
 
-        cateloryAdapter = CateloryAdapter(TYPE_SHOP) { clickCatelory(it) }
+        cateloryAdapter = CateloryAdapter(TYPE_SHOP) { clickCatelory(it.cateloryId) }
 
         productAdapter = ProductItemAdapter(TYPE_SHOP) { clickProduct(it) }
 
@@ -69,29 +83,29 @@ class ShopFragment : Fragment() {
 
         initAdapter()
 
-        model.imageSlideShow.observe(requireActivity()) {
+        shopViewModel.imageSlideShow.observe(requireActivity()) {
             it?.let {
                 slideAdapter.submitList(it)
                 autoSlideShow(it)
             }
         }
-        model.dataExclusive.observe(requireActivity()) {
+        shopViewModel.dataExclusive.observe(requireActivity()) {
             it?.let {
                 exclusiveAdapter.submitList(it)
             }
         }
-        model.dataBestSelling.observe(requireActivity()) {
+        shopViewModel.dataBestSelling.observe(requireActivity()) {
             it?.let {
                 bestSellingAdapter.submitList(it)
-                model.loadProductCatelory("0")
             }
         }
-        model.dataCategory.observe(requireActivity()) {
+        shopViewModel.dataCategory.observe(requireActivity()) {
             it?.let {
                 cateloryAdapter.submitList(it)
+                shopViewModel.loadProductByCateloryId(it[0].cateloryId)
             }
         }
-        model.dataProduct.observe(requireActivity()) {
+        shopViewModel.dataProduct.observe(requireActivity()) {
             it?.let {
                 productAdapter.submitList(it)
             }
@@ -112,31 +126,32 @@ class ShopFragment : Fragment() {
 
             viewPager.adapter = slideAdapter
 
-            TabLayoutMediator(tabLayout, viewPager) { tab, pos ->
+            TabLayoutMediator(tabLayout, viewPager) { _, _ ->
 
             }.attach()
 
         }
     }
 
-    private fun clickProduct(productId: String) {
+    //catelory
+    private fun clickProduct(productId: Int) {
+        Utils.showFragmentById(activity, DetailFragment.newInstance(productId))
+    }
+
+    private fun clickExclusive(productId: Int) {
+        Utils.showFragmentById(activity, DetailFragment.newInstance(productId))
+    }
+
+    private fun clickSlideShow(productId: Int) {
 
     }
 
-    private fun clickExclusive(productId: String) {
-
+    private fun clickBestSelling(productId: Int) {
+        Utils.showFragmentById(activity, DetailFragment.newInstance(productId))
     }
 
-    private fun clickSlideShow(productId: String) {
-
-    }
-
-    private fun clickBestSelling(productId: String) {
-
-    }
-
-    private fun clickCatelory(cateloryId: String) {
-        model.loadProductCatelory(cateloryId)
+    private fun clickCatelory(cateloryId: Int) {
+        shopViewModel.loadProductByCateloryId(cateloryId)
     }
 
     class SlideShowAuto(list: MutableList<ImageSlideModel>, view: ViewPager2) : LifecycleObserver {

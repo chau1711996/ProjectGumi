@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.gumiproject8.utils.hide
 import com.example.projectgumi.R
 import com.example.projectgumi.adapter.CateloryAdapter
+import com.example.projectgumi.data.model.Catelory
 import com.example.projectgumi.databinding.FragmentExploreBinding
 import com.example.projectgumi.utils.Utils.TYPE_EXPLORE
 import com.example.projectgumi.utils.Utils.showFragmentById
@@ -23,10 +24,18 @@ class ExploreFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentExploreBinding.bind(inflater.inflate(R.layout.fragment_explore, container, false))
+        binding.apply {
+            lifecycleOwner = this@ExploreFragment
+        }
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        model.loadCatelory()
         exploreAdapter = CateloryAdapter(TYPE_EXPLORE){clickCatelory(it)}
 
         binding.apply {
@@ -41,12 +50,10 @@ class ExploreFragment : Fragment() {
                 exploreAdapter.submitList(it)
             }
         }
-
-        return binding.root
     }
 
-    private fun clickCatelory(cateloryId: String) {
-        showFragmentById(cateloryId, activity, ExploreDetailFragment.newInstance(cateloryId))
+    private fun clickCatelory(catelory: Catelory) {
+        showFragmentById(activity, ExploreDetailFragment.newInstance(catelory.cateloryId, catelory.name))
     }
 
 }

@@ -1,317 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.detail.DetailFragment">
 
-    <LinearLayout
-        android:id="@+id/basket_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAllCaps="true"
-            android:background="@drawable/bg_button_green"
-            android:text="@string/add_to_basket" />
-    </LinearLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nes_layout"
+<layout>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/white"
+        android:focusable="true"
+        android:clickable="true"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/basket_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+            android:id="@+id/basket_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_button_green"
+                android:onClick="@{()->model.insert()}"
+                android:text="@string/add_to_basket"
+                android:textAllCaps="true" />
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nes_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/layout_image"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:background="@color/product_detail_bg"
-                android:gravity="center"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/image_product_detail"
-                    android:layout_width="300dp"
-                    android:layout_height="200dp"
-                    android:padding="50dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@drawable/bg_text_gray"
-                app:layout_constraintTop_toBottomOf="@id/title_layout" />
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@drawable/bg_text_gray"
-                app:layout_constraintTop_toBottomOf="@id/title_detail_layout" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@drawable/bg_text_gray"
-                app:layout_constraintTop_toBottomOf="@id/title_nutri_layout" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/basket_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/title_detail_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title_layout">
+                android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/image_arrow_show_product_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_down"
-                    app:layout_constraintBottom_toBottomOf="@id/text_product_title_detail"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/text_product_title_detail" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/bg_text_gray"
+                    app:layout_constraintTop_toBottomOf="@id/title_layout" />
 
-                <TextView
-                    android:id="@+id/text_product_description_detail"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/product_name_detail"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/bg_text_gray"
+                    app:layout_constraintTop_toBottomOf="@id/title_detail_layout" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:gravity="center"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/text_product_title_detail" />
-
-                <TextView
-                    android:id="@+id/text_product_title_detail"
-                    style="@style/TextAppearance.AppCompat.Title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/product_title_detail"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/title_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_image">
-
-                <ImageView
-                    android:id="@+id/image_favorite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_favorite"
-                    app:layout_constraintBottom_toBottomOf="@id/text_product_title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:id="@+id/count_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/text_product_name">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:src="@drawable/ic_dash"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:contentDescription="@string/reduce_the_number_product" />
+                        android:id="@+id/imageLeft"
+                        android:padding="0dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:src="@drawable/ic_arrow_left"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"/>
 
-                    <TextView
-                        style="@style/TextAppearance.AppCompat.Headline"
+                    <ImageView
+                        android:id="@+id/imageRight"
+                        android:padding="0dp"
+                        android:layout_marginEnd="10dp"
+                        app:layout_constraintTop_toTopOf="@id/imageLeft"
+                        app:layout_constraintBottom_toBottomOf="@id/imageLeft"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:src="@drawable/ic_cart"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/white"
+                        app:layout_constraintTop_toBottomOf="@id/imageLeft"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_amount_product"
-                        android:paddingHorizontal="15dp"
-                        android:paddingVertical="5dp"
-                        android:layout_marginHorizontal="10dp"
-                        android:text="1" />
+                        app:tabIndicatorColor="@color/white"
+                        app:layout_constraintTop_toBottomOf="@id/viewPager"
+                        android:paddingTop="20dp"
+                        app:layout_constraintBottom_toBottomOf="@id/viewPager"
+                        app:layout_constraintEnd_toEndOf="@id/viewPager"
+                        app:layout_constraintStart_toStartOf="@id/viewPager"
+                        app:tabBackground="@drawable/tab_selection" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/title_detail_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title_layout">
 
                     <ImageView
-                        android:src="@drawable/ic_add"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:contentDescription="@string/increasing_the_number_product" />
+                        android:id="@+id/image_arrow_show_product_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_down"
+                        app:layout_constraintBottom_toBottomOf="@id/text_product_title_detail"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/text_product_title_detail" />
 
-                </LinearLayout>
+                    <TextView
+                        android:id="@+id/text_product_description_detail"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@{model.dataProduct.detail}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_product_title_detail" />
 
-                <TextView
-                    android:id="@+id/text_product_title"
-                    style="@style/TextAppearance.AppCompat.Headline"
-                    android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/text_product_title_detail"
+                        style="@style/TextAppearance.AppCompat.Title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Description"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/title_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/product_title"
-                    app:layout_constraintEnd_toStartOf="@id/image_favorite"
+                    android:padding="20dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/layout_image">
 
-                <TextView
-                    android:id="@+id/text_product_price"
-                    style="@style/TextAppearance.AppCompat.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="$4.67"
-                    app:layout_constraintBottom_toBottomOf="@id/count_layout"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/count_layout" />
+                    <ImageView
+                        android:id="@+id/image_favorite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_favorite"
+                        app:layout_constraintBottom_toBottomOf="@id/text_product_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/text_product_name"
-                    style="@style/TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/count_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_product_name">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:onClick="@{()->model.clickGiamAmount()}"
+                            android:contentDescription="@string/reduce_the_number_product"
+                            android:src="@drawable/ic_dash" />
+
+                        <TextView
+                            style="@style/TextAppearance.AppCompat.Headline"
+                            android:id="@+id/amout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:background="@drawable/bg_amount_product"
+                            android:paddingHorizontal="15dp"
+                            android:paddingVertical="5dp"
+                            android:text="@{String.valueOf(model.amount)}" />
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:onClick="@{()->model.clickTangAmount()}"
+                            android:contentDescription="@string/increasing_the_number_product"
+                            android:src="@drawable/ic_add" />
+
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/text_product_title"
+                        style="@style/TextAppearance.AppCompat.Headline"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{model.dataProduct.name}"
+                        app:layout_constraintEnd_toStartOf="@id/image_favorite"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/text_product_price"
+                        style="@style/TextAppearance.AppCompat.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{model.money}"
+                        app:layout_constraintBottom_toBottomOf="@id/count_layout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/count_layout" />
+
+                    <TextView
+                        android:id="@+id/text_product_name"
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@{model.dataProduct.unit}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_product_title" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/title_review_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/product_name"
+                    android:padding="20dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/text_product_title" />
+                    app:layout_constraintTop_toBottomOf="@id/title_detail_layout">
+
+                    <RatingBar
+                        android:id="@+id/ratingbar_review"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        setRating="@{model.dataProduct.rating}"
+                        android:stepSize="0.5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/text_product_review"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/product_review"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/title_nutri_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title_detail_layout">
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageView
-                    android:id="@+id/image_arrow_show_nutri_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_right"
-                    app:layout_constraintBottom_toBottomOf="@id/text_product_nutri"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/text_product_nutri" />
-
-                <TextView
-                    android:id="@+id/text_product_nutri_count"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/bg_text_gray"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp"
-                    android:text="@string/product_nutri_count"
-                    app:layout_constraintBottom_toBottomOf="@id/text_product_nutri"
-                    app:layout_constraintEnd_toStartOf="@id/image_arrow_show_nutri_detail"
-                    app:layout_constraintTop_toTopOf="@id/text_product_nutri" />
-
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/product_name_detail"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/text_product_nutri_count" />
-
-                <TextView
-                    android:id="@+id/text_product_nutri"
-                    style="@style/TextAppearance.AppCompat.Title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/product_nutri"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_left"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_cart"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/title_review_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title_nutri_layout">
-
-                <ImageView
-                    android:id="@+id/image_arrow_show_review_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_right"
-                    app:layout_constraintBottom_toBottomOf="@id/text_product_review"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/text_product_review" />
-
-                <RatingBar
-                    android:id="@+id/ratingbar_review"
-                    style="@style/Widget.AppCompat.RatingBar.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:rating="4.7"
-                    android:stepSize="0.5"
-                    app:layout_constraintBottom_toBottomOf="@id/image_arrow_show_review_detail"
-                    app:layout_constraintEnd_toStartOf="@id/image_arrow_show_review_detail"
-                    app:layout_constraintTop_toTopOf="@id/image_arrow_show_review_detail" />
-
-                <TextView
-                    android:id="@+id/text_product_review"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/product_review"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/product_name_detail"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/image_arrow_show_review_detail" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <data>
+        <variable
+            name="model"
+            type="com.example.projectgumi.viewmodel.DetailProductViewModel" />
+    </data>
+</layout>

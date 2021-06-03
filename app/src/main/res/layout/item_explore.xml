@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
-                loadImageProduct="@{catelory.cateloryImage}"
+                loadImageProduct="@{catelory.url}"
                 android:id="@+id/imageCatelory"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
                 android:gravity="center"
                 android:layout_marginTop="20dp"
                 android:paddingHorizontal="10dp"
-                android:text="@{catelory.cateloryName}"
+                android:text="@{catelory.name}"
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
