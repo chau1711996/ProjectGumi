@@ -14,10 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.projectgumi.R
-import com.example.projectgumi.adapter.AccountAdapter
-import com.example.projectgumi.adapter.CartAdapter
-import com.example.projectgumi.adapter.CateloryAdapter
-import com.example.projectgumi.adapter.ProductItemAdapter
+import com.example.projectgumi.adapter.*
 import com.example.projectgumi.data.model.CartModel
 import com.google.android.material.textfield.TextInputEditText
 
@@ -99,15 +96,21 @@ object Binding {
 
     @BindingAdapter("favoriteAdapter")
     @JvmStatic
-    fun favoriteAdapter(rec: RecyclerView, adapterProduct: ProductItemAdapter) {
+    fun favoriteAdapter(rec: RecyclerView, adapterProduct: FavoriteAdapter) {
         rec.adapter = adapterProduct
         rec.layoutManager = LinearLayoutManager(rec.context)
     }
 
-    @BindingAdapter("setRatingToDouble")
+    @BindingAdapter("setMyText")
     @JvmStatic
-    fun setMyRating(view: RatingBar, rating: String) {
-        view.rating = rating.toFloat()
+    fun setMyText(view: TextView, text: MutableLiveData<String>) {
+        text.value?.let {
+            var money = it
+            if(money.length>6){
+                money = money.substring(0,6)
+            }
+            view.text = money
+        }
     }
 
     @SuppressLint("SetTextI18n")

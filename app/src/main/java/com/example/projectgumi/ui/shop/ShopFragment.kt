@@ -70,13 +70,13 @@ class ShopFragment : Fragment() {
     private fun init() {
         slideAdapter = SlideAdapter { clickSlideShow(it) }
 
-        exclusiveAdapter = ProductItemAdapter(TYPE_SHOP) { clickExclusive(it) }
+        exclusiveAdapter = ProductItemAdapter{ clickExclusive(it) }
 
-        bestSellingAdapter = ProductItemAdapter(TYPE_SHOP) { clickBestSelling(it) }
+        bestSellingAdapter = ProductItemAdapter{ clickBestSelling(it) }
 
         cateloryAdapter = CateloryAdapter(TYPE_SHOP) { clickCatelory(it.cateloryId) }
 
-        productAdapter = ProductItemAdapter(TYPE_SHOP) { clickProduct(it) }
+        productAdapter = ProductItemAdapter{ clickProduct(it) }
 
         initViewPager()
 

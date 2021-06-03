@@ -52,7 +52,7 @@ class ExploreDetailFragment : Fragment() {
             model.loadProductByCateloryId(it)
         }
 
-        exploreDetailAdapter = ProductItemAdapter(TYPE_SHOP) { clickProduct(it) }
+        exploreDetailAdapter = ProductItemAdapter{ clickProduct(it) }
 
         binding.apply {
             layoutHead.layoutSearch.layoutSearchStore.hide()

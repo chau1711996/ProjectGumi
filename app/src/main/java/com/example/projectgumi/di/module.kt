@@ -4,7 +4,7 @@ import androidx.room.Room
 import com.example.gumiproject8.data.RequestInterceptor
 import com.example.gumiproject8.data.room.BaseDatabase
 import com.example.projectgumi.data.api.ApiService
-import com.example.projectgumi.data.reposity.CartReposity
+import com.example.projectgumi.data.reposity.RoomDBReposity
 import com.example.projectgumi.data.reposity.MyReposity
 import com.example.projectgumi.utils.Utils
 import com.example.projectgumi.viewmodel.*
@@ -12,7 +12,6 @@ import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -34,7 +33,12 @@ val applicationModule = module {
     }
     // CartDAO
     single { get<BaseDatabase>().cartDAO() }
-    single { CartReposity(get()) }
+    // FavoriteDAO
+    single { get<BaseDatabase>().favoriteDAO() }
+
+    single { RoomDBReposity(get(),get()) }
+
+
 
     viewModel { LoginViewModel(get()) }
     viewModel { ShopViewModel(get()) }

@@ -3,21 +3,20 @@ package com.example.projectgumi.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.projectgumi.data.model.CartModel
-import com.example.projectgumi.data.model.ProductDetail
-import com.example.projectgumi.data.model.ProductImages
-import com.example.projectgumi.data.reposity.CartReposity
+import com.example.projectgumi.data.model.*
+import com.example.projectgumi.data.reposity.RoomDBReposity
 import com.example.projectgumi.data.reposity.MyReposity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class DetailProductViewModel(private val res: MyReposity, private val cartRes: CartReposity) : ViewModel() {
+class DetailProductViewModel(private val res: MyReposity, private val roomDBRes: RoomDBReposity) : ViewModel() {
     val dataImages = MutableLiveData<MutableList<ProductImages>?>()
     val dataProduct = MutableLiveData<ProductDetail?>()
 
     var amount = MutableLiveData(1)
     var money = MutableLiveData<String>()
     var statusInsert = MutableLiveData(false)
+    var statusFavorite = MutableLiveData(false)
 
     fun loadDataImages(productId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -61,15 +60,27 @@ class DetailProductViewModel(private val res: MyReposity, private val cartRes: C
         money.postValue("$${x}")
     }
 
-    fun insert(){
+    fun insertCart(){
         viewModelScope.launch {
             dataProduct.value?.let { product ->
                 amount.value?.let {
                     dataImages.value?.let{ image ->
                         val cartModel = CartModel(0, product.productId, product.name, product.unit, it, product.price, image.get(0).url)
-                        cartRes.insertCart(cartModel)
+                        roomDBRes.insertCart(cartModel)
                         statusInsert.postValue(true)
                     }
+                }
+            }
+        }
+    }
+
+    fun insertFavorite(){
+        viewModelScope.launch {
+            dataProduct.value?.let {
+                dataImages.value?.let { image ->
+                    val product = FavoriteModel(it.productId, it.name, it.unit, it.price, image.get(0).url)
+                    roomDBRes.insertFavorite(product)
+                    statusFavorite.postValue(true)
                 }
             }
         }

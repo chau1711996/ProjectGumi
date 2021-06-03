@@ -63,6 +63,12 @@ class DetailFragment : Fragment() {
                 }
             }
         }
+
+        detailViewModel.statusFavorite.observe(requireActivity()){
+            if(it){
+                Toast.makeText(context, "insert favorite success", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun initFunction() {

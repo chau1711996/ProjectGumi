@@ -3,18 +3,18 @@ package com.example.projectgumi.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.projectgumi.R
-import com.example.projectgumi.data.model.CartModel
-import com.example.projectgumi.data.model.Catelory
-import com.example.projectgumi.data.model.ImageSlideModel
-import com.example.projectgumi.data.model.Product
-import com.example.projectgumi.data.reposity.MyReposity
-import kotlinx.coroutines.Dispatchers
+import com.example.projectgumi.data.model.*
+import com.example.projectgumi.data.reposity.RoomDBReposity
 import kotlinx.coroutines.launch
-import okhttp3.internal.filterList
 
-class FavoriteViewModel(private val reposity: MyReposity) : ViewModel() {
+class FavoriteViewModel(private val roomDB: RoomDBReposity) : ViewModel() {
 
-    val dataProduct = MutableLiveData<MutableList<Product>>()
+    val dataProduct = MutableLiveData<MutableList<FavoriteModel>?>()
+
+    fun loadData(){
+        viewModelScope.launch {
+            dataProduct.postValue(roomDB.getAllFavorite())
+        }
+    }
 
 }

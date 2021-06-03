@@ -1,14 +1,15 @@
 package com.example.projectgumi.data.model
 
-import android.graphics.drawable.Drawable
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
 
-data class Product(
+@Entity(tableName = "favorite_table")
+data class FavoriteModel(
+    @PrimaryKey(autoGenerate = false)
     var productId: Int,
     var name: String,
     var unit: String,
     var price: String,
-    var cateloryId: Int,
     var url: String
 ): Serializable

@@ -48,7 +48,7 @@ class ShopSeeAllFragment : Fragment() {
             binding.layoutHead.textCateloryName.text = it
         }
 
-        productItemAdapter = ProductItemAdapter(Utils.TYPE_SHOP){clickShopSeeAll(it)}
+        productItemAdapter = ProductItemAdapter{clickShopSeeAll(it)}
 
         binding.apply {
             layoutHead.layoutSearch.layoutSearchStore.hide()

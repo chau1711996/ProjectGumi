@@ -26,7 +26,7 @@
             app:layout_constraintBottom_toBottomOf="@id/btnCart"
             android:textColor="@color/white"
             android:layout_marginEnd="20dp"
-            android:text="asdasda"
+            setMyText="@{model.sumMoney}"
             android:background="#489E67"
             android:translationZ="2dp"
             android:layout_width="wrap_content"

@@ -1,5 +1,7 @@
 package com.example.projectgumi.ui.cart
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -32,7 +34,7 @@ class CartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        cartAdapter = CartAdapter()
+        cartAdapter = CartAdapter(){clickDelete(it)}
 
         binding.apply {
             model = cartViewModel
@@ -48,7 +50,23 @@ class CartFragment : Fragment() {
         cartViewModel.dataCart.observe(requireActivity()) {
             it?.let {
                 cartAdapter.submitList(it)
+                cartViewModel.sumMoneyCart(it)
             }
         }
+    }
+
+    private fun clickDelete(cartId: Int) {
+        val dialog = AlertDialog.Builder(requireContext())
+        dialog.setMessage("Do you want delete?")
+        dialog.setPositiveButton("Yes"){ d, _ ->
+            cartViewModel.deleteCart(cartId)
+            cartViewModel.loadDataCart()
+            d.dismiss()
+        }
+        dialog.setNegativeButton("No"){ d, _ ->
+            d.cancel()
+        }
+        val alertDialog = dialog.create()
+        alertDialog.show()
     }
 }

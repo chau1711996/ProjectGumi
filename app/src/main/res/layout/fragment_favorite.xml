@@ -9,16 +9,16 @@
         android:layout_height="match_parent"
         tools:context=".ui.favorite.FavoriteFragment">
 
-        <View
-            app:layout_constraintTop_toTopOf="@id/adapterMyFavorite"
-            android:background="@color/search_store_bg"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-        <View
-            app:layout_constraintTop_toBottomOf="@id/adapterMyFavorite"
-            android:background="@color/search_store_bg"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+<!--        <View-->
+<!--            app:layout_constraintTop_toTopOf="@id/adapterMyFavorite"-->
+<!--            android:background="@color/search_store_bg"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"/>-->
+<!--        <View-->
+<!--            app:layout_constraintTop_toBottomOf="@id/adapterMyFavorite"-->
+<!--            android:background="@color/search_store_bg"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"/>-->
 
         <Button
             android:id="@+id/btnFavorite"
@@ -56,7 +56,7 @@
     <data>
         <variable
             name="adapterProduct"
-            type="com.example.projectgumi.adapter.ProductItemAdapter" />
+            type="com.example.projectgumi.adapter.FavoriteAdapter" />
     </data>
 
 </layout>

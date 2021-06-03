@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button_green"
-                android:onClick="@{()->model.insert()}"
+                android:onClick="@{()->model.insertCart()}"
                 android:text="@string/add_to_basket"
                 android:textAllCaps="true" />
         </LinearLayout>
@@ -157,6 +157,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_favorite"
+                        android:onClick="@{()->model.insertFavorite()}"
                         app:layout_constraintBottom_toBottomOf="@id/text_product_title"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -215,7 +216,7 @@
                         style="@style/TextAppearance.AppCompat.Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{model.money}"
+                        setMyText="@{model.money}"
                         app:layout_constraintBottom_toBottomOf="@id/count_layout"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/count_layout" />
