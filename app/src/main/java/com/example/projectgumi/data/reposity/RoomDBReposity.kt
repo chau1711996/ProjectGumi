@@ -10,6 +10,8 @@ class RoomDBReposity(private val cartDAO: CartDAO, private val favoriteDAO: Favo
     suspend fun insertCart(cart: CartModel) = cartDAO.insertCart(cart)
     suspend fun getAllCart(): MutableList<CartModel> = cartDAO.getAllCart()
     suspend fun deleteCart(cartId: Int) = cartDAO.delete(cartId)
+    suspend fun deleteAllCart() = cartDAO.deleteAllCart()
+
 
     suspend fun insertFavorite(product: FavoriteModel) = favoriteDAO.insertFavorite(product)
     suspend fun getAllFavorite(): MutableList<FavoriteModel> = favoriteDAO.getAllFavorite()

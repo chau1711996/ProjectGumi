@@ -1,11 +1,13 @@
 package com.example.projectgumi.ui.account
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import coil.load
+import com.example.projectgumi.MainActivity
 import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ActivityProfileBinding
 import com.example.projectgumi.ui.signInPhone.PhoneLoginActivity.Companion.USER_ID
@@ -43,7 +45,9 @@ class ProfileActivity : AppCompatActivity() {
         model.status.observe(this){
             it?.let {
                 if(it.equals(Utils.SUCCESS_CITY)){
-
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
             }
         }

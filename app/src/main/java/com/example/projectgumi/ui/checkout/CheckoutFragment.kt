@@ -2,29 +2,42 @@ package com.example.projectgumi.ui.checkout
 
 import android.os.Bundle
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.projectgumi.R
+import com.example.projectgumi.data.model.OrdersModel
 import com.example.projectgumi.databinding.FragmentCheckoutBinding
 import com.example.projectgumi.ui.order.OrderAcceptedFragment
+import com.example.projectgumi.ui.order.OrderFailedFragment
+import com.example.projectgumi.ui.order.OrdersFragment
 import com.example.projectgumi.utils.Utils
+import com.example.projectgumi.viewmodel.CheckoutViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private const val MONEY = "money"
+private const val COUNT = "count"
 class CheckoutFragment : DialogFragment() {
+    private var money: String? = null
+    private var count: String? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            money = it.getString(MONEY)
+            count = it.getString(COUNT)
+        }
+    }
 
     private lateinit var binding: FragmentCheckoutBinding
+    private val viewModel by viewModel<CheckoutViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM)
-        //make dialog_picker transparent
-        //dialog_picker?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         dialog?.window?.setBackgroundDrawableResource(R.color.transparent)
 
         binding = FragmentCheckoutBinding.bind(
@@ -44,14 +57,31 @@ class CheckoutFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
+            money?.let {
+                textTotalCoast.text = it
+            }
             imageClose.setOnClickListener {
                 dismiss()
             }
             btnCheckout.setOnClickListener {
-                dismiss()
-                Utils.showDialogFragment(activity, OrderAcceptedFragment(), OrderAcceptedFragment.TAG)
+                viewModel.insertOrders(OrdersModel(0, "Shipper", "Discard", count!!, money!!))
+
             }
         }
+
+        viewModel.status.observe(requireActivity()){
+            it?.let {
+                if(it.status.equals("success")){
+                    dismiss()
+                    Utils.showDialogFragment(activity, OrderAcceptedFragment(), OrderAcceptedFragment.TAG)
+                    viewModel.deleteAllCart()
+                }else{
+                    dismiss()
+                    Utils.showDialogFragment(activity, OrderFailedFragment(), OrderAcceptedFragment.TAG)
+                }
+            }
+        }
+
     }
 
     override fun onStart() {
@@ -64,6 +94,15 @@ class CheckoutFragment : DialogFragment() {
 
     companion object {
         const val TAG = "CheckoutFragment"
+
+        @JvmStatic
+        fun newInstance(money: String, count: String) =
+            CheckoutFragment().apply {
+                arguments = Bundle().apply {
+                    putString(MONEY, money)
+                    putString(COUNT, count)
+                }
+            }
     }
 
 }

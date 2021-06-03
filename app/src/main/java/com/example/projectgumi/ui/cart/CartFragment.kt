@@ -34,6 +34,8 @@ class CartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var countList = 0
+
         cartAdapter = CartAdapter(){clickDelete(it)}
 
         binding.apply {
@@ -41,7 +43,7 @@ class CartFragment : Fragment() {
             adapterCart = cartAdapter
             btnCart.setOnClickListener {
                 val tag = CheckoutFragment.TAG
-                showDialogFragment(activity, CheckoutFragment(), tag)
+                showDialogFragment(activity, CheckoutFragment.newInstance(cartViewModel.sumMoney.value!!, countList.toString()), tag)
             }
         }
 
@@ -49,6 +51,7 @@ class CartFragment : Fragment() {
 
         cartViewModel.dataCart.observe(requireActivity()) {
             it?.let {
+                countList = it.size
                 cartAdapter.submitList(it)
                 cartViewModel.sumMoneyCart(it)
             }

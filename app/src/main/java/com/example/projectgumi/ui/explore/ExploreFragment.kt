@@ -41,7 +41,7 @@ class ExploreFragment : Fragment() {
         binding.apply {
             layoutHead.imageBack.hide()
             layoutHead.imageRight.hide()
-            layoutHead.textCateloryName.text = "Find Product"
+            layoutHead.textCateloryName.text = "Explore"
             adapterExplore = exploreAdapter
         }
 

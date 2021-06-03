@@ -16,7 +16,9 @@ import com.example.projectgumi.adapter.ProductItemAdapter
 import com.example.projectgumi.adapter.SlideAdapter
 import com.example.projectgumi.data.model.ImageSlideModel
 import com.example.projectgumi.databinding.FragmentShopBinding
+import com.example.projectgumi.ui.order.OrdersFragment
 import com.example.projectgumi.ui.productDetail.DetailFragment
+import com.example.projectgumi.ui.search.SearchProductFragment
 import com.example.projectgumi.utils.Utils
 import com.example.projectgumi.utils.Utils.TYPE_SHOP
 import com.example.projectgumi.viewmodel.ShopViewModel
@@ -56,6 +58,12 @@ class ShopFragment : Fragment() {
             }
             layoutExclusive.textSeeAll.setOnClickListener {
                 Utils.showFragmentById(activity, ShopSeeAllFragment.newInstance(ShopSeeAllFragment.TYPE_EXCLUSIVE))
+            }
+            layoutHead.layoutSearch.layoutSearchStore.setOnClickListener {
+                Utils.showDialogFragment(activity, SearchProductFragment(), SearchProductFragment.TAG)
+            }
+            layoutHead.imageRight.setOnClickListener {
+                Utils.showDialogFragment(activity, OrdersFragment(), OrdersFragment.TAG)
             }
         }
 

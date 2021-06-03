@@ -36,7 +36,7 @@
 
             <ImageView
                 android:id="@+id/imageProfile"
-                loadImage="@{loginViewModel.urlImage}"
+                loadImage="@{loginViewModel.uriImage}"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="70dp"

@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 class LoginViewModel(private val reposity: MyReposity) : ViewModel() {
     val auth = Firebase.auth
     val status = MutableLiveData<String?>()
-    var urlImage: Uri? = auth.currentUser?.photoUrl
+    var uriImage: Uri? = auth.currentUser?.photoUrl
     val city = MutableLiveData<String?>()
     val wards = MutableLiveData<String?>()
     val district = MutableLiveData<String?>()

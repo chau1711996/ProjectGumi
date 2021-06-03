@@ -53,4 +53,19 @@ interface ApiService {
 
     @GET("product/getProductById.php")
     suspend fun getProductById(@Query("productId") productId: Int): Response<ProductDetailRespone>
+
+    @GET("product/getProductByName.php")
+    suspend fun getProductByName(@Query("name") name: String): Response<ProductRespone>
+
+    @GET("product/insertOrders.php")
+    suspend fun insertOrders(
+        @Query("id") id: Int,
+        @Query("delivery") delivery: String,
+        @Query("payment") payment: String,
+        @Query("amount") amount: String,
+        @Query("money") money: String,
+    ): Response<StatusRespone>
+
+    @GET("product/getOrders.php")
+    suspend fun getOrders(): Response<OrdersRespone>
 }

@@ -2,6 +2,7 @@ package com.example.projectgumi.utils
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
@@ -49,9 +50,9 @@ object Binding {
     }
     @BindingAdapter("getTextChange")
     @JvmStatic
-    fun getTextChange(textView: TextInputEditText, textItemChoose: MutableLiveData<String?>) {
-        textView.doAfterTextChanged {
-            textItemChoose.postValue(it.toString())
+    fun getTextChange(editText: EditText, text: MutableLiveData<String?>) {
+        editText.doAfterTextChanged {
+            text.postValue(it.toString())
         }
     }
 

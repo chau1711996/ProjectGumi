@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.core.content.ContextCompat
+import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.example.miniproject.adapter.ViewPagerFragmentAdapter
 import com.example.projectgumi.databinding.ActivityMainBinding
 import com.example.projectgumi.ui.account.AccountFragment
@@ -37,12 +39,18 @@ class MainActivity : AppCompatActivity() {
         binding?.apply {
             //chặn user vuốt ngang viewpager
             viewPager.isUserInputEnabled = false
-
-            viewPager.adapter = ViewPagerFragmentAdapter(supportFragmentManager, fragments, lifecycle)
+            val myAdapter = ViewPagerFragmentAdapter(supportFragmentManager, fragments, lifecycle)
+            viewPager.adapter = myAdapter
             TabLayoutMediator(tabLayout, viewPager){ tab, pos ->
                 tab.icon = ContextCompat.getDrawable(this@MainActivity, images[pos])
                 tab.text = titles[pos]
             }.attach()
+            viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback(){
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    myAdapter.notifyDataSetChanged()
+                }
+            })
         }
     }
 }

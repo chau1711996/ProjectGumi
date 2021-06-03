@@ -39,7 +39,9 @@ val applicationModule = module {
     single { RoomDBReposity(get(),get()) }
 
 
-
+    viewModel { CheckoutViewModel(get(), get()) }
+    viewModel { SearchStoreViewModel(get()) }
+    viewModel { OrdersViewModel(get()) }
     viewModel { LoginViewModel(get()) }
     viewModel { ShopViewModel(get()) }
     viewModel { ExploreViewModel(get()) }
