@@ -1,12 +1,14 @@
 package com.example.projectgumi.ui.cart
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.projectgumi.R
 import com.example.projectgumi.adapter.CartAdapter
 import com.example.projectgumi.databinding.FragmentCartBinding
@@ -16,6 +18,7 @@ import com.example.projectgumi.viewmodel.CartViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CartFragment : Fragment() {
+
     private lateinit var binding: FragmentCartBinding
     private val cartViewModel by viewModel<CartViewModel>()
     private lateinit var cartAdapter: CartAdapter
@@ -36,14 +39,27 @@ class CartFragment : Fragment() {
 
         var countList = 0
 
-        cartAdapter = CartAdapter(){clickDelete(it)}
+        cartAdapter = CartAdapter { clickDelete(it) }
 
         binding.apply {
             model = cartViewModel
-            adapterCart = cartAdapter
+
             btnCart.setOnClickListener {
                 val tag = CheckoutFragment.TAG
-                showDialogFragment(activity, CheckoutFragment.newInstance(cartViewModel.sumMoney.value!!, countList.toString()), tag)
+                showDialogFragment(
+                    activity,
+                    CheckoutFragment.newInstance(
+                        cartViewModel.sumMoney.value!!,
+                        countList.toString()
+                    ),
+                    tag
+                )
+            }
+
+            adapterMyCart.apply {
+                adapter = cartAdapter
+                val llm = LinearLayoutManager(requireContext())
+                layoutManager = llm
             }
         }
 
@@ -61,15 +77,16 @@ class CartFragment : Fragment() {
     private fun clickDelete(cartId: Int) {
         val dialog = AlertDialog.Builder(requireContext())
         dialog.setMessage("Do you want delete?")
-        dialog.setPositiveButton("Yes"){ d, _ ->
+        dialog.setPositiveButton("Yes") { d, _ ->
             cartViewModel.deleteCart(cartId)
             cartViewModel.loadDataCart()
             d.dismiss()
         }
-        dialog.setNegativeButton("No"){ d, _ ->
+        dialog.setNegativeButton("No") { d, _ ->
             d.cancel()
         }
         val alertDialog = dialog.create()
         alertDialog.show()
     }
+
 }

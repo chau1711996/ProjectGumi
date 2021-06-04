@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.gumiproject8.utils.hide
+import com.example.projectgumi.MainActivity
 import com.example.projectgumi.R
 import com.example.projectgumi.databinding.FragmentOrderAcceptedBinding
 import com.example.projectgumi.ui.shop.ShopFragment
@@ -49,7 +50,10 @@ class OrderAcceptedFragment : DialogFragment() {
         binding.apply {
             layoutHead.imageLeft.hide()
             btnBackHome.setOnClickListener {
-                Utils.showReplaceFragment(activity, ShopFragment())
+                //Utils.showReplaceFragment(activity, ShopFragment())
+                if(context is MainActivity) {
+                    (context as MainActivity).goToFragment(MainActivity.SHOP)
+                }
                 dismiss()
             }
         }
