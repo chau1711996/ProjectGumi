@@ -23,8 +23,10 @@ class LoginActivity : SNSLoginActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        googleSignInClient.signOut()
-        auth.signOut()
+        binding.lifecycleOwner = this
+        binding.imageLeft.setOnClickListener {
+            loginHome()
+        }
 
         init()
 

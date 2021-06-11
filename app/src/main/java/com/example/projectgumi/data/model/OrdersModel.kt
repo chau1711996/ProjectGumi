@@ -5,5 +5,6 @@ data class OrdersModel(
     val delivery: String,
     val payment: String,
     val amount: String,
-    val money: String
+    val money: String,
+    val userId: String
 )

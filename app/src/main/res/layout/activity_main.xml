@@ -8,6 +8,7 @@
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -16,19 +17,27 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/tabLayout"
+            app:layout_constraintBottom_toTopOf="@+id/layoutTab"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/layoutTab"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/button_bg"
-            app:tabTextAppearance="@style/MyCustomTabText"/>
+            app:cardElevation="5dp"
+            app:cardCornerRadius="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_tablayout"
+                app:tabIconTint="@drawable/icon_select"
+                app:tabSelectedTextColor="@color/button_bg"
+                app:tabTextAppearance="@style/MyCustomTabText"/>
+        </androidx.cardview.widget.CardView>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -43,6 +43,14 @@ object Binding {
             error(R.drawable.ic_launcher_foreground)
         }
     }
+    @BindingAdapter("loadIcon")
+    @JvmStatic
+    fun loadIcon(imageView: ImageView, image: Int) {
+        imageView.load(image){
+            placeholder(R.drawable.ic_launcher_background)
+            error(R.drawable.ic_launcher_foreground)
+        }
+    }
     @BindingAdapter("getItemSpinner")
     @JvmStatic
     fun getItemSpinner(spinner: AppCompatSpinner, textItemChoose: MutableLiveData<String?>) {

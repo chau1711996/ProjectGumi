@@ -1,0 +1,10 @@
+package com.example.projectgumi.data.model
+
+import com.google.gson.annotations.SerializedName
+
+data class UserRespone (
+    @SerializedName("status")
+    val status: String,
+    @SerializedName("data")
+    val data: MutableList<UserModel>
+)

@@ -33,10 +33,8 @@ val applicationModule = module {
     }
     // CartDAO
     single { get<BaseDatabase>().cartDAO() }
-    // FavoriteDAO
-    single { get<BaseDatabase>().favoriteDAO() }
 
-    single { RoomDBReposity(get(),get()) }
+    single { RoomDBReposity(get()) }
 
 
     viewModel { CheckoutViewModel(get(), get()) }

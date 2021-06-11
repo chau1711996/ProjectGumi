@@ -1,63 +1,69 @@
 package com.example.projectgumi.ui.favorite
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
 import com.example.projectgumi.R
 import com.example.projectgumi.adapter.FavoriteAdapter
-import com.example.projectgumi.adapter.ProductItemAdapter
+import com.example.projectgumi.base.BaseFragment
+import com.example.projectgumi.data.model.FavoriteModel
 import com.example.projectgumi.databinding.FragmentFavoriteBinding
-import com.example.projectgumi.ui.order.OrderFailedFragment
+import com.example.projectgumi.ui.cart.CartFragment
 import com.example.projectgumi.ui.productDetail.DetailFragment
 import com.example.projectgumi.utils.Utils
-import com.example.projectgumi.utils.Utils.TYPE_FAVORITE
-import com.example.projectgumi.utils.Utils.showDialogFragment
+import com.example.projectgumi.viewmodel.CartViewModel
 import com.example.projectgumi.viewmodel.FavoriteViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavoriteFragment : Fragment() {
-    private lateinit var binding: FragmentFavoriteBinding
+class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>() {
     private lateinit var favoriteAdaper: FavoriteAdapter
     private val viewModel by viewModel<FavoriteViewModel>()
+    private val cartViewModel by viewModel<CartViewModel>()
+    private var listFavorite = mutableListOf<FavoriteModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentFavoriteBinding.bind(
-            inflater.inflate(
-                R.layout.fragment_favorite,
-                container,
-                false
-            )
-        )
-        binding.lifecycleOwner = this
-        // Inflate the layout for this fragment
-        return binding.root
-    }
+    override val layoutResource: Int
+        get() = R.layout.fragment_favorite
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun viewCreated() {
         favoriteAdaper = FavoriteAdapter{ clickFavorite(it) }
+
+        val dialog = Utils.showProgressBar(requireContext(), "Loading...")
 
         binding.apply {
             adapterProduct = favoriteAdaper
             btnFavorite.setOnClickListener {
-                showDialogFragment(activity, OrderFailedFragment(), OrderFailedFragment.TAG)
+                cartViewModel.insertCartByFavorite(listFavorite)
+            }
+            imageRefresh.setOnClickListener {
+                loadData()
             }
         }
 
-        viewModel.loadData()
+        loadData()
 
         viewModel.dataProduct.observe(requireActivity()){
             it?.let {
-                favoriteAdaper.submitList(it)
+                listFavorite = it
+                favoriteAdaper.submitList(listFavorite)
             }
         }
 
+        cartViewModel.statusAddAllCart.observe(requireActivity()){
+            it?.let {
+                if(it){
+                    dialog.dismiss()
+                    Toast.makeText(requireContext(), "insert add all to cart success", Toast.LENGTH_SHORT)
+                        .show()
+//                    val cart = CartFragment()
+//                    cart.loadData()
+                }else
+                    dialog.show()
+            }
+        }
+    }
+
+    fun loadData(){
+        currentUser?.let {
+            viewModel.loadData(it.uid)
+        }
     }
 
     private fun clickFavorite(productId: Int) {

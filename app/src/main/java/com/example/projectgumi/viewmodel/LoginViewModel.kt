@@ -33,16 +33,28 @@ class LoginViewModel(private val reposity: MyReposity) : ViewModel() {
         }
     }
 
-    fun onClick(){
+    fun onClick() {
         updateAddress()
     }
 
-    fun updateAddress(){
+    fun updateAddress() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val result = reposity.updateAddress(INSERT_CITY, auth.uid?:"", city.value?:"",district.value?:"",wards.value?:"",house.value?:"")
-                status.postValue(result.body()?.status)
-            }catch (e: Exception) {
+                if (userName.value.isNullOrEmpty() || house.value.isNullOrEmpty()) {
+                    status.postValue("Plese check not do empty")
+                } else {
+                    val result = reposity.updateAddress(
+                        INSERT_CITY,
+                        auth.uid ?: "",
+                        userName.value ?: "",
+                        city.value ?: "",
+                        district.value ?: "",
+                        wards.value ?: "",
+                        house.value ?: ""
+                    )
+                    status.postValue(result.body()?.status)
+                }
+            } catch (e: Exception) {
                 Log.i("chaudangAPI", e.message.toString())
             }
         }
@@ -50,9 +62,11 @@ class LoginViewModel(private val reposity: MyReposity) : ViewModel() {
 
 
     fun updatePhoneUser(key: String, userId: String, userName: String, phoneNumber: String) {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                status.postValue(reposity.updatePhoneUser(key, userId, userName, phoneNumber).body()?.status)
+                status.postValue(
+                    reposity.updatePhoneUser(key, userId, userName, phoneNumber).body()?.status
+                )
             } catch (e: Exception) {
                 Log.i("chauAPI", e.message.toString())
             }

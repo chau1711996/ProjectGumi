@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.projectgumi.R
 import com.example.projectgumi.data.model.AccountLayoutModel
-import com.example.projectgumi.data.model.ImageSlideModel
-import com.example.projectgumi.databinding.AdapterSlideBinding
 import com.example.projectgumi.databinding.ItemUserBinding
 
 class AccountAdapter(val action: (String) -> Unit) :

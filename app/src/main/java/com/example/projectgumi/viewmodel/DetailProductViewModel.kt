@@ -16,7 +16,8 @@ class DetailProductViewModel(private val res: MyReposity, private val roomDBRes:
     var amount = MutableLiveData(1)
     var money = MutableLiveData<String>()
     var statusInsert = MutableLiveData(false)
-    var statusFavorite = MutableLiveData(false)
+    var statusFavorite = MutableLiveData<String?>()
+    var statusCheckFavorite = MutableLiveData<String?>()
 
     fun loadDataImages(productId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -74,15 +75,20 @@ class DetailProductViewModel(private val res: MyReposity, private val roomDBRes:
         }
     }
 
-    fun insertFavorite(){
+    fun insertFavorite(userId: String){
         viewModelScope.launch {
             dataProduct.value?.let {
                 dataImages.value?.let { image ->
-                    val product = FavoriteModel(it.productId, it.name, it.unit, it.price, image.get(0).url)
-                    roomDBRes.insertFavorite(product)
-                    statusFavorite.postValue(true)
+                    val product = FavoriteModel(0, it.productId, it.name, it.unit, it.price, image.get(0).url, userId)
+                    statusFavorite.postValue(res.insertFavorite(product).body()?.status)
                 }
             }
+        }
+    }
+
+    fun checkFavorite(productId: Int, userId: String){
+        viewModelScope.launch {
+            statusCheckFavorite.postValue(res.checkFavorite(productId, userId).body()?.status)
         }
     }
 }

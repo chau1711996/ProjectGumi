@@ -1,5 +1,6 @@
 package com.example.projectgumi.data.model
 
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable

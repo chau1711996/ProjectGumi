@@ -3,10 +3,12 @@ package com.example.projectgumi.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.projectgumi.MainActivity
 import com.example.projectgumi.R
 import com.example.projectgumi.data.model.Product
 import com.example.projectgumi.databinding.ItemCateloryBinding
@@ -22,8 +24,14 @@ class ProductItemAdapter(private val action: (Int) -> Unit) :
         fun bind(p: Product) {
             binding.apply {
                 product = p
-                layoutItemProduct.setOnClickListener {
+                imageProduct.setOnClickListener {
                     action(p.productId)
+                }
+                btnClickToProductDetail.setOnClickListener {
+                    if(binding.root.context is MainActivity){
+                        val result = binding.root.context as MainActivity
+                        result.insertCart(p)
+                    }
                 }
             }
         }

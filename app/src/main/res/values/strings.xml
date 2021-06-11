@@ -26,7 +26,7 @@
     <string name="enter_phone_number">Please enter phone number</string>
     <string name="first_phone_vn">+84</string>
     <string name="enter_code">Enter Code</string>
-    <string name="your_groceries">Get your groceries with nectar</string>
+    <string name="your_groceries">Get your groceries <br />with nectar</string>
     <string name="button_login_google">Continue with Google</string>
     <string name="button_login_fb">Continue with Facebook</string>
     <string name="resend_code">Resend Code</string>
@@ -40,7 +40,7 @@
     <string name="go_to_checkout">go to checkout</string>
     <string name="add_all_to_cart">add all to cart</string>
     <string name="favorite_name">Favorite</string>
-    <string name="checkout">By placing an order you agree to our <b>Terms</b> <b>Conditions</b> And <br /></string>
+    <string name="checkout">By placing an order you agree to our <br /> <b>Terms</b> <b>Conditions</b> And <br /></string>
     <string name="place_order">Place Order</string>
     <string name="accepted_title">Your Order has been <br /> accepted</string>
     <string name="accepted_caption">Your items has been placcd and is on <br /> it’s way to being processed</string>
@@ -49,5 +49,9 @@
     <string name="try_again">try again</string>
     <string name="failed_title">Oops! Order Failed</string>
     <string name="failed_caption">Something went tembly wrong.</string>
+    <string name="welcome_to_our_store">Welcome <br /> to our store</string>
+    <string name="groceries">Ger your groceries in as fast as one hour</string>
+    <string name="get_start">Get Started</string>
+    <string name="customers">Hello Customers</string>
 
 </resources>

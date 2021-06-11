@@ -15,6 +15,10 @@ interface CartDAO {
     @Query("SELECT * FROM cart_table")
     suspend fun getAllCart(): MutableList<CartModel>
 
+    @Query("UPDATE cart_table SET amount = :amount WHERE cartId = :cartId")
+    suspend fun updateAmount(cartId: Int, amount: Int)
+
+
     @Query("DELETE FROM cart_table WHERE cartId= :cartId")
     suspend fun delete(cartId: Int)
 

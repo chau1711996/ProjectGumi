@@ -9,11 +9,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="search_store_bg">#F2F3F2</color>
     <color name="button_bg">#53B175</color>
-    <color name="product_detail_bg">#F2F3F2</color>
+    <color name="product_detail_bg">#FCFCFC</color>
     <color name="rating">#F3603F</color>
     <color name="catelory1">#53B175</color>
     <color name="catelory2">#F8A44C</color>
     <color name="catelory3">#F7A593</color>
     <color name="catelory4">#D3B0E0</color>
     <color name="transparent">#00000000</color>
+    <color name="viewpager">#1053B175</color>
+    <color name="red">#FF2414</color>
 </resources>

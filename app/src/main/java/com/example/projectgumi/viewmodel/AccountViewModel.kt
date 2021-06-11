@@ -10,7 +10,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.internal.filterList
 
-class AccountViewModel(private val reposity: MyReposity) : ViewModel() {
+class AccountViewModel(private val res: MyReposity) : ViewModel() {
+    val dataUser = MutableLiveData<UserModel?>()
 
     val dataAccount = MutableLiveData(
         mutableListOf(
@@ -20,5 +21,12 @@ class AccountViewModel(private val reposity: MyReposity) : ViewModel() {
             AccountLayoutModel(R.drawable.ic_about, "About"),
         )
     )
+
+    fun getUserById(userId: String){
+        viewModelScope.launch {
+            val result = res.getUserById(userId).body()?.data
+            dataUser.postValue(result?.get(0))
+        }
+    }
 
 }

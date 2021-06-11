@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.projectgumi.R
 import com.example.projectgumi.data.model.Catelory
 import com.example.projectgumi.data.model.ImageSlideModel
 import com.example.projectgumi.data.model.Product
+import com.example.projectgumi.data.model.UserModel
 import com.example.projectgumi.data.reposity.MyReposity
 import com.example.projectgumi.utils.Utils
 import kotlinx.coroutines.launch
@@ -18,6 +20,14 @@ class ShopViewModel(private val res: MyReposity) : ViewModel() {
     val dataBestSelling = MutableLiveData<MutableList<Product>?>()
     val dataCategory = MutableLiveData<MutableList<Catelory>?>()
     val dataProduct = MutableLiveData<MutableList<Product>?>()
+    val dataUser = MutableLiveData<UserModel?>()
+
+    fun getUserById(userId: String){
+        viewModelScope.launch {
+            val result = res.getUserById(userId).body()?.data
+            dataUser.postValue(result?.get(0))
+        }
+    }
 
 
     fun loadProductByCateloryId(cateloryId: Int){
@@ -30,24 +40,34 @@ class ShopViewModel(private val res: MyReposity) : ViewModel() {
         imageSlideShow.postValue(
             mutableListOf(
                 ImageSlideModel(
-                    0,
-                    "https://i.pinimg.com/originals/9d/60/22/9d6022f153768025ad37f51d89d29ece.jpg"
-                ),
-                ImageSlideModel(
-                    1,
-                    "https://wall.vn/wp-content/uploads/2020/03/hinh-nen-dep-may-tinh-1.jpg"
-                ),
-                ImageSlideModel(
-                    2,
-                    "https://maytinhvui.com/wp-content/uploads/2020/11/hinh-nen-may-tinh-4k-game-min.jpg"
-                ),
-                ImageSlideModel(
                     3,
-                    "https://pdp.edu.vn/wp-content/uploads/2021/01/hinh-nen-4k-tuyet-dep-cho-may-tinh.jpg"
+                    R.drawable.vegetable,
+                    "Fresh Fruits & Vegetable"
                 ),
                 ImageSlideModel(
                     4,
-                    "https://luongsport.com/wp-content/uploads/2020/10/1039991.jpg"
+                    R.drawable.oil,
+                    "Cooking Oil & Ghee"
+                ),
+                ImageSlideModel(
+                    5,
+                    R.drawable.meat,
+                    "Meat & Fish"
+                ),
+                ImageSlideModel(
+                    6,
+                    R.drawable.bakery,
+                    "Bakery & Snacks"
+                ),
+                ImageSlideModel(
+                    7,
+                    R.drawable.dairy,
+                    "Dairy & Eggs"
+                ),
+                ImageSlideModel(
+                    8,
+                    R.drawable.beverages,
+                    "Beverages"
                 )
             )
         )

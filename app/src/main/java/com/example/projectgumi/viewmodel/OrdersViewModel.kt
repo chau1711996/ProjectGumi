@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 class OrdersViewModel(private val res: MyReposity) : ViewModel() {
 
     val dataOrders = MutableLiveData<MutableList<OrdersModel>?>()
-    fun getOrders(){
+    fun getOrdersByIdUser(userId: String){
         viewModelScope.launch {
-            dataOrders.postValue(res.getOrders().body()?.data)
+            dataOrders.postValue(res.getOrdersByIdUser(userId).body()?.data)
         }
     }
 

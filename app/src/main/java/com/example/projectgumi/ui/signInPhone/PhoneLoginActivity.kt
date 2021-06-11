@@ -7,22 +7,26 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import com.example.gumiproject8.utils.hide
 import com.example.gumiproject8.utils.hideKeyboard
 import com.example.gumiproject8.utils.show
 import com.example.projectgumi.R
 import com.example.projectgumi.databinding.ActivityPhoneLoginBinding
-import com.example.projectgumi.sns.SNSLoginActivity
 import com.example.projectgumi.ui.account.ProfileActivity
 import com.example.projectgumi.ui.login.LoginActivity
 import com.example.projectgumi.utils.Utils
 import com.example.projectgumi.utils.Utils.INSERT_PHONE
 import com.example.projectgumi.utils.Utils.SUCCESS_PHONE
 import com.example.projectgumi.viewmodel.LoginViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import org.koin.android.ext.android.bind
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
@@ -33,6 +37,8 @@ class PhoneLoginActivity : AppCompatActivity() {
     private lateinit var verificationId: String
     private lateinit var dialog: AlertDialog
     private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
+
     private val model by viewModel<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,12 +49,19 @@ class PhoneLoginActivity : AppCompatActivity() {
         auth = Firebase.auth
         init()
 
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
         model.status.observe(this) {
             it?.let {
                 if (it.equals(SUCCESS_PHONE)) {
                     loginProfile()
                 } else {
-                    Toast.makeText(baseContext, "Error phoneNumber_insert", Toast.LENGTH_SHORT)
+                    Toast.makeText(baseContext, "Error" , Toast.LENGTH_SHORT)
                         .show()
                 }
             }
@@ -57,11 +70,25 @@ class PhoneLoginActivity : AppCompatActivity() {
 
     private fun init() {
 
+        binding.apply {
+            editCode.doAfterTextChanged {
+                textError.text = ""
+            }
+            editPhoneNumber.doAfterTextChanged {
+                textError.text = ""
+            }
+        }
+
         updateUI(false)
 
         binding.apply {
             layoutHead.imageLeft.setOnClickListener {
+                googleSignInClient.signOut()
+                Firebase.auth.signOut()
                 loginActivity()
+            }
+            imageLeftCode.setOnClickListener {
+                updateUI(false)
             }
             flGetCode.setOnClickListener {
                 dialog.show()
@@ -82,11 +109,7 @@ class PhoneLoginActivity : AppCompatActivity() {
 
     private fun checkPhoneAndSendCode(phone: String) {
         if (phone.isEmpty() || phone.length != 9) {
-            Toast.makeText(
-                this@PhoneLoginActivity,
-                "Please enter phone number without 0",
-                Toast.LENGTH_SHORT
-            ).show()
+            binding.textError.text = "Please enter phone number without 0"
             dialog.dismiss()
         } else {
             signInPhone(phone)
@@ -102,10 +125,11 @@ class PhoneLoginActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun updateUI(check: Boolean) {
+
         binding.apply {
             layoutHead.title.text = "Hello ${auth.currentUser?.displayName}"
             layoutHead.caption.text = "Please enter your mobie phone number"
-
+            textError.text = ""
             if (check) {
                 layoutHead.caption.text = "Please enter your CODE"
                 flGetCode.hide()
@@ -113,7 +137,12 @@ class PhoneLoginActivity : AppCompatActivity() {
                 flSendCode.show()
                 textResend.show()
                 editCode.show()
+                textError.show()
+                imageLeftCode.show()
+                layoutHead.imageLeft.hide()
             } else {
+                imageLeftCode.hide()
+                layoutHead.imageLeft.show()
                 flGetCode.show()
                 layoutPhone.show()
                 flSendCode.hide()
@@ -151,11 +180,14 @@ class PhoneLoginActivity : AppCompatActivity() {
 
             override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
                 super.onCodeSent(p0, p1)
+                Toast.makeText(
+                    baseContext, "Code on send to sms.",
+                    Toast.LENGTH_SHORT
+                ).show()
                 forceResend = p1
                 verificationId = p0
                 updateUI(true)
                 dialog.dismiss()
-                Log.i("chauAPI", "onCodeSent")
             }
         }
     }
@@ -192,12 +224,11 @@ class PhoneLoginActivity : AppCompatActivity() {
 
                     } else {
                         Log.i("chauAPI", task.exception?.message.toString())
-                        Toast.makeText(
-                            baseContext, task.exception?.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        task.exception?.let {
+                            binding.textError.text = it.message.toString()
+                        }
                     }
-                    dialog.show()
+                    dialog.dismiss()
                 }
         }
     }

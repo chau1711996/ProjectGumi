@@ -13,7 +13,7 @@
             android:id="@+id/btnCart"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_margin="20dp"
             android:background="@drawable/bg_button_green"
             android:text="@string/go_to_checkout"
@@ -42,6 +42,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:src="@drawable/ic_refresh"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/button_bg"
+            android:onClick="@{()->model.loadDataCart()}"
+            app:layout_constraintBottom_toBottomOf="@id/textCartName"
+            android:layout_marginEnd="20dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
 
         <View
             app:layout_constraintTop_toTopOf="@id/adapterMyCart"

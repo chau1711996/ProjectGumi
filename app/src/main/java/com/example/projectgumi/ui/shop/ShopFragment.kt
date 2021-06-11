@@ -1,22 +1,18 @@
 package com.example.projectgumi.ui.shop
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager2.widget.ViewPager2
+import com.example.projectgumi.MainActivity
 import com.example.projectgumi.R
 import com.example.projectgumi.adapter.CateloryAdapter
 import com.example.projectgumi.adapter.ProductItemAdapter
 import com.example.projectgumi.adapter.SlideAdapter
+import com.example.projectgumi.base.BaseFragment
 import com.example.projectgumi.data.model.ImageSlideModel
 import com.example.projectgumi.databinding.FragmentShopBinding
-import com.example.projectgumi.ui.order.OrdersFragment
+import com.example.projectgumi.ui.explore.ExploreDetailFragment
 import com.example.projectgumi.ui.productDetail.DetailFragment
 import com.example.projectgumi.ui.search.SearchProductFragment
 import com.example.projectgumi.utils.Utils
@@ -27,30 +23,19 @@ import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ShopFragment : Fragment() {
+class ShopFragment : BaseFragment<FragmentShopBinding>() {
+
+    override val layoutResource: Int
+        get() = R.layout.fragment_shop
 
     private lateinit var slideAdapter: SlideAdapter
     private lateinit var exclusiveAdapter: ProductItemAdapter
     private lateinit var bestSellingAdapter: ProductItemAdapter
     private lateinit var cateloryAdapter: CateloryAdapter
     private lateinit var productAdapter: ProductItemAdapter
-    private lateinit var binding: FragmentShopBinding
     private val shopViewModel by viewModel<ShopViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shop, container, false)
-        binding.lifecycleOwner = this
-
-        // Inflate the layout for this fragment
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun viewCreated() {
         binding.apply {
             model = shopViewModel
             layoutBestSelling.textSeeAll.setOnClickListener {
@@ -59,15 +44,17 @@ class ShopFragment : Fragment() {
             layoutExclusive.textSeeAll.setOnClickListener {
                 Utils.showFragmentById(activity, ShopSeeAllFragment.newInstance(ShopSeeAllFragment.TYPE_EXCLUSIVE))
             }
+            layoutCatelory.textSeeAll.setOnClickListener {
+                (context as MainActivity).goToFragment(MainActivity.Explore)
+            }
             layoutHead.layoutSearch.layoutSearchStore.setOnClickListener {
                 Utils.showDialogFragment(activity, SearchProductFragment(), SearchProductFragment.TAG)
-            }
-            layoutHead.imageRight.setOnClickListener {
-                Utils.showDialogFragment(activity, OrdersFragment(), OrdersFragment.TAG)
             }
         }
 
         init()
+
+        checkLogin()
 
         shopViewModel.loadImageSlideShow()
         shopViewModel.loadExclusive()
@@ -75,8 +62,16 @@ class ShopFragment : Fragment() {
         shopViewModel.loadCatelory()
     }
 
+    private fun checkLogin(){
+        currentUser?.let {
+            shopViewModel.getUserById(it.uid)
+        }
+    }
+
     private fun init() {
-        slideAdapter = SlideAdapter { clickSlideShow(it) }
+        slideAdapter = SlideAdapter { id, name ->
+            clickSlideShow(id, name)
+        }
 
         exclusiveAdapter = ProductItemAdapter{ clickExclusive(it) }
 
@@ -87,7 +82,6 @@ class ShopFragment : Fragment() {
         productAdapter = ProductItemAdapter{ clickProduct(it) }
 
         initViewPager()
-
 
         initAdapter()
 
@@ -118,6 +112,13 @@ class ShopFragment : Fragment() {
                 productAdapter.submitList(it)
             }
         }
+        shopViewModel.dataUser.observe(requireActivity()){
+            it?.let {
+                binding.apply {
+                    layoutHead.textTitle.text = it.street
+                }
+            }
+        }
     }
 
     private fun initAdapter() {
@@ -141,7 +142,7 @@ class ShopFragment : Fragment() {
         }
     }
 
-    //catelory
+
     private fun clickProduct(productId: Int) {
         Utils.showFragmentById(activity, DetailFragment.newInstance(productId))
     }
@@ -150,8 +151,11 @@ class ShopFragment : Fragment() {
         Utils.showFragmentById(activity, DetailFragment.newInstance(productId))
     }
 
-    private fun clickSlideShow(productId: Int) {
-
+    private fun clickSlideShow(cateloryId: Int, name: String) {
+        Utils.showFragmentById(
+            activity,
+            ExploreDetailFragment.newInstance(cateloryId, name)
+        )
     }
 
     private fun clickBestSelling(productId: Int) {
@@ -177,11 +181,11 @@ class ShopFragment : Fragment() {
 
             }
         }
-        @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
         fun start() {
             job.start()
         }
-        @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+        @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         fun stop() {
             job.cancel()
         }
@@ -191,5 +195,7 @@ class ShopFragment : Fragment() {
         val slideShow = SlideShowAuto(list, binding.viewPager)
         lifecycle.addObserver(slideShow)
     }
+
+
 
 }

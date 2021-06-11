@@ -1,7 +1,6 @@
 package com.example.projectgumi.ui.order
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,25 +9,9 @@ import com.example.gumiproject8.utils.hide
 import com.example.projectgumi.MainActivity
 import com.example.projectgumi.R
 import com.example.projectgumi.databinding.FragmentOrderAcceptedBinding
-import com.example.projectgumi.ui.shop.ShopFragment
 import com.example.projectgumi.utils.Utils
-import com.google.android.gms.common.util.DataUtils
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class OrderAcceptedFragment : DialogFragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     private lateinit var binding: FragmentOrderAcceptedBinding
 
@@ -56,6 +39,10 @@ class OrderAcceptedFragment : DialogFragment() {
                 }
                 dismiss()
             }
+            btnTrackOrder.setOnClickListener {
+                Utils.showDialogFragment(activity, OrdersFragment(), OrdersFragment.TAG)
+                dismiss()
+            }
         }
     }
 
@@ -69,13 +56,5 @@ class OrderAcceptedFragment : DialogFragment() {
 
     companion object {
         const val TAG = "OrderAcceptedFragment"
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            OrderAcceptedFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }

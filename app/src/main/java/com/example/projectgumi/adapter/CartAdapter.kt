@@ -1,26 +1,29 @@
 package com.example.projectgumi.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.example.projectgumi.R
 import com.example.projectgumi.data.model.CartModel
-import com.example.projectgumi.data.model.Product
 import com.example.projectgumi.databinding.ItemCartBinding
-import com.example.projectgumi.databinding.ItemProductBinding
+import com.example.projectgumi.ui.cart.CartFragment
 
-class CartAdapter(val action:(Int)->Unit) :
+class CartAdapter(val action:(Int,String,Int)->Unit) :
     ListAdapter<CartModel, CartAdapter.CartHolder>(CartCallback()) {
     inner class CartHolder(val binding: ItemCartBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(cart: CartModel) {
+        fun bind(cart: CartModel, position: Int) {
             binding.apply {
                 cartModel = cart
                 imageDelete.setOnClickListener {
-                    action(cart.cartId)
+                    action(cart.cartId, CartFragment.DELETE, position)
+                }
+                imageGiam.setOnClickListener {
+                    action(cart.cartId, CartFragment.REDUCTION, position)
+                }
+                imageTang.setOnClickListener {
+                    action(cart.cartId, CartFragment.INCREASE, position)
                 }
             }
         }
@@ -32,7 +35,7 @@ class CartAdapter(val action:(Int)->Unit) :
     }
 
     override fun onBindViewHolder(holder: CartHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), position)
     }
 
     class CartCallback : DiffUtil.ItemCallback<CartModel>() {

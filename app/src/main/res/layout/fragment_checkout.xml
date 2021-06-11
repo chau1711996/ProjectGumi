@@ -177,6 +177,7 @@
                 android:id="@+id/textCheckout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layoutTotalCost"
+                app:layout_constraintBottom_toTopOf="@id/btnCheckout"
                 android:layout_margin="20dp"
                 style="@style/TextAppearance.AppCompat.Caption"
                 android:text="@string/checkout"
@@ -186,9 +187,8 @@
             <Button
                 android:id="@+id/btnCheckout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_margin="20dp"
-                android:layout_marginTop="10dp"
                 android:background="@drawable/bg_button_green"
                 android:text="@string/place_order"
                 android:textColor="@color/white"

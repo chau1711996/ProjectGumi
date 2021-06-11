@@ -7,10 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.projectgumi.R
-import com.example.projectgumi.data.model.ImageSlideModel
 import com.example.projectgumi.data.model.ProductImages
 import com.example.projectgumi.databinding.AdapterImagesBinding
-import com.example.projectgumi.databinding.AdapterSlideBinding
 
 class ImagesProductAdapter: ListAdapter<ProductImages, ImagesProductAdapter.ProductImagesViewHolder>(
     SlideCallback()

@@ -40,6 +40,12 @@ class ProfileActivity : AppCompatActivity() {
             spinnerDistrict.adapter = districtAdapter
             spinnerWards.adapter = wardstAdapter
             loginViewModel = model
+            layoutHead.imageLeft.setOnClickListener {
+                val intent = Intent(this@ProfileActivity, MainActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                finish()
+            }
         }
 
         model.status.observe(this){
@@ -48,6 +54,8 @@ class ProfileActivity : AppCompatActivity() {
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
+                }else{
+                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                 }
             }
         }

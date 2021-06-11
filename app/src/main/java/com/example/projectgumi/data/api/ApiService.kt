@@ -11,6 +11,11 @@ interface ApiService {
         @Field("userId") userId: String
     ): Response<StatusRespone>
 
+    @GET("user/getUserById.php")
+    suspend fun getUserById(
+        @Query("userId") userId: String
+    ): Response<UserRespone>
+
     @POST("user/user.php")
     @FormUrlEncoded
     suspend fun updatePhoneUser(
@@ -19,11 +24,13 @@ interface ApiService {
         @Field("userName") userName: String,
         @Field("phoneNumber") phoneNumber: String
     ): Response<StatusRespone>
+
     @POST("user/user.php")
     @FormUrlEncoded
     suspend fun updateAddress(
         @Field("key") key: String,
         @Field("userId") userId: String,
+        @Field("userName") userName: String,
         @Field("city") city: String,
         @Field("district") district: String,
         @Field("wards") wards: String,
@@ -64,8 +71,34 @@ interface ApiService {
         @Query("payment") payment: String,
         @Query("amount") amount: String,
         @Query("money") money: String,
+        @Query("userId") userId: String,
     ): Response<StatusRespone>
 
-    @GET("product/getOrders.php")
-    suspend fun getOrders(): Response<OrdersRespone>
+    @GET("product/getOrdersByIdUser.php")
+    suspend fun getOrdersByIdUser(@Query("userId") userId: String): Response<OrdersRespone>
+
+    @GET("product/getCateloryByName.php")
+    suspend fun getCateloryByName(@Query("name") name: String): Response<CateloryRespone>
+
+    @GET("product/insertFavorite.php")
+    suspend fun insertFavorite(
+        @Query("id") id: Int,
+        @Query("productId") productId: Int,
+        @Query("name") name: String,
+        @Query("unit") unit: String,
+        @Query("price") price: String,
+        @Query("url") url: String,
+        @Query("userId") userId: String,
+    ): Response<StatusRespone>
+
+    @GET("product/checkFavorite.php")
+    suspend fun checkFavorite(
+        @Query("productId") productId: Int,
+        @Query("userId") userId: String,
+    ): Response<StatusRespone>
+
+    @GET("product/getFavoriteByUserId.php")
+    suspend fun getFavoriteByUserId(
+        @Query("userId") userId: String
+    ): Response<FavoriteRespone>
 }

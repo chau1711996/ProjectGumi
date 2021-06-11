@@ -12,6 +12,7 @@ class ExploreViewModel(private val res: MyReposity) : ViewModel() {
 
     val dataCategory = MutableLiveData<MutableList<Catelory>?>()
     val dataProduct = MutableLiveData<MutableList<Product>?>()
+    val text = MutableLiveData<String?>()
 
     fun loadCatelory() {
         viewModelScope.launch {
@@ -22,6 +23,13 @@ class ExploreViewModel(private val res: MyReposity) : ViewModel() {
     fun loadProductByCateloryId(cateloryId: Int){
         viewModelScope.launch {
             dataProduct.postValue(res.getProductByCateloryId(cateloryId).body()?.data)
+        }
+    }
+
+    fun getCateloryByName(name: String){
+        viewModelScope.launch {
+            val result = res.getCateloryByName(name).body()?.data
+            dataCategory.postValue(result)
         }
     }
 

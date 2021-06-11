@@ -14,4 +14,4 @@ data class UserModel(
     val district: String,
     val wards: String,
     val street: String
-) : Serializable
+)

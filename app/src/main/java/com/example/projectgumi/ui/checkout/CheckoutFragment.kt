@@ -14,10 +14,13 @@ import com.example.projectgumi.ui.order.OrderFailedFragment
 import com.example.projectgumi.ui.order.OrdersFragment
 import com.example.projectgumi.utils.Utils
 import com.example.projectgumi.viewmodel.CheckoutViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val MONEY = "money"
 private const val COUNT = "count"
+
 class CheckoutFragment : DialogFragment() {
     private var money: String? = null
     private var count: String? = null
@@ -56,28 +59,54 @@ class CheckoutFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var cost = ""
         binding.apply {
             money?.let {
-                textTotalCoast.text = it
+                cost = it
+                if (cost.length > 6) {
+                    cost = cost.substring(0, 6)
+                }
+                textTotalCoast.text = cost
             }
             imageClose.setOnClickListener {
                 dismiss()
             }
             btnCheckout.setOnClickListener {
-                viewModel.insertOrders(OrdersModel(0, "Shipper", "Discard", count!!, money!!))
-
+                count?.let { count ->
+                    Firebase.auth.currentUser?.let { user ->
+                        viewModel.insertOrders(
+                            OrdersModel(
+                                0,
+                                "Shipper",
+                                "Discard",
+                                count,
+                                cost,
+                                user.uid
+                            )
+                        )
+                    }
+                }
             }
         }
 
-        viewModel.status.observe(requireActivity()){
+        viewModel.status.observe(requireActivity())
+        {
             it?.let {
-                if(it.status.equals("success")){
+                if (it.status.equals("success")) {
                     dismiss()
-                    Utils.showDialogFragment(activity, OrderAcceptedFragment(), OrderAcceptedFragment.TAG)
+                    Utils.showDialogFragment(
+                        activity,
+                        OrderAcceptedFragment(),
+                        OrderAcceptedFragment.TAG
+                    )
                     viewModel.deleteAllCart()
-                }else{
+                } else {
                     dismiss()
-                    Utils.showDialogFragment(activity, OrderFailedFragment(), OrderAcceptedFragment.TAG)
+                    Utils.showDialogFragment(
+                        activity,
+                        OrderFailedFragment(),
+                        OrderAcceptedFragment.TAG
+                    )
                 }
             }
         }
