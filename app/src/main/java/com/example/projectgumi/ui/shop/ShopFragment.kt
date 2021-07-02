@@ -1,5 +1,6 @@
 package com.example.projectgumi.ui.shop
 
+import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -20,8 +21,6 @@ import com.example.projectgumi.utils.Utils.TYPE_SHOP
 import com.example.projectgumi.viewmodel.ShopViewModel
 import com.google.android.ads.nativetemplates.NativeTemplateStyle
 import com.google.android.gms.ads.*
-import com.google.android.gms.ads.nativead.NativeAd
-import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,22 +37,31 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
     private lateinit var cateloryAdapter: CateloryAdapter
     private lateinit var productAdapter: ProductItemAdapter
     private val shopViewModel by viewModel<ShopViewModel>()
-    lateinit var adLoader: AdLoader
 
     override fun viewCreated() {
         binding.apply {
             model = shopViewModel
             layoutBestSelling.textSeeAll.setOnClickListener {
-                Utils.showFragmentById(activity, ShopSeeAllFragment.newInstance(ShopSeeAllFragment.TYPE_BESTSELLING))
+                Utils.showFragmentById(
+                    activity,
+                    ShopSeeAllFragment.newInstance(ShopSeeAllFragment.TYPE_BESTSELLING)
+                )
             }
             layoutExclusive.textSeeAll.setOnClickListener {
-                Utils.showFragmentById(activity, ShopSeeAllFragment.newInstance(ShopSeeAllFragment.TYPE_EXCLUSIVE))
+                Utils.showFragmentById(
+                    activity,
+                    ShopSeeAllFragment.newInstance(ShopSeeAllFragment.TYPE_EXCLUSIVE)
+                )
             }
             layoutCatelory.textSeeAll.setOnClickListener {
                 (context as MainActivity).goToFragment(MainActivity.Explore)
             }
             layoutHead.layoutSearch.layoutSearchStore.setOnClickListener {
-                Utils.showDialogFragment(activity, SearchProductFragment(), SearchProductFragment.TAG)
+                Utils.showDialogFragment(
+                    activity,
+                    SearchProductFragment(),
+                    SearchProductFragment.TAG
+                )
             }
         }
 
@@ -67,7 +75,7 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
         shopViewModel.loadCatelory()
     }
 
-    private fun checkLogin(){
+    private fun checkLogin() {
         currentUser?.let {
             shopViewModel.getUserById(it.uid)
         }
@@ -78,17 +86,19 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
             clickSlideShow(id, name)
         }
 
-        exclusiveAdapter = ProductItemAdapter{ clickExclusive(it) }
+        exclusiveAdapter = ProductItemAdapter { clickExclusive(it) }
 
-        bestSellingAdapter = ProductItemAdapter{ clickBestSelling(it) }
+        bestSellingAdapter = ProductItemAdapter { clickBestSelling(it) }
 
         cateloryAdapter = CateloryAdapter(TYPE_SHOP) { clickCatelory(it.cateloryId) }
 
-        productAdapter = ProductItemAdapter{ clickProduct(it) }
+        productAdapter = ProductItemAdapter { clickProduct(it) }
 
         initViewPager()
 
         initAdapter()
+
+        initAdsNative()
 
         shopViewModel.imageSlideShow.observe(requireActivity()) {
             it?.let {
@@ -117,7 +127,7 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
                 productAdapter.submitList(it)
             }
         }
-        shopViewModel.dataUser.observe(requireActivity()){
+        shopViewModel.dataUser.observe(requireActivity()) {
             it?.let {
                 binding.apply {
                     layoutHead.textTitle.text = it.street
@@ -126,34 +136,37 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
         }
     }
 
-    private fun initAdsNative(){
+    private fun initAdsNative() {
 
-        MobileAds.initialize(requireContext()){}
+        MobileAds.initialize(requireContext()) {}
 
         val adLoader = AdLoader.Builder(requireContext(), "ca-app-pub-3940256099942544/2247696110")
             .forNativeAd {
                 // Show the ad.
-                if (adLoader.isLoading) {
-                    // The AdLoader is still loading ads.
-                    // Expect more adLoaded or onAdFailedToLoad callbacks.
-                } else {
-                    // The AdLoader has finished loading ads.
-                    val style = NativeTemplateStyle.Builder()
-                        .build()
-                    binding.myTemplate.apply {
-                        setNativeAd(it)
-                        setStyles(style)
-                    }
+                val style = NativeTemplateStyle.Builder()
+                    .build()
+                binding.myTemplate.apply {
+                    setNativeAd(it)
+                    setStyles(style)
+
                 }
                 if (isDestroyed) {
                     it.destroy()
                     return@forNativeAd
                 }
-            }.build()
+            }
+            .withAdListener(object : AdListener(){
+                override fun onAdClicked() {
+                    super.onAdClicked()
+                    Toast.makeText(requireContext(), "Clicked Native ads", Toast.LENGTH_SHORT).show()
+                }
+            })
+            .build()
 
         adLoader.loadAd(AdRequest.Builder().build())
 
     }
+
     private var isDestroyed = false
     override fun onDestroy() {
         super.onDestroy()
@@ -205,7 +218,8 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
         shopViewModel.loadProductByCateloryId(cateloryId)
     }
 
-    class SlideShowAuto(list: MutableList<ImageSlideModel>, view: ViewPager2) : LifecycleObserver {
+    class SlideShowAuto(list: MutableList<ImageSlideModel>, view: ViewPager2) :
+        LifecycleObserver {
         var index = 0
 
         val job = GlobalScope.launch(Dispatchers.Main) {
@@ -220,10 +234,12 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
 
             }
         }
+
         @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
         fun start() {
             job.start()
         }
+
         @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         fun stop() {
             job.cancel()
@@ -234,7 +250,6 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
         val slideShow = SlideShowAuto(list, binding.viewPager)
         lifecycle.addObserver(slideShow)
     }
-
 
 
 }
