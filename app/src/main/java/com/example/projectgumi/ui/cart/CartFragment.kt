@@ -27,6 +27,11 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
     private val loginViewModel by viewModel<LoginViewModel>()
     private var listCart = mutableListOf<CartModel>()
 
+    override fun onResume() {
+        super.onResume()
+        loadData()
+    }
+
     override fun viewCreated() {
         var countList = 0
 
