@@ -5,7 +5,7 @@
     <data>
         <variable
             name="product"
-            type="com.example.projectgumi.data.model.FavoriteModel" />
+            type="com.gumi.projectgumi.data.model.FavoriteModel" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

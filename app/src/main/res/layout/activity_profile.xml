@@ -118,6 +118,6 @@
 
         <variable
             name="loginViewModel"
-            type="com.example.projectgumi.viewmodel.LoginViewModel" />
+            type="com.gumi.projectgumi.viewmodel.LoginViewModel" />
     </data>
 </layout>

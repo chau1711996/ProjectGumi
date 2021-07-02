@@ -5,7 +5,7 @@
     <data>
         <variable
             name="accountModel"
-            type="com.example.projectgumi.data.model.AccountLayoutModel" />
+            type="com.gumi.projectgumi.data.model.AccountLayoutModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -5,10 +5,10 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.projectgumi.viewmodel.ExploreViewModel" />
+            type="com.gumi.projectgumi.viewmodel.ExploreViewModel" />
         <variable
             name="adapterExplore"
-            type="com.example.projectgumi.adapter.CateloryAdapter" />
+            type="com.gumi.projectgumi.adapter.CateloryAdapter" />
     </data>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

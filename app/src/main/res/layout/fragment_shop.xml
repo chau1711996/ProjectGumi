@@ -89,22 +89,22 @@
 
         <variable
             name="model"
-            type="com.example.projectgumi.viewmodel.ShopViewModel" />
+            type="com.gumi.projectgumi.viewmodel.ShopViewModel" />
 
         <variable
             name="adapterExclusive"
-            type="com.example.projectgumi.adapter.ProductItemAdapter" />
+            type="com.gumi.projectgumi.adapter.ProductItemAdapter" />
 
         <variable
             name="adapterBestSelling"
-            type="com.example.projectgumi.adapter.ProductItemAdapter" />
+            type="com.gumi.projectgumi.adapter.ProductItemAdapter" />
 
         <variable
             name="adapterCatelory"
-            type="com.example.projectgumi.adapter.CateloryAdapter" />
+            type="com.gumi.projectgumi.adapter.CateloryAdapter" />
 
         <variable
             name="adapterProduct"
-            type="com.example.projectgumi.adapter.ProductItemAdapter" />
+            type="com.gumi.projectgumi.adapter.ProductItemAdapter" />
     </data>
 </layout>

@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/layoutTab"
+            app:layout_constraintBottom_toTopOf="@+id/adView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <androidx.cardview.widget.CardView
@@ -37,7 +37,19 @@
                 app:tabSelectedTextColor="@color/button_bg"
                 app:tabTextAppearance="@style/MyCustomTabText"/>
         </androidx.cardview.widget.CardView>
-
+        <com.google.android.gms.ads.AdView
+            ads:layout_constraintBottom_toTopOf="@id/layoutTab"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+        </com.google.android.gms.ads.AdView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

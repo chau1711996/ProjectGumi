@@ -5,7 +5,7 @@
     <data>
         <variable
             name="model"
-            type="com.example.projectgumi.viewmodel.OrdersViewModel" />
+            type="com.gumi.projectgumi.viewmodel.OrdersViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@color/white"

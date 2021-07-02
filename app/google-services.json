@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:374114930310:android:6b6d8608c1d48419ae8b07",
+        "mobilesdk_app_id": "1:374114930310:android:9abb8ff8a2db2fd8ae8b07",
         "android_client_info": {
-          "package_name": "com.example.projectgumi"
+          "package_name": "com.gumi.projectgumi"
         }
       },
       "oauth_client": [
         {
-          "client_id": "374114930310-043vj4o2gj74s4b9utkdladpu6tt4j5d.apps.googleusercontent.com",
+          "client_id": "374114930310-kfcrvftomr68s51nc9h60l6oplern1be.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.projectgumi",
+            "package_name": "com.gumi.projectgumi",
             "certificate_hash": "cc17955568ab366085fd3a9c67616fbf4bab003a"
           }
         },

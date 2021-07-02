@@ -5,7 +5,7 @@
     <data>
         <variable
             name="catelory"
-            type="com.example.projectgumi.data.model.Catelory" />
+            type="com.gumi.projectgumi.data.model.Catelory" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="adapterProduct"
-            type="com.example.projectgumi.adapter.ProductItemAdapter" />
+            type="com.gumi.projectgumi.adapter.ProductItemAdapter" />
     </data>
     <androidx.core.widget.NestedScrollView
         android:background="@color/white"

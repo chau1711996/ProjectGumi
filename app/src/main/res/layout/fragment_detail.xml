@@ -266,6 +266,6 @@
     <data>
         <variable
             name="model"
-            type="com.example.projectgumi.viewmodel.DetailProductViewModel" />
+            type="com.gumi.projectgumi.viewmodel.DetailProductViewModel" />
     </data>
 </layout>

@@ -76,6 +76,6 @@
     <data>
         <variable
             name="adapterAccount"
-            type="com.example.projectgumi.adapter.AccountAdapter" />
+            type="com.gumi.projectgumi.adapter.AccountAdapter" />
     </data>
 </layout>

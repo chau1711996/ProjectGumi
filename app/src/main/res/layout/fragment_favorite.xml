@@ -67,7 +67,7 @@
     <data>
         <variable
             name="adapterProduct"
-            type="com.example.projectgumi.adapter.FavoriteAdapter" />
+            type="com.gumi.projectgumi.adapter.FavoriteAdapter" />
     </data>
 
 </layout>

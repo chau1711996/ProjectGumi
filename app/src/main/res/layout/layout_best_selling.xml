@@ -5,7 +5,7 @@
     <data>
         <variable
             name="adapterBestSelling"
-            type="com.example.projectgumi.adapter.ProductItemAdapter" />
+            type="com.gumi.projectgumi.adapter.ProductItemAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="product"
-            type="com.example.projectgumi.data.model.Product" />
+            type="com.gumi.projectgumi.data.model.Product" />
     </data>
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/layoutItemProduct"

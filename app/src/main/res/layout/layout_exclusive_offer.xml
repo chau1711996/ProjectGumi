@@ -5,7 +5,7 @@
     <data>
         <variable
             name="adapterExclusive"
-            type="com.example.projectgumi.adapter.ProductItemAdapter" />
+            type="com.gumi.projectgumi.adapter.ProductItemAdapter" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

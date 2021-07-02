@@ -5,7 +5,7 @@
     <data>
         <variable
             name="cartModel"
-            type="com.example.projectgumi.data.model.CartModel" />
+            type="com.gumi.projectgumi.data.model.CartModel" />
     </data>
     <androidx.cardview.widget.CardView
 

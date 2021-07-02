@@ -56,9 +56,9 @@
     <data>
         <variable
             name="model"
-            type="com.example.projectgumi.viewmodel.SearchStoreViewModel" />
+            type="com.gumi.projectgumi.viewmodel.SearchStoreViewModel" />
         <variable
             name="adapterProduct"
-            type="com.example.projectgumi.adapter.ProductItemAdapter" />
+            type="com.gumi.projectgumi.adapter.ProductItemAdapter" />
     </data>
 </layout>

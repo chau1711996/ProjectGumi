@@ -5,10 +5,10 @@
     <data>
         <variable
             name="apdaterCatelory"
-            type="com.example.projectgumi.adapter.CateloryAdapter" />
+            type="com.gumi.projectgumi.adapter.CateloryAdapter" />
         <variable
             name="apdaterProduct"
-            type="com.example.projectgumi.adapter.ProductItemAdapter" />
+            type="com.gumi.projectgumi.adapter.ProductItemAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
