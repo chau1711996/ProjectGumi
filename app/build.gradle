@@ -111,4 +111,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     //google ads mod
     implementation 'com.google.android.gms:play-services-ads:20.2.0'
+
+    //native ads templates
+    implementation project(':nativetemplates')
 }

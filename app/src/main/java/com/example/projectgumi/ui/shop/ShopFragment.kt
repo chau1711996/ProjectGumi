@@ -18,6 +18,10 @@ import com.example.projectgumi.ui.search.SearchProductFragment
 import com.example.projectgumi.utils.Utils
 import com.example.projectgumi.utils.Utils.TYPE_SHOP
 import com.example.projectgumi.viewmodel.ShopViewModel
+import com.google.android.ads.nativetemplates.NativeTemplateStyle
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,6 +38,7 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
     private lateinit var cateloryAdapter: CateloryAdapter
     private lateinit var productAdapter: ProductItemAdapter
     private val shopViewModel by viewModel<ShopViewModel>()
+    lateinit var adLoader: AdLoader
 
     override fun viewCreated() {
         binding.apply {
@@ -119,6 +124,40 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
                 }
             }
         }
+    }
+
+    private fun initAdsNative(){
+
+        MobileAds.initialize(requireContext()){}
+
+        val adLoader = AdLoader.Builder(requireContext(), "ca-app-pub-3940256099942544/2247696110")
+            .forNativeAd {
+                // Show the ad.
+                if (adLoader.isLoading) {
+                    // The AdLoader is still loading ads.
+                    // Expect more adLoaded or onAdFailedToLoad callbacks.
+                } else {
+                    // The AdLoader has finished loading ads.
+                    val style = NativeTemplateStyle.Builder()
+                        .build()
+                    binding.myTemplate.apply {
+                        setNativeAd(it)
+                        setStyles(style)
+                    }
+                }
+                if (isDestroyed) {
+                    it.destroy()
+                    return@forNativeAd
+                }
+            }.build()
+
+        adLoader.loadAd(AdRequest.Builder().build())
+
+    }
+    private var isDestroyed = false
+    override fun onDestroy() {
+        super.onDestroy()
+        isDestroyed = true
     }
 
     private fun initAdapter() {

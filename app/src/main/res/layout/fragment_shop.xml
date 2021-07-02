@@ -5,24 +5,25 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-    <androidx.core.widget.NestedScrollView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@color/white"
+    <androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".ui.shop.ShopFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/layoutView"
-                android:layout_margin="20dp"
                 android:layout_width="match_parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layoutHead"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
                 app:cardCornerRadius="15dp"
-                android:layout_height="wrap_content">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/my_template">
+
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager"
                     android:layout_width="match_parent"
@@ -33,10 +34,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
+                    app:tabBackground="@drawable/tab_selection"
                     app:tabGravity="center"
-                    app:tabIndicatorColor="@color/viewpager"
-                    app:tabBackground="@drawable/tab_selection" />
+                    app:tabIndicatorColor="@color/viewpager" />
             </androidx.cardview.widget.CardView>
+
+            <com.google.android.ads.nativetemplates.TemplateView
+                app:layout_constraintTop_toBottomOf="@id/layoutHead"
+                android:id="@+id/my_template"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:gnt_template_type="@layout/gnt_small_template_view" />
 
             <include
                 android:id="@+id/layoutHead"
@@ -93,6 +102,7 @@
         <variable
             name="adapterCatelory"
             type="com.example.projectgumi.adapter.CateloryAdapter" />
+
         <variable
             name="adapterProduct"
             type="com.example.projectgumi.adapter.ProductItemAdapter" />
