@@ -1,21 +1,14 @@
 package com.example.projectgumi.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.example.projectgumi.MainActivity
 import com.example.projectgumi.R
 import com.example.projectgumi.data.model.Product
-import com.example.projectgumi.databinding.ItemCateloryBinding
-import com.example.projectgumi.databinding.ItemExploreBinding
-import com.example.projectgumi.databinding.ItemFavoriteBinding
 import com.example.projectgumi.databinding.ItemProductBinding
-import com.example.projectgumi.utils.Utils
 
 class ProductItemAdapter(private val action: (Int) -> Unit) :
     ListAdapter<Product, ProductItemAdapter.ProductItemHolder>(ProductItemHolderCallback()) {
