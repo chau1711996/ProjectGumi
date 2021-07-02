@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import com.gumi.gumiproject8.utils.hideKeyboard
 import com.gumi.projectgumi.R
 import com.gumi.projectgumi.databinding.ActivityPhoneLoginBinding
@@ -23,6 +24,8 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.gumi.gumiproject8.utils.hide
+import com.gumi.gumiproject8.utils.show
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 

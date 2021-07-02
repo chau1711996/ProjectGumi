@@ -1,6 +1,7 @@
 package com.gumi.projectgumi.ui.account
 
 import android.content.Intent
+import coil.load
 import com.gumi.projectgumi.MainActivity
 import com.gumi.projectgumi.R
 import com.gumi.projectgumi.adapter.AccountAdapter
@@ -16,6 +17,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.gumi.gumiproject8.utils.hide
+import com.gumi.gumiproject8.utils.show
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AccountFragment : BaseFragment<FragmentAccountBinding>() {

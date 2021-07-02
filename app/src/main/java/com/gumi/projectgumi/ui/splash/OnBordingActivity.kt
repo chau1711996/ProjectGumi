@@ -10,6 +10,8 @@ import com.gumi.projectgumi.databinding.ActivityOnBordingBinding
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.gumi.gumiproject8.utils.hide
+import com.gumi.gumiproject8.utils.show
 
 
 class OnBordingActivity : AppCompatActivity() {

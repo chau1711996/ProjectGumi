@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.gumi.gumiproject8.utils.hide
 import com.gumi.projectgumi.R
 import com.gumi.projectgumi.adapter.ProductItemAdapter
 import com.gumi.projectgumi.databinding.FragmentShopSeeAllBinding

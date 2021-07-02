@@ -1,5 +1,6 @@
 package com.gumi.projectgumi.ui.explore
 
+import com.gumi.gumiproject8.utils.hide
 import com.gumi.projectgumi.R
 import com.gumi.projectgumi.adapter.CateloryAdapter
 import com.gumi.projectgumi.base.BaseFragment

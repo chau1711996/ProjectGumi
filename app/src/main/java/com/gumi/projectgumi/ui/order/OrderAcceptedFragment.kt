@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.gumi.gumiproject8.utils.hide
 import com.gumi.projectgumi.MainActivity
 import com.gumi.projectgumi.R
 import com.gumi.projectgumi.databinding.FragmentOrderAcceptedBinding

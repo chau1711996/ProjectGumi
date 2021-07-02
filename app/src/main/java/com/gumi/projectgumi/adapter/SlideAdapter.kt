@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.gumi.projectgumi.R
 import com.gumi.projectgumi.data.model.ImageSlideModel
 import com.gumi.projectgumi.databinding.AdapterSlideBinding

@@ -2,6 +2,7 @@ package com.gumi.projectgumi.ui.productDetail
 
 import android.os.Bundle
 import android.widget.Toast
+import coil.load
 import com.gumi.projectgumi.MainActivity
 import com.gumi.projectgumi.R
 import com.gumi.projectgumi.adapter.ImagesProductAdapter
@@ -11,6 +12,7 @@ import com.gumi.projectgumi.utils.Utils
 import com.gumi.projectgumi.viewmodel.DetailProductViewModel
 import com.gumi.projectgumi.viewmodel.LoginViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import com.gumi.gumiproject8.utils.setVisible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val PRODUCT_ID = "PRODUCT_ID"
