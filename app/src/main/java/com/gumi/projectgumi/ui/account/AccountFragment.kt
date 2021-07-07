@@ -1,6 +1,7 @@
 package com.gumi.projectgumi.ui.account
 
 import android.content.Intent
+import android.util.Log
 import coil.load
 import com.gumi.projectgumi.MainActivity
 import com.gumi.projectgumi.R
@@ -17,11 +18,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.gumi.gumiproject8.utils.goToActivity
 import com.gumi.gumiproject8.utils.hide
+import com.gumi.gumiproject8.utils.setVisible
 import com.gumi.gumiproject8.utils.show
+import com.gumi.projectgumi.utils.BillingSubcribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AccountFragment : BaseFragment<FragmentAccountBinding>() {
+class AccountFragment : BaseFragment<FragmentAccountBinding>(){
 
     override val layoutResource: Int
         get() = R.layout.fragment_account
@@ -35,6 +39,8 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>() {
 
         accountAdapter = AccountAdapter { clickAccount(it) }
         binding.adapterAccount = accountAdapter
+
+        initSubcribe()
 
         if (Firebase.auth.currentUser == null) {
             binding.apply {
@@ -80,6 +86,15 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>() {
 
     }
 
+    private fun initSubcribe() {
+        BillingSubcribe(TAG, requireContext()).isSubscribe.observe(this){
+            it?.let {
+                Log.d(TAG, "isSubscribe $it")
+                binding.imageVip.setVisible(it)
+            }
+        }
+    }
+
     private fun checkHasUser() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -120,6 +135,11 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>() {
             "Profile" -> (context as MainActivity).loginProfile()
             "Orders" -> Utils.showDialogFragment(activity, OrdersFragment(), OrdersFragment.TAG)
             "About" -> (context as MainActivity).loginOnBording()
+            "Subscribe" -> (context as MainActivity).goToActivity(SubsActivity::class.java)
         }
+    }
+
+    companion object{
+        const val TAG = "LogAccountFragment"
     }
 }

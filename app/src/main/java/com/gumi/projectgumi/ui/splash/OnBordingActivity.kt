@@ -10,8 +10,11 @@ import com.gumi.projectgumi.databinding.ActivityOnBordingBinding
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.gumi.gumiproject8.utils.goToActivity
 import com.gumi.gumiproject8.utils.hide
+import com.gumi.gumiproject8.utils.setVisible
 import com.gumi.gumiproject8.utils.show
+import com.gumi.projectgumi.utils.BillingSubcribe
 
 
 class OnBordingActivity : AppCompatActivity() {
@@ -20,28 +23,31 @@ class OnBordingActivity : AppCompatActivity() {
     private var mInterstitialAd: InterstitialAd? = null
     private final var TAG = "LogOnBordingActivity"
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOnBordingBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        init()
-        binding?.buttonStart?.setOnClickListener {
-            mInterstitialAd?.let {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-                finish()
-                it.show(this)
+        binding?.buttonStart?.hide()
+        BillingSubcribe.getInstance(TAG, this).isSubscribe.observe(this) {
+            it?.let {
+                if (!it) {
+                    init()
+                }else{
+                    binding?.buttonStart?.show()
+                }
             }
+        }
+
+        binding?.buttonStart?.setOnClickListener {
+            goToActivity(MainActivity::class.java)
+            mInterstitialAd?.show(this)
         }
     }
 
-    private fun init(){
-        binding?.buttonStart?.hide()
+    private fun init() {
         MobileAds.initialize(this) {}
         setupInterstitialAd()
-        mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+        mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdDismissedFullScreenContent() {
                 Log.d(TAG, "Ad was dismissed.")
             }

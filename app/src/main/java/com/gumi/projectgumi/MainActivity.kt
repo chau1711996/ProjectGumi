@@ -17,7 +17,11 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.tabs.TabLayoutMediator
+import com.gumi.gumiproject8.utils.setVisible
+import com.gumi.projectgumi.ui.account.SubsActivity
+import com.gumi.projectgumi.utils.BillingSubcribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
@@ -31,6 +35,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding?.root)
         init()
         initBannerAds()
+        initSubcribe()
+    }
+
+    private fun initSubcribe() {
+        BillingSubcribe.getInstance(TAG, this).isSubscribe.observe(this){
+            it?.let {
+                binding?.adView?.setVisible(!it)
+            }
+        }
     }
 
     private fun init() {
@@ -75,6 +88,13 @@ class MainActivity : AppCompatActivity() {
         finish()
     }
 
+    fun loginSubs() {
+        val intent = Intent(this, SubsActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        finish()
+    }
+
     fun loginPhoneNumber() {
         val intent = Intent(this, PhoneLoginActivity::class.java)
         startActivity(intent)
@@ -106,5 +126,7 @@ class MainActivity : AppCompatActivity() {
         const val Explore = 1
         const val Cart = 2
         const val Favorite = 3
+        const val TAG = "LogMainActivity"
     }
+
 }

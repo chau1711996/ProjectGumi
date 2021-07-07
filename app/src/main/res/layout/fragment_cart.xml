@@ -43,17 +43,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:src="@drawable/ic_refresh"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/button_bg"
-            android:onClick="@{()->model.loadDataCart()}"
-            app:layout_constraintBottom_toBottomOf="@id/textCartName"
-            android:layout_marginEnd="20dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"/>
-
         <View
             app:layout_constraintTop_toTopOf="@id/adapterMyCart"
             android:background="@color/search_store_bg"
@@ -73,6 +62,17 @@
             android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toTopOf="@id/btnCart"
             app:layout_constraintTop_toBottomOf="@id/textCartName" />
+        <ImageView
+            android:id="@+id/imageSale"
+            app:layout_constraintBottom_toTopOf="@id/btnCart"
+            app:layout_constraintTop_toTopOf="@id/btnCart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.97"
+            android:translationZ="5dp"
+            android:src="@drawable/ic_sale"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <data>

@@ -2,7 +2,9 @@ package com.gumi.projectgumi.ui.cart
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gumi.gumiproject8.utils.setVisible
 import com.gumi.projectgumi.MainActivity
 import com.gumi.projectgumi.R
 import com.gumi.projectgumi.adapter.CartAdapter
@@ -11,6 +13,7 @@ import com.gumi.projectgumi.data.model.CartModel
 import com.gumi.projectgumi.databinding.FragmentCartBinding
 import com.gumi.projectgumi.ui.checkout.CheckoutFragment
 import com.gumi.projectgumi.ui.login.LoginActivity
+import com.gumi.projectgumi.utils.BillingSubcribe
 import com.gumi.projectgumi.utils.Utils.showDialogFragment
 import com.gumi.projectgumi.viewmodel.CartViewModel
 import com.gumi.projectgumi.viewmodel.LoginViewModel
@@ -62,12 +65,20 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
 
         loadData()
 
-        cartViewModel.dataCart.observe(requireActivity()) {
-            it?.let {
-                countList = it.size
-                listCart = it
+        cartViewModel.dataCart.observe(requireActivity()) { it ->
+            it?.let { listCartModel ->
+                countList = listCartModel.size
+                listCart = listCartModel
+
                 cartAdapter.submitList(listCart)
-                cartViewModel.sumMoneyCart(listCart)
+                BillingSubcribe.getInstance(TAG, requireContext()).isSubscribe.observe(
+                    requireActivity()
+                ) { isActive ->
+                    isActive?.let {
+                        cartViewModel.sumMoneyCart(listCart, it)
+                        binding.imageSale.setVisible(it)
+                    }
+                }
             }
         }
 
@@ -127,16 +138,16 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
     private fun clickIncrease(cartId: Int, position: Int) {
         val amount = listCart[position].amount
         if (amount < 10)
-            cartViewModel.updateAmount(cartId, amount+1)
+            cartViewModel.updateAmount(cartId, amount + 1)
     }
 
     private fun clickReduction(cartId: Int, position: Int) {
         val amount = listCart[position].amount
         if (amount > 1)
-            cartViewModel.updateAmount(cartId, amount-  1)
+            cartViewModel.updateAmount(cartId, amount - 1)
     }
 
-    fun loadData() {
+    private fun loadData() {
         cartViewModel.loadDataCart()
     }
 
@@ -144,6 +155,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
         const val DELETE = "delete"
         const val INCREASE = "increase"
         const val REDUCTION = "reduction"
+        const val TAG = "LogCartFragment"
     }
 
 }

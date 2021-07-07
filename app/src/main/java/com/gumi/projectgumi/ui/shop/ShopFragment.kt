@@ -22,6 +22,8 @@ import com.gumi.projectgumi.viewmodel.ShopViewModel
 import com.google.android.ads.nativetemplates.NativeTemplateStyle
 import com.google.android.gms.ads.*
 import com.google.android.material.tabs.TabLayoutMediator
+import com.gumi.gumiproject8.utils.setVisible
+import com.gumi.projectgumi.utils.BillingSubcribe
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -69,15 +71,24 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
 
         checkLogin()
 
+        initSubcribe()
+
         try {
             shopViewModel.loadImageSlideShow()
             shopViewModel.loadExclusive()
             shopViewModel.loadBestSelling()
             shopViewModel.loadCatelory()
-        }catch (e: Exception){
+        } catch (e: Exception) {
 
         }
+    }
 
+    private fun initSubcribe() {
+        BillingSubcribe.getInstance(TAG, requireContext()).isSubscribe.observe(this) {
+            it?.let {
+                binding.myTemplate.setVisible(!it)
+            }
+        }
     }
 
     private fun checkLogin() {
@@ -160,10 +171,11 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
                     return@forNativeAd
                 }
             }
-            .withAdListener(object : AdListener(){
+            .withAdListener(object : AdListener() {
                 override fun onAdClicked() {
                     super.onAdClicked()
-                    Toast.makeText(requireContext(), "Clicked Native ads", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Clicked Native ads", Toast.LENGTH_SHORT)
+                        .show()
                 }
             })
             .build()
@@ -256,5 +268,7 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
         lifecycle.addObserver(slideShow)
     }
 
-
+    companion object {
+        const val TAG = "LogShopFragment"
+    }
 }

@@ -21,6 +21,11 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>() {
     override val layoutResource: Int
         get() = R.layout.fragment_favorite
 
+    override fun onResume() {
+        super.onResume()
+        loadData()
+    }
+
     override fun viewCreated() {
         favoriteAdaper = FavoriteAdapter{ clickFavorite(it) }
 
@@ -30,9 +35,6 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>() {
             adapterProduct = favoriteAdaper
             btnFavorite.setOnClickListener {
                 cartViewModel.insertCartByFavorite(listFavorite)
-            }
-            imageRefresh.setOnClickListener {
-                loadData()
             }
         }
 

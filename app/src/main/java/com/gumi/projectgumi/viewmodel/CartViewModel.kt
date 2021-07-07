@@ -21,11 +21,14 @@ class CartViewModel(private val roomDBReposity: RoomDBReposity) : ViewModel() {
         }
     }
 
-    fun sumMoneyCart(list: MutableList<CartModel>) {
+    fun sumMoneyCart(list: MutableList<CartModel>, isActive: Boolean) {
         var sum = 0.0
         list.forEach {
             val money = (it.productPrice.substring(1).toDouble() * it.amount)
             sum += money
+        }
+        if(isActive){
+            sum = (sum * 85)/100
         }
         sumMoney.postValue("$${sum}")
     }

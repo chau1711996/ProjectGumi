@@ -15,7 +15,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.projectgumi"
+        applicationId "com.gumi.projectgumi"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
@@ -114,4 +114,8 @@ dependencies {
 
     //native ads templates
     implementation project(':nativetemplates')
+
+    //google billing
+    def billing_version = "4.0.0"
+    implementation("com.android.billingclient:billing:$billing_version")
 }

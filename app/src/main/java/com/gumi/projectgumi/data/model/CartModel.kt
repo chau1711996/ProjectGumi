@@ -11,8 +11,8 @@ data class CartModel(
     val productId: Int,
     val productName: String,
     val unit: String,
-    val amount: Int,
-    val productPrice: String,
+    var amount: Int,
+    var productPrice: String,
     val url: String
 ): Serializable
 

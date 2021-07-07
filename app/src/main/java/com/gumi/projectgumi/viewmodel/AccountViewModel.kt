@@ -15,6 +15,7 @@ class AccountViewModel(private val res: MyReposity) : ViewModel() {
         mutableListOf(
             AccountLayoutModel(R.drawable.ic_order, "Orders"),
             AccountLayoutModel(R.drawable.ic_profile, "Profile"),
+            AccountLayoutModel(R.drawable.ic_subs, "Subscribe"),
             AccountLayoutModel(R.drawable.ic_help, "Help"),
             AccountLayoutModel(R.drawable.ic_about, "About"),
         )
