@@ -68,7 +68,7 @@ class ShopFragment : BaseFragment<FragmentShopBinding>() {
         }
 
         init()
-        //asdasdasdasdasdaa
+        //xxxcvcvcvcvc
 
         checkLogin()
 
