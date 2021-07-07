@@ -3,6 +3,11 @@ package com.gumi.projectgumi.ui.productDetail
 import android.os.Bundle
 import android.widget.Toast
 import coil.load
+import com.google.android.ads.nativetemplates.NativeTemplateStyle
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.gumi.projectgumi.MainActivity
 import com.gumi.projectgumi.R
 import com.gumi.projectgumi.adapter.ImagesProductAdapter
@@ -37,6 +42,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
     override fun viewCreated() {
         adapterImage = ImagesProductAdapter()
 
+        initAdsNative()
         initFunction()
 
         productId?.let {
@@ -83,6 +89,34 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
             }
 
         }
+    }
+
+    private fun initAdsNative() {
+
+        MobileAds.initialize(requireContext()) {}
+
+        val adLoader = AdLoader.Builder(requireContext(), "ca-app-pub-3940256099942544/2247696110")
+            .forNativeAd {
+                // Show the ad.
+                val style = NativeTemplateStyle.Builder()
+                    .build()
+                binding.myTemplate.apply {
+                    setNativeAd(it)
+                    setStyles(style)
+
+                }
+            }
+            .withAdListener(object : AdListener() {
+                override fun onAdClicked() {
+                    super.onAdClicked()
+                    Toast.makeText(requireContext(), "Clicked Native ads", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            })
+            .build()
+
+        adLoader.loadAd(AdRequest.Builder().build())
+
     }
 
     private fun initFunction() {

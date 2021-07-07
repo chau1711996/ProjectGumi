@@ -74,7 +74,10 @@ class BillingSubcribe(private val tag: String, context: Context) : PurchasesUpda
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun disconect(){
-        billingClient?.endConnection()
+        billingClient?.let {
+            it.endConnection()
+            Log.d(tag, "endConnection")
+        }
     }
 
     fun querySkuDetails() {

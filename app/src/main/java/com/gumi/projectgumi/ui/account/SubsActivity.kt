@@ -28,6 +28,8 @@ class SubsActivity : AppCompatActivity() {
         billingClient = billing.billingClient!!
         subsAdapter = SubsAdapter { clickBuyItem(it) }
 
+        lifecycle.addObserver(billing)
+
         binding.apply {
             val linearLayoutManager = LinearLayoutManager(binding.root.context)
             rcvItem.apply {
